@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
+            $table->foreignId('match_id')->constrained('matches')->onDelete('cascade');
             $table->foreignId('profile_id')->constrained('profiles')->onDelete('cascade');
             $table->timestamps();
-
-            $table->unique(['event_id', 'profile_id']);
+            $table->unique(['match_id', 'profile_id']);
         });
 
     }

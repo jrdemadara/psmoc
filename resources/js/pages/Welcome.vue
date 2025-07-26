@@ -44,7 +44,7 @@ import welcome from '../../assets/images/welcome.jpg';
                             <Link :href="route('register-gunclub')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary">Gun Club</Link>
                         </div>
                     </div>
-                    <Link :href="route('login')" class="inline-block px-5 py-1.5 hover:text-red-500">Events</Link>
+                    <Link :href="route('login')" class="inline-block px-5 py-1.5 hover:text-red-500">Sanctioned Matches</Link>
                     <div class="group relative">
                         <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Rulebook</button>
                         <div
