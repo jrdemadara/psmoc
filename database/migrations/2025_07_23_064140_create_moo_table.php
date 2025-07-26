@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('moo', function (Blueprint $table) {
             $table->id();
+             $table->foreignId('profile_id')->nullable()->constrained('profiles')->onDelete('cascade');
             $table->integer('exame_score');
             $table->string('zone');
             $table->string('district');
