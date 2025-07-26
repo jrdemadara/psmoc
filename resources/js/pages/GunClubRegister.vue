@@ -153,7 +153,7 @@ const submit = () => {
                     <div class="mx-5 mt-8 flex flex-col items-start justify-start space-y-2">
                         <div class="flex w-full items-center justify-between space-x-2">
                             <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
-                                <icons.Goal />
+                                <icons.Goal class="text-primary" />
                             </div>
                             <div class="flex w-full flex-col justify-start">
                                 <h4 class="text-sm font-bold">Gun Club Information</h4>
