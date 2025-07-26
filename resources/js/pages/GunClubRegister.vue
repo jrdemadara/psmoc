@@ -50,7 +50,8 @@ const stepIcon = computed(() => stepData[step.value]?.icon ?? '');
 const totalSteps = stepData.length;
 
 function nextStep(): void {
-    if (step.value < totalSteps - 1) {
+    formValidator();
+    if (step.value < totalSteps - 1 && isFormValid.value == true) {
         step.value++;
     }
 }
@@ -74,6 +75,17 @@ const form = useForm({
     email_address: '',
     logo: null as File | null,
 });
+
+const isFormValid = ref<boolean | null>(null);
+
+function formValidator(): void {
+    if (!form.name || !form.address || !form.contact_person || !form.contact_no || !form.email_address || !form.logo) {
+        isFormValid.value = false;
+        return;
+    }
+
+    isFormValid.value = true;
+}
 
 function formatPhone(e: any) {
     let input = e.target.value;
@@ -118,7 +130,7 @@ const submit = () => {
         forceFormData: true,
         onSuccess: () => {
             popToast();
-            form.reset();
+            //form.reset();
             logoError.value = '';
             isSubmitSuccess.value = true;
         },
@@ -153,13 +165,21 @@ const submit = () => {
                     <div class="mx-5 mt-8 flex flex-col items-start justify-start space-y-2">
                         <div class="flex w-full items-center justify-between space-x-2">
                             <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
-                                <icons.Goal class="text-primary" />
+                                <icons.Goal />
                             </div>
                             <div class="flex w-full flex-col justify-start">
                                 <h4 class="text-sm font-bold">Gun Club Information</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Provide your gun club information</p>
                             </div>
-                            <icons.Check :size="32" />
+                            <span v-if="isFormValid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isFormValid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -174,7 +194,15 @@ const submit = () => {
                                 <h4 class="text-sm font-bold">Review & Submit</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Confirm and finish</p>
                             </div>
-                            <icons.Check :size="32" />
+                            <span v-if="form.processing">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="form.wasSuccessful">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else-if="form.hasErrors">
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -203,7 +231,7 @@ const submit = () => {
                         </div>
                     </div>
                 </div>
-                <form @submit.prevent="submit" class="mt-10 flex flex-col">
+                <form @submit.prevent="submit" class="mt-10 flex flex-col items-end">
                     <div v-if="step == 0" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         <div class="grid gap-2">
                             <Label for="name">Gun Club Name</Label>
@@ -274,10 +302,10 @@ const submit = () => {
                         </div>
                     </div>
                     <div v-if="step == 1" class="flex w-[680px] flex-col items-center justify-center">
-                        <div v-if="isSubmitSuccess == false" class="rounded-md bg-yellow-50 p-4 text-lg text-yellow-800">
+                        <div v-if="form.wasSuccessful == false" class="rounded-md bg-yellow-50 p-4 text-lg text-yellow-800">
                             <strong>ᡕᠵデᡁ᠊╾━💥 Double-check your details so everything hits the mark — no one likes a misfire.</strong>
                         </div>
-                        <div v-if="isSubmitSuccess" class="rounded-md bg-green-50 p-4 text-lg text-green-800">
+                        <div v-if="form.wasSuccessful" class="mb-5 rounded-md bg-green-950 p-4 text-lg text-green-100">
                             <strong>Submission Successful!</strong>
                             <p class="text-basetext-justify mt-2">
                                 Your information has been received and is now being processed. If you need to make any changes, a secure update link
@@ -287,7 +315,7 @@ const submit = () => {
                         <ToastProvider>
                             <ToastRoot
                                 v-model:open="open"
-                                class="data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=end]:animate-swipeOut grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-lg border bg-white p-[15px] shadow-sm [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=move]:translate-x-[var(--reka-toast-swipe-move-x)]"
+                                class="data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=end]:animate-swipeOut grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-lg border bg-white p-[15px] shadow-sm [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=move]:translate-x-[var(--reka-toast-swipe-move-x)] dark:bg-zinc-700"
                             >
                                 <ToastTitle class="text-slate12 mb-[5px] text-sm font-medium [grid-area:_title]"> Submit Success!</ToastTitle>
                                 <ToastDescription as-child>
@@ -337,6 +365,18 @@ const submit = () => {
                             </template>
                         </Button>
                     </div>
+                    <Link v-if="form.wasSuccessful" :href="route('home')">
+                        <Button
+                            type="button"
+                            v-if="step > 0"
+                            @click="form.reset()"
+                            class="mt-10 h-10 w-full bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 sm:w-52 dark:bg-zinc-700"
+                            :tabindex="4"
+                        >
+                            <icons.ArrowLeft class="h-4 w-4" />
+                            Back to main
+                        </Button>
+                    </Link>
                 </form>
             </div>
         </div>
