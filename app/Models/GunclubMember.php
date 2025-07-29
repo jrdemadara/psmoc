@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class GunclubMember extends Model
 {
-    protected $table = 'profile_gunclub'; // or 'gunclub_profile' if that's your actual table name
+    protected $table = 'gunclub_members'; // or 'gunclub_profile' if that's your actual table name
 
     protected $fillable = [
         'profile_id',

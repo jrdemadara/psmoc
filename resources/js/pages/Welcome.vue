@@ -31,20 +31,23 @@ import welcome from '../../assets/images/welcome.jpg';
                     <img src="../../assets/images/logo.png" alt="Logo" class="h-14 w-auto" />
                     <AppLogoSecondary class="w-72 text-zinc-950 dark:text-zinc-50" />
                 </div>
-                <nav class="flex w-full items-center justify-center gap-2 text-sm font-semibold text-[#1b1b18] uppercase dark:text-[#EDEDEC]">
+                <nav class="flex w-full items-center justify-center gap-2 text-sm font-semibold text-[#1b1b18] capitalize dark:text-[#EDEDEC]">
                     <div class="group relative">
                         <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Register</button>
                         <div
-                            class="absolute z-10 hidden min-w-[150px] rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
+                            class="absolute z-10 hidden w-52 rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
                         >
-                            <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary">Member</Link>
+                            <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary">New Member</Link>
+                            <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                >Membership Renewal</Link
+                            >
                             <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                 >Match Officer</Link
                             >
                             <Link :href="route('register-gunclub')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary">Gun Club</Link>
                         </div>
                     </div>
-                    <Link :href="route('login')" class="inline-block px-5 py-1.5 hover:text-red-500">Sanctioned Matches</Link>
+                    <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Matches</Link>
                     <div class="group relative">
                         <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Rulebook</button>
                         <div
@@ -58,9 +61,9 @@ import welcome from '../../assets/images/welcome.jpg';
                             >
                         </div>
                     </div>
-                    <Link :href="route('login')" class="inline-block px-5 py-1.5 hover:text-red-500">Gun Clubs</Link>
-                    <Link :href="route('login')" class="inline-block px-5 py-1.5 hover:text-red-500">Match Officers</Link>
-                    <Link :href="route('login')" class="inline-block px-5 py-1.5 hover:text-red-500">About</Link>
+                    <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Gun Clubs</Link>
+                    <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Match Officers</Link>
+                    <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">About</Link>
                 </nav>
 
                 <div class="flex w-fit items-center justify-end space-x-3 px-16">

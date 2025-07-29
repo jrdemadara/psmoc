@@ -19,13 +19,9 @@ return new class extends Migration
             $table->string('model');
             $table->string('caliber');
             $table->string('serial_no')->unique();
-            $table->string('ltopf_no')->nullable();
-            $table->string('license_type')->nullable();
             $table->timestamps();
-
-            $table->index(['serial_no', 'ltopf_no']);
+            $table->index(['serial_no']);
         });
-
     }
 
     /**

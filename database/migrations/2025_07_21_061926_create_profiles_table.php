@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->enum('reg_type', ['new', 'renewal']);
             $table->string('application_venue');
+            $table->string('ltopf_no');
+            $table->string('license_type');
 
             $table->string('last_name');
             $table->string('first_name');
@@ -25,36 +27,36 @@ return new class extends Migration
             $table->date('birth_date');
             $table->string('birth_place');
             $table->integer('age');
-            $table->enum('gender', ['male', 'female', 'other']);
+            $table->string('gender');
             $table->string('civil_status');
             $table->string('blood_type');
 
-            $table->string('street');
-            $table->string('purok');
-            $table->string('barangay');
-            $table->string('city_municipality');
+            $table->string('region');
             $table->string('province');
+            $table->string('city_municipality');
+            $table->string('barangay');
+            $table->string('purok');
+            $table->string('street');
 
             $table->string('occupation');
             $table->string('company_organization')->nullable();
             $table->string('position')->nullable();
             $table->string('office_business_address')->nullable();
             $table->string('office_landline')->nullable();
-            $table->string('office_email')->unique()->nullable();
+            $table->string('office_email')->nullable();
 
 
-            $table->text('photo');
-            $table->text('signature');
+            $table->text('photo')->nullable();
+            $table->text('signature')->nullable();
 
             $table->string('recommended_by')->nullable();
             $table->string('approved_by')->nullable();
             $table->boolean('licensed_shooter')->default(false);
             $table->date('expiry_date');
-            $table->enum('status', ['pending', 'approved', 'denied'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'recommended', 'denied'])->default('pending');
             $table->timestamps();
             $table->index(['last_name', 'first_name']);
         });
-
     }
 
     /**
