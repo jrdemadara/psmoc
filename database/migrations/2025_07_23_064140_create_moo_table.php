@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('moo', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('profile_id')->nullable()->constrained('profiles')->onDelete('cascade');
+            $table->foreignId('profile_id')->nullable()->constrained('profiles')->onDelete('cascade');
             $table->integer('exame_score');
             $table->string('zone');
             $table->string('district');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('recommended_by')->nullable();
             $table->string('approved_by')->nullable();
             $table->date('expiry_date');
-            $table->enum('status', ['pending', 'approved', 'denied'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'recommended', 'denied'])->default('pending');
             $table->timestamps();
         });
     }

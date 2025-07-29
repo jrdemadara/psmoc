@@ -12,6 +12,9 @@ Route::get('/', function () {
 Route::get('register-member', [MemberRegisterController::class, 'create'])
     ->name('register-member');
 
+Route::post('register-member', [MemberRegisterController::class, 'store'])
+    ->name('register-member');
+
 Route::get('register-gunclub', [GunClubRegisterController::class, 'create'])
     ->name('register-gunclub');
 

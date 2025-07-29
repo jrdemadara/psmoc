@@ -18,10 +18,8 @@ return new class extends Migration
             $table->boolean('is_main')->default(false);
             $table->string('years_no')->nullable();
             $table->timestamps();
-
             $table->unique(['profile_id', 'gunclub_id']);
         });
-
     }
 
     /**

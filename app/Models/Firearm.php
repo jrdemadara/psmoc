@@ -14,8 +14,6 @@ class Firearm extends Model
         'model',
         'caliber',
         'serial_no',
-        'ltopf_no',
-        'license_type',
     ];
 
     public function profile():BelongsTo
