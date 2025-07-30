@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
 import { Link } from '@inertiajs/vue3';
-import { Crosshair, Facebook, Instagram, Mail, MoveRight, Phone, Smartphone, Youtube } from 'lucide-vue-next';
+import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-next';
 import welcome from '../../assets/images/welcome.jpg';
 </script>
 
@@ -12,7 +12,7 @@ import welcome from '../../assets/images/welcome.jpg';
     </Head>
     <div class="flex min-h-screen flex-col items-center bg-[#FDFDFC] text-[#1b1b18] dark:bg-black">
         <header class="flex w-full flex-col">
-            <div class="flex space-x-8 border border-b px-8 py-2 text-zinc-400">
+            <!-- <div class="flex space-x-8 border border-b px-8 py-2 text-zinc-400">
                 <div class="flex items-center justify-center space-x-2">
                     <Smartphone :size="22" class="text-zinc-400" />
                     <strong>(Globe) +63 975 3577 935</strong>
@@ -25,7 +25,7 @@ import welcome from '../../assets/images/welcome.jpg';
                     <Mail :size="22" class="text-zinc-400" />
                     <strong>psmoc.main@gmail.com</strong>
                 </div>
-            </div>
+            </div> -->
             <div class="flex py-5">
                 <div class="flex w-fit items-center justify-center space-x-2 px-16">
                     <img src="../../assets/images/logo.png" alt="Logo" class="h-14 w-auto" />
@@ -67,13 +67,13 @@ import welcome from '../../assets/images/welcome.jpg';
                 </nav>
 
                 <div class="flex w-fit items-center justify-end space-x-3 px-16">
-                    <div class="rounded-full bg-primary/40 p-2 hover:bg-primary/30">
+                    <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
                         <Facebook color="white" :size="22" />
                     </div>
-                    <div class="rounded-full bg-primary/40 p-2 hover:bg-primary/30">
+                    <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
                         <Instagram color="white" :size="22" />
                     </div>
-                    <div class="rounded-full bg-primary/40 p-2 hover:bg-primary/30">
+                    <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
                         <Youtube color="white" :size="22" />
                     </div>
                     <Link

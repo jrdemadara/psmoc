@@ -76,14 +76,14 @@ type StepInfo = {
 };
 
 const stepData: StepInfo[] = [
-    { title: 'Application Type', tag: 'Choose New or Renewal', icon: 'FilePlus' },
-    { title: 'Personal Information', tag: 'Tell us about yourself', icon: 'UserRound' },
-    { title: 'Home Address', tag: 'Verify your address', icon: 'MapPinHouse' },
-    { title: 'Work Details', tag: 'Tell us about your work', icon: 'BriefcaseBusiness' },
-    { title: 'Photo & Signature', tag: 'Verify your identity', icon: 'Signature' },
-    { title: 'Gun Club', tag: 'Select your gun club', icon: 'Goal' },
-    { title: 'Firearms Details', tag: 'Indicate your firearms', icon: 'Crosshair' },
-    { title: 'Review & Submit', tag: 'Confirm and finish', icon: 'CheckCircle' },
+    { title: 'Application Type', tag: 'Select application type', icon: 'FilePlus' },
+    { title: 'Personal Information', tag: 'Enter personal details', icon: 'UserRound' },
+    { title: 'Home Address', tag: 'Confirm your address', icon: 'MapPinHouse' },
+    { title: 'Work Details', tag: 'Provide work information', icon: 'BriefcaseBusiness' },
+    { title: 'Photo & Signature', tag: 'Upload photo and signature', icon: 'Signature' },
+    { title: 'Gun Club', tag: 'Choose your gun club', icon: 'Goal' },
+    { title: 'Firearms Details', tag: 'List your firearms', icon: 'Crosshair' },
+    { title: 'Review & Submit', tag: 'Confirm all your details', icon: 'CheckCircle' },
 ];
 
 const step = ref<number>(0);
@@ -94,8 +94,12 @@ const stepIcon = computed(() => stepData[step.value]?.icon ?? '');
 
 const totalSteps = stepData.length;
 function nextStep(): void {
-    if (step.value < totalSteps - 1) {
-        step.value++;
+    if (validateStep(step.value)) {
+        if (step.value < totalSteps - 1) {
+            step.value++;
+        }
+    } else {
+        alert('Please complete all required fields before proceeding.');
     }
 }
 
@@ -167,6 +171,68 @@ const form = useForm({
         serial_no: string;
     }[],
 });
+
+const isStep0Valid = ref(false);
+const isStep1Valid = ref(false);
+const isStep2Valid = ref(false);
+const isStep3Valid = ref(false);
+const isStep4Valid = ref(false);
+const isStep5Valid = ref(false);
+const isStep6Valid = ref(false);
+
+function validateStep(currentStep: number): boolean {
+    let valid = false;
+
+    switch (currentStep) {
+        case 0:
+            valid = !!form.application_venue && form.licensed_shooter !== null && !!form.ltopf_no && !!form.license_type;
+            isStep0Valid.value = valid;
+            return valid;
+        case 1:
+            valid =
+                !!form.last_name &&
+                !!form.first_name &&
+                !!form.middle_name &&
+                !!form.birth_date &&
+                !!form.birth_place &&
+                !!form.age &&
+                !!form.gender &&
+                !!form.civil_status &&
+                !!form.blood_type &&
+                !!form.email &&
+                !!form.phone;
+            isStep1Valid.value = valid;
+            return valid;
+        case 2:
+            valid = !!form.street && !!form.purok && !!form.barangay && !!form.city_municipality && !!form.province && !!form.region;
+            isStep2Valid.value = valid;
+            return valid;
+        case 3:
+            valid =
+                !!form.occupation &&
+                !!form.company_organization &&
+                !!form.position &&
+                !!form.office_business_address &&
+                !!form.office_landline &&
+                !!form.office_email;
+            isStep3Valid.value = valid;
+            return valid;
+        case 4:
+            valid = form.photo !== null && form.signature !== null;
+            isStep4Valid.value = valid;
+            return valid;
+        case 5:
+            valid = form.gunclubs.length > 0;
+            isStep5Valid.value = valid;
+            return valid;
+        case 6:
+            valid = form.firearms.length > 0;
+            isStep6Valid.value = valid;
+            return valid;
+        default:
+            return true;
+    }
+}
 
 const licensedShooterOptions = ['Yes', 'No'];
 const licenseTypeOptions = ['Type 1', 'Type 2', 'Type 3', 'Type 4', 'Type 5'];
@@ -559,7 +625,15 @@ onUnmounted(() => {
                                 <h2 class="text-sm font-bold">Application Type</h2>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">How you'd like to proceed?</p>
                             </div>
-                            <icons.LoaderCircle class="animate-spin" :size="32" />
+                            <span v-if="isStep0Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep0Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -574,7 +648,15 @@ onUnmounted(() => {
                                 <h2 class="text-sm font-bold">Personal Information</h2>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Tell us about yourself</p>
                             </div>
-                            <icons.LoaderCircle class="animate-spin" :size="32" />
+                            <span v-if="isStep1Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep1Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -589,7 +671,15 @@ onUnmounted(() => {
                                 <h2 class="text-sm font-bold">Home Address</h2>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Verify your address</p>
                             </div>
-                            <icons.LoaderCircle class="animate-spin" :size="32" />
+                            <span v-if="isStep2Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep2Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -604,7 +694,15 @@ onUnmounted(() => {
                                 <h2 class="text-sm font-bold">Work Details</h2>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Tell us about your work</p>
                             </div>
-                            <icons.CircleCheck class="text-green-600" :size="32" />
+                            <span v-if="isStep3Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep3Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -619,7 +717,15 @@ onUnmounted(() => {
                                 <h4 class="text-sm font-bold">Photo & Signature</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Verify your identity</p>
                             </div>
-                            <icons.CircleX class="text-primary" :size="32" />
+                            <span v-if="isStep4Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep4Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -634,7 +740,15 @@ onUnmounted(() => {
                                 <h4 class="text-sm font-bold">Gun Club</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Select your gun club</p>
                             </div>
-                            <icons.Check :size="32" />
+                            <span v-if="isStep5Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep5Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -649,7 +763,15 @@ onUnmounted(() => {
                                 <h4 class="text-sm font-bold">Firearms Details</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Indicate your firearms</p>
                             </div>
-                            <icons.Check :size="32" />
+                            <span v-if="isStep6Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep6Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
 
                         <div class="flex w-12 items-center justify-center">
@@ -664,7 +786,15 @@ onUnmounted(() => {
                                 <h4 class="text-sm font-bold">Review & Submit</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Confirm and finish</p>
                             </div>
-                            <icons.Check :size="32" />
+                            <span v-if="form.processing">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="form.wasSuccessful">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else-if="form.hasErrors">
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -1381,7 +1511,7 @@ onUnmounted(() => {
                                         ref="signature"
                                         height="200px"
                                         width="680px"
-                                        maxWidth:2
+                                        maxWidth="3"
                                         :disabled="state.disabled"
                                         :options="{
                                             penColor: state.options.penColor,
@@ -1634,6 +1764,59 @@ onUnmounted(() => {
                         </table>
                     </div>
 
+                    <div v-if="step == 7" class="flex w-[680px] flex-col items-center justify-center">
+                        <div v-if="form.wasSuccessful == false" class="rounded-md bg-zinc-200 p-4 text-lg dark:bg-zinc-800 dark:text-zinc-50">
+                            <strong>ᡕᠵデᡁ᠊╾━💥 Double-check your details so everything hits the mark — no one likes a misfire.</strong>
+                        </div>
+                        <div v-if="form.wasSuccessful" class="mb-5 rounded-md bg-green-950 p-4 text-lg text-green-100">
+                            <strong>Submission Successful!</strong>
+                            <p class="text-basetext-justify mt-2">
+                                Your information has been received and is now being processed. If you need to make any changes, a secure update link
+                                has been sent to the email address you provided. Please check your inbox (and spam folder) for further instructions.
+                            </p>
+                        </div>
+                        <ToastProvider>
+                            <ToastRoot
+                                v-model:open="successToastOpen"
+                                class="data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=end]:animate-swipeOut grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-lg border bg-white p-[15px] shadow-sm [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=move]:translate-x-[var(--reka-toast-swipe-move-x)] dark:bg-zinc-700"
+                            >
+                                <ToastTitle class="text-slate12 mb-[5px] text-sm font-medium [grid-area:_title]"> Submit Success!</ToastTitle>
+                                <ToastDescription as-child>
+                                    For any corrections or updates, please use the link that will be sent to your submitted email address.
+                                </ToastDescription>
+                                <ToastAction class="[grid-area:_action]" as-child alt-text="Goto schedule to undo">
+                                    <button
+                                        class="bg-green2 text-green11 shadow-green7 hover:shadow-green8 focus:shadow-green8 inline-flex h-[25px] items-center justify-center rounded-md px-[10px] text-xs leading-[25px] font-medium shadow-[inset_0_0_0_1px] hover:shadow-[inset_0_0_0_1px] focus:shadow-[0_0_0_2px]"
+                                    >
+                                        Close
+                                    </button>
+                                </ToastAction>
+                            </ToastRoot>
+                            <ToastViewport
+                                class="fixed right-0 bottom-0 z-[2147483647] m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-[10px] p-[var(--viewport-padding)] outline-none [--viewport-padding:_25px]"
+                            />
+                        </ToastProvider>
+                        <ToastProvider>
+                            <ToastRoot
+                                v-model:open="errorToastOpen"
+                                class="data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=end]:animate-swipeOut grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-lg border bg-red-400 p-[15px] shadow-sm [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=move]:translate-x-[var(--reka-toast-swipe-move-x)] dark:bg-red-400"
+                            >
+                                <ToastTitle class="text-slate12 mb-[5px] text-sm font-medium [grid-area:_title]"> Submit Error!</ToastTitle>
+                                <ToastDescription as-child> {{ formErrorMessage }} </ToastDescription>
+                                <ToastAction class="[grid-area:_action]" as-child alt-text="Goto schedule to undo">
+                                    <button
+                                        class="bg-green2 text-green11 shadow-green7 hover:shadow-green8 focus:shadow-green8 inline-flex h-[25px] items-center justify-center rounded-md px-[10px] text-xs leading-[25px] font-medium shadow-[inset_0_0_0_1px] hover:shadow-[inset_0_0_0_1px] focus:shadow-[0_0_0_2px]"
+                                    >
+                                        Close
+                                    </button>
+                                </ToastAction>
+                            </ToastRoot>
+                            <ToastViewport
+                                class="fixed right-0 bottom-0 z-[2147483647] m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-[10px] p-[var(--viewport-padding)] outline-none [--viewport-padding:_25px]"
+                            />
+                        </ToastProvider>
+                    </div>
+
                     <div
                         v-if="isSubmitSuccess == false"
                         class="mt-8 flex flex-col-reverse items-center justify-end space-y-4 space-x-0 sm:flex-row sm:space-y-0 sm:space-x-4"
@@ -1667,7 +1850,6 @@ onUnmounted(() => {
                     <Link v-if="form.wasSuccessful" :href="route('home')">
                         <Button
                             type="button"
-                            v-if="step > 0"
                             @click="form.reset()"
                             class="mt-10 h-10 w-full bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 sm:w-52 dark:bg-zinc-700"
                             :tabindex="4"
@@ -1676,52 +1858,7 @@ onUnmounted(() => {
                             Back to main
                         </Button>
                     </Link>
-
-                    <!-- <Button type="submit" class="mt-4 w-52 text-white" :tabindex="4" :disabled="form.processing">
-                        <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                        Next
-                    </Button> -->
                 </form>
-                <ToastProvider>
-                    <ToastRoot
-                        v-model:open="successToastOpen"
-                        class="data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=end]:animate-swipeOut grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-lg border bg-white p-[15px] shadow-sm [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=move]:translate-x-[var(--reka-toast-swipe-move-x)] dark:bg-zinc-700"
-                    >
-                        <ToastTitle class="text-slate12 mb-[5px] text-sm font-medium [grid-area:_title]"> Submit Success!</ToastTitle>
-                        <ToastDescription as-child>
-                            For any corrections or updates, please use the link that will be sent to your submitted email address.
-                        </ToastDescription>
-                        <ToastAction class="[grid-area:_action]" as-child alt-text="Goto schedule to undo">
-                            <button
-                                class="bg-green2 text-green11 shadow-green7 hover:shadow-green8 focus:shadow-green8 inline-flex h-[25px] items-center justify-center rounded-md px-[10px] text-xs leading-[25px] font-medium shadow-[inset_0_0_0_1px] hover:shadow-[inset_0_0_0_1px] focus:shadow-[0_0_0_2px]"
-                            >
-                                Close
-                            </button>
-                        </ToastAction>
-                    </ToastRoot>
-                    <ToastViewport
-                        class="fixed right-0 bottom-0 z-[2147483647] m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-[10px] p-[var(--viewport-padding)] outline-none [--viewport-padding:_25px]"
-                    />
-                </ToastProvider>
-                <ToastProvider>
-                    <ToastRoot
-                        v-model:open="errorToastOpen"
-                        class="data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=end]:animate-swipeOut grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-lg border bg-red-400 p-[15px] shadow-sm [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=move]:translate-x-[var(--reka-toast-swipe-move-x)] dark:bg-red-400"
-                    >
-                        <ToastTitle class="text-slate12 mb-[5px] text-sm font-medium [grid-area:_title]"> Submit Error!</ToastTitle>
-                        <ToastDescription as-child> {{ formErrorMessage }} </ToastDescription>
-                        <ToastAction class="[grid-area:_action]" as-child alt-text="Goto schedule to undo">
-                            <button
-                                class="bg-green2 text-green11 shadow-green7 hover:shadow-green8 focus:shadow-green8 inline-flex h-[25px] items-center justify-center rounded-md px-[10px] text-xs leading-[25px] font-medium shadow-[inset_0_0_0_1px] hover:shadow-[inset_0_0_0_1px] focus:shadow-[0_0_0_2px]"
-                            >
-                                Close
-                            </button>
-                        </ToastAction>
-                    </ToastRoot>
-                    <ToastViewport
-                        class="fixed right-0 bottom-0 z-[2147483647] m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-[10px] p-[var(--viewport-padding)] outline-none [--viewport-padding:_25px]"
-                    />
-                </ToastProvider>
             </div>
         </div>
     </div>
