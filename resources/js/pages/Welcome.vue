@@ -27,16 +27,16 @@ import welcome from '../../assets/images/welcome.jpg';
                             <div
                                 class="absolute z-10 hidden w-52 rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
                             >
-                                <Link :href="route('register-member.create')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >New Member</Link
                                 >
-                                <Link :href="route('register-member.create')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >Membership Renewal</Link
                                 >
-                                <Link :href="route('register-member.create')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >Match Officer</Link
                                 >
-                                <Link :href="route('register-gunclub.create')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-gunclub')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >Gun Club</Link
                                 >
                             </div>
@@ -47,10 +47,10 @@ import welcome from '../../assets/images/welcome.jpg';
                             <div
                                 class="absolute z-10 hidden min-w-[150px] rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
                             >
-                                <Link :href="route('register-member.create')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >PSMOC Rulebook</Link
                                 >
-                                <Link :href="route('register-member.create')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >ISMOC Airsoft Rulebook</Link
                                 >
                             </div>
@@ -71,7 +71,7 @@ import welcome from '../../assets/images/welcome.jpg';
                             <Youtube color="white" :size="22" />
                         </div>
                         <Link
-                            :href="route('register-member.create  ')"
+                            :href="route('register-member  ')"
                             class="flex h-10 w-32 items-center justify-center rounded-full bg-primary font-bold text-white hover:bg-primary/80"
                         >
                             <strong>Join Us</strong>
@@ -97,7 +97,7 @@ import welcome from '../../assets/images/welcome.jpg';
                         </p>
 
                         <Link
-                            :href="route('register-member.create')"
+                            :href="route('register-member')"
                             class="mt-12 flex h-16 w-56 items-center justify-between space-x-2 rounded-full bg-primary px-5 hover:bg-primary/80"
                         >
                             <MoveRight color="white" :size="24" />

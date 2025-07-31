@@ -10,13 +10,13 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('register-member', [MemberRegisterController::class, 'create'])
-    ->name('register-member.create');
+    ->name('register-member');
 
 Route::post('register-member', [MemberRegisterController::class, 'store'])
     ->name('register-member.store');
 
 Route::get('register-gunclub', [GunClubRegisterController::class, 'create'])
-    ->name('register-gunclub.create');
+    ->name('register-gunclub');
 
 Route::post('register-gunclub', [GunClubRegisterController::class, 'store'])
     ->name('register-gunclub.store');
