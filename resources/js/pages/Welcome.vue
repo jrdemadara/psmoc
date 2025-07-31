@@ -71,7 +71,7 @@ import welcome from '../../assets/images/welcome.jpg';
                             <Youtube color="white" :size="22" />
                         </div>
                         <Link
-                            :href="route('register-member  ')"
+                            :href="route('register-member')"
                             class="flex h-10 w-32 items-center justify-center rounded-full bg-primary font-bold text-white hover:bg-primary/80"
                         >
                             <strong>Join Us</strong>
