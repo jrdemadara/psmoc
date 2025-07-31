@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MemberOnboardingMail;
 use App\Models\Gunclub;
 use App\Models\Profile;
 use Carbon\Carbon;
@@ -9,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -175,6 +177,14 @@ class MemberRegisterController extends Controller
 
             DB::commit();
             Log::info('Transaction committed successfully.');
+
+            $data = [
+                'name' => Str::upper($profile->first_name),
+            ];
+
+            Log::info('Attempting to send onboarding email.');
+            Mail::to($profile->email)->send(new MemberOnboardingMail($data));
+            Log::info('Onboarding email sent.');
 
             return redirect()->back()->with('success', 'Profile created successfully.');
 
