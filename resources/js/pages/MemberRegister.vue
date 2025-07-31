@@ -259,7 +259,7 @@ const firearmTypeOptions = [
 const isSubmitSuccess = ref<boolean>(false);
 const formErrorMessage = ref<string>('');
 const submit = () => {
-    form.post(route('register-member'), {
+    form.post(route('register-member.store'), {
         forceFormData: true,
         onSuccess: () => {
             isSubmitSuccess.value = true;

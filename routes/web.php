@@ -10,22 +10,16 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('register-member', [MemberRegisterController::class, 'create'])
-    ->name('register-member');
+    ->name('register-member.create');
 
 Route::post('register-member', [MemberRegisterController::class, 'store'])
-    ->name('register-member');
+    ->name('register-member.store');
 
 Route::get('register-gunclub', [GunClubRegisterController::class, 'create'])
-    ->name('register-gunclub');
+    ->name('register-gunclub.create');
 
 Route::post('register-gunclub', [GunClubRegisterController::class, 'store'])
     ->name('register-gunclub.store');
-
-
-
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
