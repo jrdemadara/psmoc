@@ -179,6 +179,7 @@ const isStep3Valid = ref(false);
 const isStep4Valid = ref(false);
 const isStep5Valid = ref(false);
 const isStep6Valid = ref(false);
+const isStep7Valid = ref(false);
 
 function validateStep(currentStep: number): boolean {
     let valid = false;
@@ -229,6 +230,9 @@ function validateStep(currentStep: number): boolean {
             valid = form.firearms.length > 0;
             isStep6Valid.value = valid;
             return valid;
+        case 7:
+            isStep7Valid.value = true;
+            return true;
         default:
             return true;
     }
@@ -786,13 +790,13 @@ onUnmounted(() => {
                                 <h4 class="text-sm font-bold">Review & Submit</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Confirm and finish</p>
                             </div>
-                            <span v-if="form.processing">
+                            <span v-if="isStep7Valid == null">
                                 <icons.Loader2 class="animate-spin" :size="24" />
                             </span>
-                            <span v-else-if="form.wasSuccessful">
+                            <span v-else-if="isStep7Valid">
                                 <icons.Check class="text-green-600" :size="24" />
                             </span>
-                            <span v-else-if="form.hasErrors">
+                            <span v-else>
                                 <icons.X class="text-red-600" :size="24" />
                             </span>
                         </div>

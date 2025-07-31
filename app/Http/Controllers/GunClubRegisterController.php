@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ClubOnboardingMail;
 use App\Models\Gunclub;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -46,6 +48,12 @@ class GunClubRegisterController extends Controller
             // Update the gunclub with the logo path
             $gunclub->update(['logo' => $path]);
         }
+
+        $data = [
+            'name' => Str::upper($gunclub->name),
+        ];
+
+        Mail::to($gunclub->email_address)->send(new ClubOnboardingMail($data));
 
         return redirect()->back()->with('success', 'Gun Club created successfully.');
     }
