@@ -13,5 +13,7 @@ class Gunclub extends Model
         'contact_no',
         'email_address',
         'logo',
+        'approved_by',
+        'status',
     ];
 }
