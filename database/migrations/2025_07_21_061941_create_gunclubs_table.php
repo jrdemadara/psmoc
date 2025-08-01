@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('contact_no');
             $table->string('email_address');
             $table->text('logo')->nullable();
+            $table->string('approved_by')->nullable();
+            $table->enum('status', ['pending', 'approved', 'recommended', 'denied'])->default('pending');
             $table->timestamps();
         });
     }
