@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\GunClubRegisterController;
 use App\Http\Controllers\MemberRegisterController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+Route::get('/', [WelcomeController::class, 'create'])
+    ->name('home');
 
 Route::get('register-member', [MemberRegisterController::class, 'create'])
     ->name('register-member');

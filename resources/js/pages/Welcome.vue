@@ -2,8 +2,15 @@
 import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
 import { Link } from '@inertiajs/vue3';
 import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-next';
-import metallicBackground from '../../assets/images/metallic-background.jpg';
+import { PropType } from 'vue';
 import welcome from '../../assets/images/welcome.jpg';
+
+const props = defineProps({
+    gunClubs: {
+        type: Array as PropType<{ id: number; name: string; logo: string }[]>,
+        required: true,
+    },
+});
 </script>
 <template>
     <Head title="Welcome">
@@ -232,9 +239,14 @@ import welcome from '../../assets/images/welcome.jpg';
                     <div class="h-6 w-6 animate-spin bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <div class="flex h-96 flex-col bg-cover bg-center" :style="`background-image: url(${metallicBackground})`">
-                    <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-52 object-contain" />
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-6 lg:grid-cols-6">
+                <div
+                    v-for="club in props.gunClubs"
+                    :key="club.id"
+                    class="flex h-52 w-52 flex-col transition-transform duration-300 ease-in-out hover:scale-110"
+                >
+                    <img :src="club.logo" :alt="club.name + ' logo'" class="mb-2 max-h-52 w-full object-contain" />
+                    <div class="text-center font-semibold text-white uppercase">{{ club.name }}</div>
                 </div>
             </div>
         </section>
