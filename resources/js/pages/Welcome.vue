@@ -65,16 +65,16 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
         <!-- Section that fills the screen -->
         <section class="relative h-screen w-full">
             <!-- Header -->
-            <header class="absolute top-0 left-0 z-20 w-full bg-black text-white">
+            <header class="absolute top-0 left-0 z-20 w-full bg-zinc-50 text-white dark:bg-black">
                 <div class="flex flex-wrap items-center justify-between px-4 py-5 lg:px-16">
                     <!-- Logo -->
                     <div class="flex items-center space-x-2">
                         <img src="../../assets/images/logo.png" alt="Logo" class="h-14 w-auto" />
-                        <AppLogoSecondary class="w-48 text-zinc-50" />
+                        <AppLogoSecondary class="text-black dark:text-zinc-50" />
                     </div>
 
                     <!-- Hamburger -->
-                    <button @click="isOpen = !isOpen" class="text-white focus:outline-none lg:hidden">
+                    <button @click="isOpen = !isOpen" class="text-black focus:outline-none lg:hidden dark:text-zinc-50">
                         <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -86,13 +86,13 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                     <!-- Navigation -->
                     <nav
                         :class="[
-                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0 dark:text-[#EDEDEC]',
+                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold text-black capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0 dark:text-zinc-50',
                             isOpen ? 'mt-5 flex' : 'hidden lg:flex',
                         ]"
                         class="transition-all duration-300 ease-in-out"
                     >
                         <div class="group relative">
-                            <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Register</button>
+                            <button class="inline-block px-5 py-1.5 uppercase hover:text-primary">Register</button>
                             <div
                                 class="absolute z-10 hidden w-52 rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
                             >
@@ -124,20 +124,20 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                             </div>
                         </div>
 
-                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Gun Clubs</Link>
-                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Match Officers</Link>
-                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">About</Link>
+                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Gun Clubs</Link>
+                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Match Officers</Link>
+                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">About</Link>
 
                         <!-- Socials + CTA -->
                         <div class="flex flex-col items-center space-y-3 pt-4 lg:ml-8 lg:flex-row lg:space-y-0 lg:space-x-3 lg:pt-0">
                             <div class="flex space-x-3">
-                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                <div class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40">
                                     <Facebook color="white" :size="22" />
                                 </div>
-                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                <div class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40">
                                     <Instagram color="white" :size="22" />
                                 </div>
-                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                <div class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40">
                                     <Youtube color="white" :size="22" />
                                 </div>
                             </div>
@@ -158,13 +158,22 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                 class="relative flex h-full w-full flex-col items-center justify-center bg-cover bg-center bg-no-repeat text-center text-white sm:bg-[length:120%] lg:bg-cover lg:pt-52"
                 :style="`background-image: url(${welcome})`"
             >
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20"></div>
+                <!-- Gradient overlay for both light and dark modes -->
+                <div class="absolute inset-0 z-0">
+                    <!-- Light mode gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-white/20 dark:hidden"></div>
+
+                    <!-- Dark mode gradient -->
+                    <div class="absolute inset-0 hidden bg-gradient-to-t from-black via-black/80 to-black/20 dark:block"></div>
+                </div>
 
                 <div class="relative z-10 flex h-full w-full flex-col items-center justify-center rounded-lg px-5 lg:space-y-28 lg:px-16">
                     <div class="flex h-full flex-col items-center justify-center">
                         <img src="../../assets/images/header.svg" alt="" class="w-[680px]" />
-                        <p class="text-xl font-bold tracking-wider text-zinc-200 lg:text-2xl">Philippine Shooters and Match Officers Confederation</p>
-                        <p class="mt-5 text-xl tracking-wider text-zinc-400 lg:text-2xl">
+                        <p class="text-xl font-bold tracking-wider text-zinc-800 lg:text-2xl dark:text-zinc-200">
+                            Philippine Shooters and Match Officers Confederation
+                        </p>
+                        <p class="mt-5 text-xl tracking-wider text-zinc-700 lg:text-2xl dark:text-zinc-400">
                             No gimmicks. Just pure firepower. At PSMOC, we take shooting to the extreme — <br />
                             live matches, advanced setups, and raw intensity that hits you like recoil.
                         </p>
@@ -181,20 +190,20 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
 
                     <div class="mb-5 flex w-full">
                         <div class="flex h-12 w-full items-end">
-                            <div class="h-1 w-6 bg-zinc-800"></div>
+                            <div class="h-1 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full space-x-3">
-                            <div class="h-2 w-2 animate-spin bg-zinc-800"></div>
-                            <div class="h-2 w-2 bg-zinc-800"></div>
+                            <div class="h-2 w-2 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
+                            <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full items-center">
-                            <div class="h-6 w-6 bg-zinc-800"></div>
+                            <div class="h-6 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full items-end">
-                            <div class="h-1 w-4 animate-bounce bg-zinc-800"></div>
+                            <div class="h-1 w-4 animate-bounce bg-zinc-200 dark:bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full items-start">
-                            <div class="h-1 w-32 bg-zinc-800"></div>
+                            <div class="h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
                         </div>
                     </div>
                 </div>
@@ -203,33 +212,37 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
 
         <!-- Section A -->
         <section class="flex w-full flex-col items-center justify-center px-5 lg:px-16">
-            <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Competitive Shooting Matches</h1>
+            <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Competitive Shooting Matches</h1>
             <div class="mt-5 flex w-full">
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full space-x-3"></div>
                 <div class="flex h-12 w-full items-center"></div>
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full items-start">
-                    <div class="h-6 w-6 animate-spin bg-zinc-800"></div>
+                    <div class="h-6 w-6 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
             </div>
             <div class="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-400 px-5">
+                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-300 px-5 dark:border-zinc-400">
                     <div class="flex size-12 items-center justify-center rounded-full bg-primary p-2 text-3xl font-black text-zinc-50">1</div>
-                    <h4 class="text-2xl font-bold text-zinc-50">Nationwide Competition</h4>
-                    <p class="text-xl text-zinc-400">Open to participants from all over the country. Join and showcase your skills.</p>
+                    <h4 class="text-2xl font-bold text-zinc-800 dark:text-zinc-50">Nationwide Competition</h4>
+                    <p class="text-xl text-zinc-600 dark:text-zinc-400">
+                        Open to participants from all over the country. Join and showcase your skills.
+                    </p>
                 </div>
 
                 <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg bg-primary px-5">
                     <div class="flex size-12 items-center justify-center rounded-full bg-zinc-50 p-2 text-3xl font-black text-zinc-950">2</div>
-                    <h4 class="text-2xl font-bold text-zinc-950">Elite Match Officers</h4>
-                    <p class="text-xl text-zinc-900">Led by top-tier professionals ensuring fairness and precision in every match.</p>
+                    <h4 class="d text-2xl font-bold text-zinc-50">Elite Match Officers</h4>
+                    <p class="text-xl text-zinc-100">Led by top-tier professionals ensuring fairness and precision in every match.</p>
                 </div>
 
-                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-400 px-5">
+                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-300 px-5 dark:border-zinc-400">
                     <div class="flex size-12 items-center justify-center rounded-full bg-primary p-2 text-3xl font-black text-zinc-50">3</div>
-                    <h4 class="text-2xl font-bold text-zinc-50">Live-Fire Challenges</h4>
-                    <p class="text-xl text-zinc-400">Experience intense, real-world scenarios that push your skills to the limit.</p>
+                    <h4 class="text-2xl font-bold text-zinc-800 dark:text-zinc-50">Live-Fire Challenges</h4>
+                    <p class="text-xl text-zinc-600 dark:text-zinc-400">
+                        Experience intense, real-world scenarios that push your skills to the limit.
+                    </p>
                 </div>
             </div>
         </section>
@@ -238,21 +251,21 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
         <section class="mt-16 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <div class="mt-5 flex h-24 w-full">
                 <div class="flex h-full w-full flex-col items-start justify-end">
-                    <div class="h-1 w-24 bg-zinc-600"></div>
-                    <div class="mt-4 h-1 w-32 bg-zinc-800"></div>
+                    <div class="h-1 w-24 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="mt-4 h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-center justify-center space-x-3">
-                    <div class="h-6 w-6 animate-pulse bg-zinc-800"></div>
+                    <div class="h-6 w-6 animate-pulse bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-start justify-center">
-                    <div class="h-2 w-2 bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-end justify-center space-x-2">
-                    <div class="h-1 w-1 bg-zinc-800"></div>
-                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-end justify-end">
-                    <div class="h-4 w-4 bg-zinc-800"></div>
+                    <div class="h-4 w-4 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
             </div>
             <div class="mt-10 flex w-full flex-col items-center gap-8 lg:flex-row">
@@ -269,7 +282,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                     </div>
 
                     <div class="mt-0 flex flex-col lg:mt-32">
-                        <p class="text-justify text-xl leading-normal tracking-wider text-zinc-50">
+                        <p class="text-justify text-xl leading-normal tracking-wider text-black dark:text-zinc-50">
                             Dear PSMOC Family members, <br /><br />
                             It is with great honor and pride that I announce the creation of the International Shooters and Match Officers
                             Confederation (ISMOC), Inc.—the first international shooting organization founded and headquartered in the Philippines.
@@ -278,7 +291,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                             of our officers, Match Officers, members, and staff—thank you all. As reflected in our logo, ISMOC thrives with dynamic
                             energy, united by a shared passion for the shooting sport. Mabuhay!
                         </p>
-                        <span class="mt-5 text-zinc-50">
+                        <span class="mt-5 text-black dark:text-zinc-50">
                             <strong class="">CONG. SUHARTO “Teng” MANGUDADATU, Ph.D.</strong><br />
                             Representative, 1st District of Sultan Kudarat, <br />
                             Philippines President, International Shooters and Match Officers Confederation President, <br />
@@ -291,21 +304,23 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
 
         <!-- Section Gun Clubs -->
         <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
-            <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Registered Gun Clubs</h1>
-            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-400 lg:text-2xl">
+            <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Registered Gun Clubs</h1>
+            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-600 lg:text-2xl dark:text-zinc-400">
                 Discover gun clubs officially registered under ISMOC, representing excellence in sportsmanship, safety, and competition across the
                 Philippines and beyond.
             </p>
             <div class="mt-5 flex w-full">
                 <div class="flex h-12 w-full items-end">
-                    <div class="h-1 w-1 bg-zinc-800"></div>
-                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full space-x-3"></div>
-                <div class="flex h-12 w-full items-center"><div class="mt-4 h-1 w-32 bg-zinc-800"></div></div>
+                <div class="flex h-12 w-full items-center">
+                    <div class="mt-4 h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
+                </div>
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full items-start">
-                    <div class="h-6 w-6 animate-spin bg-zinc-800"></div>
+                    <div class="h-6 w-6 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
             </div>
             <Carousel v-bind="gunClubsConfig">
@@ -324,22 +339,22 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
 
         <!-- Section Gallery -->
         <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
-            <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Gallery</h1>
-            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-400 lg:text-2xl">
+            <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Gallery</h1>
+            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-600 lg:text-2xl dark:text-zinc-400">
                 A curated collection of memorable events, trainings, and activities showcasing the spirit and dedication of our shooting community.
             </p>
             <div class="mt-5 flex w-full">
                 <div class="flex h-full w-full items-start justify-center">
-                    <div class="h-2 w-2 bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full space-x-3"></div>
                 <div class="flex h-12 w-full items-center">
-                    <div class="h-2 w-2 bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-full w-full items-end justify-center space-x-2">
-                    <div class="h-1 w-1 bg-zinc-800"></div>
-                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
             </div>
             <Carousel id="gallery" v-bind="galleryConfig" v-model="currentSlide">
@@ -367,27 +382,29 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
         <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <div class="mb-5 flex w-full">
                 <div class="flex h-12 w-full items-end">
-                    <div class="h-1 w-6 bg-zinc-800"></div>
+                    <div class="h-1 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full space-x-3">
-                    <div class="h-2 w-2 animate-spin bg-zinc-800"></div>
-                    <div class="h-2 w-2 bg-zinc-800"></div>
+                    <div class="h-2 w-2 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-center">
-                    <div class="h-6 w-6 bg-zinc-800"></div>
+                    <div class="h-6 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-end">
-                    <div class="h-1 w-4 animate-bounce bg-zinc-800"></div>
+                    <div class="h-1 w-4 animate-bounce bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-start">
-                    <div class="h-1 w-32 bg-zinc-800"></div>
+                    <div class="h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="flex w-full flex-col justify-center rounded-2xl bg-zinc-800 px-5 py-5 lg:p-32">
-                <h1 class="text-center text-2xl font-bold text-zinc-50 lg:text-start lg:text-5xl">Check Our Facebook Page</h1>
+            <div
+                class="flex w-full flex-col justify-center rounded-2xl bg-zinc-100 px-5 py-5 shadow shadow-zinc-200 lg:p-32 dark:bg-zinc-800 dark:shadow-zinc-900"
+            >
+                <h1 class="text-center text-2xl font-bold lg:text-start lg:text-5xl dark:text-zinc-50">Check Our Facebook Page</h1>
                 <div class="mt-6 flex flex-col-reverse lg:flex-row">
                     <div class="flex flex-col items-center space-y-5 space-x-5 lg:items-start">
-                        <p class="mt-5 max-w-2xl text-center text-lg text-zinc-300 md:text-start lg:mt-0 lg:text-xl">
+                        <p class="mt-5 max-w-2xl text-center text-lg md:text-start lg:mt-0 lg:text-xl dark:text-zinc-300">
                             Stay connected with the Philippine Shooters and Match Officers Confederation (PSMOC) through our official Facebook page.
                             Get the latest updates on upcoming events, training sessions, match results, and behind-the-scenes action straight from
                             the range. Whether you're a competitive shooter, a range officer, or just passionate about the sport, our Facebook
@@ -397,7 +414,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                         <a
                             href="https://www.facebook.com/psmoc.main"
                             target="_blank"
-                            class="mt-5 w-fit items-center justify-center rounded-full bg-primary p-4 font-bold text-white hover:bg-primary/80 lg:mt-0 lg:inline-flex"
+                            class="mt-5 w-fit items-center justify-center rounded-full bg-primary px-8 py-5 font-bold text-white hover:bg-primary/80 lg:mt-0 lg:inline-flex"
                         >
                             <strong>Follow us on Facebook</strong>
                         </a>
@@ -414,7 +431,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
 
         <!-- Footer -->
         <footer class="flex w-full flex-col items-center justify-center py-5">
-            <div class="flex items-center justify-center px-16 text-zinc-50">Copyright © 2025 PSMOC. All Rights Reserved.</div>
+            <div class="flex items-center justify-center px-16 dark:text-zinc-50">Copyright © 2025 PSMOC. All Rights Reserved.</div>
         </footer>
     </div>
 </template>
