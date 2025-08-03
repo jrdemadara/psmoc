@@ -5,6 +5,10 @@ import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-n
 import { PropType } from 'vue';
 import welcome from '../../assets/images/welcome.jpg';
 
+import { ref } from 'vue';
+
+const isOpen = ref(false);
+
 const props = defineProps({
     gunClubs: {
         type: Array as PropType<{ id: number; name: string; logo: string }[]>,
@@ -22,13 +26,32 @@ const props = defineProps({
         <!-- Section that fills the screen -->
         <section class="relative h-screen w-full">
             <!-- Header -->
-            <header class="absolute top-0 left-0 z-20 w-full bg-black">
-                <div class="flex py-5">
-                    <div class="flex w-fit items-center justify-center space-x-2 px-16">
+            <header class="absolute top-0 left-0 z-20 w-full bg-black text-white">
+                <div class="flex flex-wrap items-center justify-between px-4 py-5 lg:px-16">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-2">
                         <img src="../../assets/images/logo.png" alt="Logo" class="h-14 w-auto" />
-                        <AppLogoSecondary class="w-72 text-zinc-950 dark:text-zinc-50" />
+                        <AppLogoSecondary class="w-48 text-zinc-50" />
                     </div>
-                    <nav class="flex w-full items-center justify-center gap-2 text-sm font-semibold text-[#1b1b18] capitalize dark:text-[#EDEDEC]">
+
+                    <!-- Hamburger -->
+                    <button @click="isOpen = !isOpen" class="text-white focus:outline-none lg:hidden">
+                        <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <!-- Navigation -->
+                    <nav
+                        :class="[
+                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold capitalize lg:flex lg:w-auto lg:flex-row lg:justify-center lg:gap-12 lg:space-y-0 dark:text-[#EDEDEC]',
+                            isOpen ? 'mt-5 flex' : 'hidden lg:flex',
+                        ]"
+                        class="transition-all duration-300 ease-in-out"
+                    >
                         <div class="group relative">
                             <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Register</button>
                             <div
@@ -40,15 +63,14 @@ const props = defineProps({
                                 <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >Membership Renewal</Link
                                 >
-                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
-                                    >Match Officer</Link
-                                >
                                 <Link :href="route('register-gunclub')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
                                     >Gun Club</Link
                                 >
                             </div>
                         </div>
+
                         <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Matches</Link>
+
                         <div class="group relative">
                             <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Rulebook</button>
                             <div
@@ -62,43 +84,48 @@ const props = defineProps({
                                 >
                             </div>
                         </div>
+
                         <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Gun Clubs</Link>
                         <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Match Officers</Link>
                         <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">About</Link>
-                    </nav>
 
-                    <div class="flex w-fit items-center justify-end space-x-3 px-16">
-                        <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
-                            <Facebook color="white" :size="22" />
+                        <!-- Socials + CTA -->
+                        <div class="flex flex-col items-center space-y-3 pt-4 lg:ml-8 lg:flex-row lg:space-y-0 lg:space-x-3 lg:pt-0">
+                            <div class="flex space-x-3">
+                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                    <Facebook color="white" :size="22" />
+                                </div>
+                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                    <Instagram color="white" :size="22" />
+                                </div>
+                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                    <Youtube color="white" :size="22" />
+                                </div>
+                            </div>
+
+                            <Link
+                                :href="route('register-member')"
+                                class="mt-2 hidden h-10 w-32 items-center justify-center rounded-full bg-primary font-bold text-white hover:bg-primary/80 lg:mt-0 lg:inline-flex"
+                            >
+                                <strong>Join Us</strong>
+                            </Link>
                         </div>
-                        <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
-                            <Instagram color="white" :size="22" />
-                        </div>
-                        <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
-                            <Youtube color="white" :size="22" />
-                        </div>
-                        <Link
-                            :href="route('register-member')"
-                            class="flex h-10 w-32 items-center justify-center rounded-full bg-primary font-bold text-white hover:bg-primary/80"
-                        >
-                            <strong>Join Us</strong>
-                        </Link>
-                    </div>
+                    </nav>
                 </div>
             </header>
 
             <!-- Main Hero -->
             <div
-                class="relative flex h-full w-full flex-col items-center justify-center bg-cover pt-52 text-center text-white"
+                class="relative flex h-full w-full flex-col items-center justify-center bg-cover text-center text-white lg:pt-52"
                 :style="`background-image: url(${welcome})`"
             >
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20"></div>
 
-                <div class="relative z-10 flex h-full w-full flex-col items-center justify-center space-y-28 rounded-lg px-16">
+                <div class="relative z-10 flex h-full w-full flex-col items-center justify-center rounded-lg px-5 lg:space-y-28 lg:px-16">
                     <div class="flex h-full flex-col items-center justify-center">
                         <img src="../../assets/images/header.svg" alt="" class="w-[680px]" />
-                        <p class="text-2xl font-bold tracking-wider text-zinc-200">Philippine Shooters and Match Officers Confederation</p>
-                        <p class="mt-5 text-2xl tracking-wider text-zinc-400">
+                        <p class="text-xl font-bold tracking-wider text-zinc-200 lg:text-2xl">Philippine Shooters and Match Officers Confederation</p>
+                        <p class="mt-5 text-xl tracking-wider text-zinc-400 lg:text-2xl">
                             No gimmicks. Just pure firepower. At PSMOC, we take shooting to the extreme — <br />
                             live matches, advanced setups, and raw intensity that hits you like recoil.
                         </p>
@@ -136,8 +163,8 @@ const props = defineProps({
         </section>
 
         <!-- Section A -->
-        <section class="flex w-full flex-col items-center justify-center px-16">
-            <h1 class="text-7xl font-bold text-zinc-50">Competitive Shooting Matches</h1>
+        <section class="flex w-full flex-col items-center justify-center px-5 lg:px-16">
+            <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Competitive Shooting Matches</h1>
             <div class="mt-5 flex w-full">
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full space-x-3"></div>
@@ -169,7 +196,7 @@ const props = defineProps({
         </section>
 
         <!-- Section B -->
-        <section class="mt-16 flex w-full flex-col items-center justify-center px-16">
+        <section class="mt-16 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <div class="mt-5 flex h-24 w-full">
                 <div class="flex h-full w-full flex-col items-start justify-end">
                     <div class="h-1 w-24 bg-zinc-600"></div>
@@ -189,20 +216,20 @@ const props = defineProps({
                     <div class="h-4 w-4 bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="mt-10 flex w-full items-center gap-8">
+            <div class="mt-10 flex w-full flex-col items-center gap-8 lg:flex-row">
                 <!-- Image Wrapper -->
                 <div class="flex-shrink-0">
-                    <img src="../../assets/images/agila.png" alt="" class="h-auto w-[600px] object-contain" />
+                    <img src="../../assets/images/agila.png" alt="" class="h-auto w-72 object-contain lg:w-[600px]" />
                 </div>
 
                 <!-- Text Content -->
-                <div class="flex">
-                    <div class="flex items-start justify-center space-x-3">
-                        <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-52 object-contain" />
-                        <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-52 object-contain" />
+                <div class="flex flex-col lg:flex-row">
+                    <div class="flex items-start space-x-3 lg:justify-center">
+                        <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-8 object-contain lg:w-96" />
+                        <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-8 object-contain lg:w-96" />
                     </div>
 
-                    <div class="mt-28 flex flex-col">
+                    <div class="mt-0 flex flex-col lg:mt-48">
                         <p class="text-justify text-xl leading-normal tracking-wider text-zinc-50">
                             Dear PSMOC Family members, <br /><br />
                             It is with great honor and pride that I announce the creation of the International Shooters and Match Officers
@@ -224,9 +251,9 @@ const props = defineProps({
         </section>
 
         <!-- Section C -->
-        <section class="mt-32 flex w-full flex-col items-center justify-center px-16">
-            <h1 class="text-7xl font-bold text-zinc-50">Registered Gun Clubs</h1>
-            <p class="mx-auto mt-5 max-w-6xl text-center text-2xl tracking-wider text-zinc-400">
+        <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
+            <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Registered Gun Clubs</h1>
+            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-400 lg:text-2xl">
                 Discover gun clubs officially registered under ISMOC, representing excellence in sportsmanship, safety, and competition across the
                 Philippines and beyond.
             </p>
@@ -239,7 +266,7 @@ const props = defineProps({
                     <div class="h-6 w-6 animate-spin bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 gap-8 md:grid-cols-6 lg:grid-cols-6">
+            <div class="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
                 <div
                     v-for="club in props.gunClubs"
                     :key="club.id"
@@ -257,3 +284,27 @@ const props = defineProps({
         </footer>
     </div>
 </template>
+
+<style scoped>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.3s ease;
+}
+.fade-slide-enter-from {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease-in-out;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>
