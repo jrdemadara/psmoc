@@ -606,10 +606,12 @@ onUnmounted(() => {
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
-    <div class="flex h-screen w-screen text-[#1b1b18] dark:text-white">
-        <div class="relative flex h-full w-[580px] flex-col justify-between overflow-hidden bg-zinc-200 p-10 dark:bg-zinc-900">
+    <div class="flex h-screen w-screen flex-col text-[#1b1b18] lg:flex-row dark:text-white">
+        <div
+            class="relative flex w-full flex-col items-center justify-between overflow-hidden bg-zinc-100 p-10 lg:h-full lg:w-[580px] lg:items-start lg:bg-zinc-200 dark:bg-zinc-900"
+        >
             <!-- Background image layer with opacity -->
-            <div class="absolute inset-0 bg-cover bg-center opacity-5" :style="`background-image: url(${bulletsCover})`"></div>
+            <div class="absolute inset-0 hidden bg-cover bg-center opacity-5 lg:block" :style="`background-image: url(${bulletsCover})`"></div>
 
             <!-- Foreground content -->
             <div class="relative z-10 flex h-full flex-col justify-between">
@@ -619,8 +621,8 @@ onUnmounted(() => {
                 </div>
 
                 <div>
-                    <h4 class="h-fit text-xl font-medium text-zinc-950 dark:text-zinc-50">Member Registration</h4>
-                    <div class="mx-5 mt-8 flex flex-col items-start justify-start space-y-2">
+                    <h4 class="h-fit text-center text-xl font-medium text-zinc-950 lg:text-start dark:text-zinc-50">Member Registration</h4>
+                    <div class="mx-5 mt-8 hidden flex-col items-start justify-start space-y-2 lg:flex">
                         <div class="flex w-full items-center justify-between space-x-2">
                             <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
                                 <icons.FilePlus class="text-primary" />
@@ -805,7 +807,7 @@ onUnmounted(() => {
 
                 <Link
                     :href="route('home')"
-                    class="mt-10 flex h-10 w-32 items-center justify-center space-x-2 text-zinc-900 hover:text-primary/80 dark:text-zinc-50"
+                    class="mt-5 flex h-10 items-center justify-center space-x-2 text-zinc-900 hover:text-primary/80 lg:mt-10 lg:w-32 dark:text-zinc-50"
                 >
                     <icons.ArrowLeft />
                     <span class="cursor-default">Back to main</span>
@@ -813,9 +815,9 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <div class="flex h-full w-full items-center justify-center bg-zinc-100 p-5 dark:bg-zinc-900/80">
-            <div>
-                <div class="flex">
+        <div class="flex w-full items-center justify-center bg-zinc-100 p-5 lg:h-full dark:bg-zinc-900/80">
+            <div class="w-full px-0 lg:px-32">
+                <div class="hidden lg:flex">
                     <div class="flex items-center justify-center space-x-2">
                         <div class="rounded bg-zinc-200 p-2 dark:bg-zinc-800">
                             <component :is="IconComponent" class="icon" />
@@ -828,18 +830,10 @@ onUnmounted(() => {
                     </div>
                 </div>
                 <form @submit.prevent="submit" class="mt-10 flex flex-col">
-                    <div v-if="step == 0" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
+                    <div v-if="step == 0" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
                         <div class="grid gap-2">
                             <Label for="application_venue">Application Venue</Label>
-                            <Input
-                                id="application_venue"
-                                type="text"
-                                required
-                                autofocus
-                                :tabindex="1"
-                                autocomplete="age"
-                                v-model="form.application_venue"
-                            />
+                            <Input id="application_venue" type="text" required autofocus autocomplete="age" v-model="form.application_venue" />
                             <InputError :message="form.errors.application_venue" />
                         </div>
                         <div class="grid gap-2">
@@ -895,7 +889,7 @@ onUnmounted(() => {
                         </div>
                         <div class="grid gap-2">
                             <Label for="ltopf_no">LTOPF No.</Label>
-                            <Input id="ltopf_no" type="text" required autofocus :tabindex="1" v-model="form.ltopf_no" />
+                            <Input id="ltopf_no" type="text" required autofocus v-model="form.ltopf_no" />
                             <InputError :message="form.errors.ltopf_no" />
                         </div>
                         <div class="grid gap-2">
@@ -951,62 +945,46 @@ onUnmounted(() => {
                         </div>
                     </div>
 
-                    <div v-if="step == 1" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div v-if="step == 1" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         <div class="grid gap-2">
                             <Label for="lastname">Lastname</Label>
-                            <Input id="lastname" type="text" required autofocus :tabindex="1" autocomplete="lastname" v-model="form.last_name" />
+                            <Input id="lastname" type="text" required autofocus autocomplete="lastname" v-model="form.last_name" />
                             <InputError :message="form.errors.last_name" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="firstname">Firstname</Label>
-                            <Input id="firstname" type="text" required autofocus :tabindex="1" autocomplete="firstname" v-model="form.first_name" />
+                            <Input id="firstname" type="text" required autofocus autocomplete="firstname" v-model="form.first_name" />
                             <InputError :message="form.errors.first_name" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="middlename">Middlename</Label>
-                            <Input
-                                id="middlename"
-                                type="text"
-                                required
-                                autofocus
-                                :tabindex="1"
-                                autocomplete="middlename"
-                                v-model="form.middle_name"
-                            />
+                            <Input id="middlename" type="text" required autofocus autocomplete="middlename" v-model="form.middle_name" />
                             <InputError :message="form.errors.middle_name" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="extension">Extension</Label>
-                            <Input id="extension" type="text" required autofocus :tabindex="1" autocomplete="extension" v-model="form.extension" />
+                            <Input id="extension" type="text" required autofocus autocomplete="extension" v-model="form.extension" />
                             <InputError :message="form.errors.extension" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="birth_date">Birth Date</Label>
-                            <Input id="birth_date" type="date" required autofocus :tabindex="1" autocomplete="birth_date" v-model="form.birth_date" />
+                            <Input id="birth_date" type="date" required autofocus autocomplete="birth_date" v-model="form.birth_date" />
                             <InputError :message="form.errors.birth_date" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="birth_place">Birth Place</Label>
-                            <Input
-                                id="birth_place"
-                                type="text"
-                                required
-                                autofocus
-                                :tabindex="1"
-                                autocomplete="birth_place"
-                                v-model="form.birth_place"
-                            />
+                            <Input id="birth_place" type="text" required autofocus autocomplete="birth_place" v-model="form.birth_place" />
                             <InputError :message="form.errors.birth_place" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="age">Age</Label>
-                            <Input id="age" type="number" required autofocus :tabindex="1" autocomplete="age" v-model="form.age" />
+                            <Input id="age" type="number" required autofocus autocomplete="age" v-model="form.age" />
                             <InputError :message="form.errors.age" />
                         </div>
 
@@ -1168,26 +1146,17 @@ onUnmounted(() => {
 
                         <div class="grid gap-2">
                             <Label for="email">Email</Label>
-                            <Input id="email" type="email" required autofocus :tabindex="1" autocomplete="email" v-model="form.email" />
+                            <Input id="email" type="email" required autofocus autocomplete="email" v-model="form.email" />
                             <InputError :message="form.errors.email" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="phone">Phone</Label>
-                            <Input
-                                id="phone"
-                                @input="formatPhone"
-                                type="text"
-                                required
-                                autofocus
-                                :tabindex="1"
-                                autocomplete="tel"
-                                v-model="form.phone"
-                            />
+                            <Input id="phone" @input="formatPhone" type="text" required autofocus autocomplete="tel" v-model="form.phone" />
                             <InputError :message="form.errors.phone" />
                         </div>
                     </div>
 
-                    <div v-if="step == 2" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div v-if="step == 2" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         <div class="grid gap-2">
                             <Label for="street">Region</Label>
                             <SelectRoot v-model="form.region">
@@ -1400,37 +1369,30 @@ onUnmounted(() => {
                         </div>
                         <div class="grid gap-2">
                             <Label for="purok">Purok</Label>
-                            <Input id="purok" type="text" required autofocus :tabindex="1" autocomplete="purok" v-model="form.purok" />
+                            <Input id="purok" type="text" required autofocus autocomplete="purok" v-model="form.purok" />
                             <InputError :message="form.errors.purok" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="street">Street</Label>
-                            <Input id="street" type="text" required autofocus :tabindex="1" autocomplete="street" v-model="form.street" />
+                            <Input id="street" type="text" required autofocus autocomplete="street" v-model="form.street" />
                             <InputError :message="form.errors.street" />
                         </div>
                     </div>
 
-                    <div v-if="step == 3" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div v-if="step == 3" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         <div class="grid gap-2">
                             <Label for="occupation">Occupation</Label>
-                            <Input id="occupation" type="text" required autofocus :tabindex="1" autocomplete="occupation" v-model="form.occupation" />
+                            <Input id="occupation" type="text" required autofocus autocomplete="occupation" v-model="form.occupation" />
                             <InputError :message="form.errors.occupation" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="company_organization">Company/Organization</Label>
-                            <Input
-                                id="company_organization"
-                                type="text"
-                                autofocus
-                                :tabindex="1"
-                                autocomplete="purok"
-                                v-model="form.company_organization"
-                            />
+                            <Input id="company_organization" type="text" autofocus autocomplete="purok" v-model="form.company_organization" />
                             <InputError :message="form.errors.company_organization" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="position">Position</Label>
-                            <Input id="position" type="text" required autofocus :tabindex="1" autocomplete="position" v-model="form.position" />
+                            <Input id="position" type="text" required autofocus autocomplete="position" v-model="form.position" />
                             <InputError :message="form.errors.position" />
                         </div>
                         <div class="grid gap-2">
@@ -1439,7 +1401,6 @@ onUnmounted(() => {
                                 id="office_business_address"
                                 type="text"
                                 autofocus
-                                :tabindex="1"
                                 autocomplete="office_business_address"
                                 v-model="form.office_business_address"
                             />
@@ -1448,20 +1409,13 @@ onUnmounted(() => {
 
                         <div class="grid gap-2">
                             <Label for="office_landline">Landline</Label>
-                            <Input
-                                id="office_landline"
-                                type="tel"
-                                autofocus
-                                :tabindex="1"
-                                autocomplete="office_landline"
-                                v-model="form.office_landline"
-                            />
+                            <Input id="office_landline" type="tel" autofocus autocomplete="office_landline" v-model="form.office_landline" />
                             <InputError :message="form.errors.office_landline" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="office_email">Email</Label>
-                            <Input id="office_email" type="email" autofocus :tabindex="1" autocomplete="office_email" v-model="form.office_email" />
+                            <Input id="office_email" type="email" autofocus autocomplete="office_email" v-model="form.office_email" />
                             <InputError :message="form.errors.office_email" />
                         </div>
                     </div>
@@ -1469,14 +1423,14 @@ onUnmounted(() => {
                     <div v-if="step == 4" class="grid grid-cols-1 gap-6">
                         <div class="grid gap-2">
                             <Label for="signature">Selfie Photo</Label>
-                            <div class="flex h-full w-full flex-col items-center justify-center space-y-2">
+                            <div class="flex h-full w-full flex-col items-center justify-center space-y-2 lg:items-start">
                                 <!-- Image Display (Click to Open Camera) -->
                                 <audio ref="captureSound" :src="captureSoundSrc"></audio>
                                 <img
                                     v-if="cameraState === 'capture'"
                                     :src="photo ?? undefined"
                                     alt="Captured"
-                                    class="w-full cursor-pointer object-cover"
+                                    class="w-full cursor-pointer object-cover lg:w-1/2"
                                     @click="startCamera"
                                 />
                                 <div
@@ -1514,7 +1468,6 @@ onUnmounted(() => {
                                     <VueSignaturePad
                                         ref="signature"
                                         height="200px"
-                                        width="680px"
                                         maxWidth="3"
                                         :disabled="state.disabled"
                                         :options="{
@@ -1545,7 +1498,7 @@ onUnmounted(() => {
                     </div>
 
                     <div v-if="step == 5" class="flex flex-col space-y-4">
-                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
+                        <div class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
                             <div class="grid gap-2">
                                 <Label for="signature">Gun Club</Label>
                                 <SelectRoot v-model="newGunClub.gunclub_id">
@@ -1601,18 +1554,12 @@ onUnmounted(() => {
                             </div>
                             <div class="grid gap-2">
                                 <Label for="years_no">Years of Membership</Label>
-                                <Input id="years_no" type="number" required autofocus1 :tabindex="1" v-model="newGunClub.years_no" />
+                                <Input id="years_no" type="number" required autofocus1 v-model="newGunClub.years_no" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="model">Main Gun Club</Label>
                                 <div class="flex items-center gap-2">
-                                    <input
-                                        id="is_main"
-                                        type="checkbox"
-                                        v-model="newGunClub.is_main"
-                                        :tabindex="1"
-                                        class="form-checkbox h-5 w-5 text-red-600"
-                                    />
+                                    <input id="is_main" type="checkbox" v-model="newGunClub.is_main" class="form-checkbox h-5 w-5 text-red-600" />
                                     <Label for="is_main">Check if yes</Label>
                                 </div>
                             </div>
@@ -1636,7 +1583,11 @@ onUnmounted(() => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(gunclub, index) in form.gunclubs" :key="index" class="border-t border-zinc-600 uppercase">
+                                <tr
+                                    v-for="(gunclub, index) in form.gunclubs"
+                                    :key="index"
+                                    class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
+                                >
                                     <td class="px-3 py-2">{{ index + 1 }}</td>
                                     <td class="px-3 py-2">
                                         {{ props.gunClubs.find((club) => club.id === gunclub.gunclub_id)?.name || 'Unknown' }}
@@ -1658,7 +1609,7 @@ onUnmounted(() => {
                     </div>
 
                     <div v-if="step == 6" class="flex flex-col space-y-4">
-                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+                        <div class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
                             <div class="grid gap-2">
                                 <Label for="Firearm Type">Firearm Type</Label>
                                 <SelectRoot v-model="newFirearm.type">
@@ -1711,19 +1662,19 @@ onUnmounted(() => {
                             </div>
                             <div class="grid gap-2">
                                 <Label for="make">Make</Label>
-                                <Input id="make" type="text" required autofocus :tabindex="1" v-model="newFirearm.make" />
+                                <Input id="make" type="text" required autofocus v-model="newFirearm.make" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="model">Model</Label>
-                                <Input id="make" type="text" required autofocus :tabindex="1" v-model="newFirearm.model" />
+                                <Input id="make" type="text" required autofocus v-model="newFirearm.model" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="caliber">Caliber</Label>
-                                <Input id="caliber" type="text" required autofocus :tabindex="1" v-model="newFirearm.caliber" />
+                                <Input id="caliber" type="text" required autofocus v-model="newFirearm.caliber" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="serial_no">Serial No.</Label>
-                                <Input id="serial_no" type="text" required autofocus :tabindex="1" v-model="newFirearm.serial_no" />
+                                <Input id="serial_no" type="text" required autofocus v-model="newFirearm.serial_no" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="serial_no" class="text-transparent">Action</Label>
@@ -1747,7 +1698,11 @@ onUnmounted(() => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(firearm, index) in form.firearms" :key="index" class="border-t border-zinc-600 uppercase">
+                                <tr
+                                    v-for="(firearm, index) in form.firearms"
+                                    :key="index"
+                                    class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
+                                >
                                     <td class="px-3 py-2">{{ index + 1 }}</td>
                                     <td class="px-3 py-2">{{ firearm.type }}</td>
                                     <td class="px-3 py-2">{{ firearm.make }}</td>
@@ -1768,7 +1723,7 @@ onUnmounted(() => {
                         </table>
                     </div>
 
-                    <div v-if="step == 7" class="flex w-[680px] flex-col items-center justify-center">
+                    <div v-if="step == 7" class="flex flex-col items-center justify-center lg:w-[680px]">
                         <div v-if="form.wasSuccessful == false" class="rounded-md bg-zinc-200 p-4 text-lg dark:bg-zinc-800 dark:text-zinc-50">
                             <strong>ᡕᠵデᡁ᠊╾━💥 Double-check your details so everything hits the mark — no one likes a misfire.</strong>
                         </div>
@@ -1823,24 +1778,24 @@ onUnmounted(() => {
 
                     <div
                         v-if="isSubmitSuccess == false"
-                        class="mt-8 flex flex-col-reverse items-center justify-end space-y-4 space-x-0 sm:flex-row sm:space-y-0 sm:space-x-4"
+                        class="mt-8 flex flex-row items-center justify-end space-y-4 space-x-1 sm:flex-row sm:space-y-0 sm:space-x-4 lg:flex-row lg:space-x-4"
                     >
                         <Button
                             type="button"
                             v-if="step > 0"
                             @click="prevStep()"
-                            class="mt-4 h-10 w-full bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 sm:w-52 dark:bg-zinc-700"
+                            class="mt-4 h-10 w-1/2 bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 lg:w-52 dark:bg-zinc-700"
                             :tabindex="4"
                         >
                             <icons.ArrowLeft class="h-4 w-4" />
                             Previous
                         </Button>
 
-                        <Button v-if="step < 7" type="button" @click="nextStep()" class="h-10 w-full text-white sm:w-52" :tabindex="4">
+                        <Button v-if="step < 7" type="button" @click="nextStep()" class="h-10 w-1/2 text-white lg:w-52" :tabindex="4">
                             Next
                             <icons.ArrowRight class="h-4 w-4" />
                         </Button>
-                        <Button v-if="step == 7" class="h-10 w-52 text-white" :tabindex="4" :disabled="form.processing">
+                        <Button v-if="step == 7" class="h-10 w-1/2 text-white lg:w-full" :tabindex="4" :disabled="form.processing">
                             <template v-if="form.processing">
                                 <icons.LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
                                 Submitting…
