@@ -2,10 +2,10 @@
 import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
 import { Link } from '@inertiajs/vue3';
 import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-next';
-import { PropType } from 'vue';
+import { PropType, ref } from 'vue';
+import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel';
+import 'vue3-carousel/carousel.css';
 import welcome from '../../assets/images/welcome.jpg';
-
-import { ref } from 'vue';
 
 const isOpen = ref(false);
 
@@ -15,6 +15,18 @@ const props = defineProps({
         required: true,
     },
 });
+
+const gunClubImages = Array.from({ length: props.gunClubs.length }, (_, index) => ({
+    id: index + 1,
+    url: props.gunClubs[index].logo,
+}));
+
+const gunClubsConfig = {
+    height: 200,
+    itemsToShow: 4,
+    gap: 5,
+    autoplay: true,
+};
 </script>
 <template>
     <Head title="Welcome">
@@ -258,24 +270,29 @@ const props = defineProps({
                 Philippines and beyond.
             </p>
             <div class="mt-5 flex w-full">
-                <div class="flex h-12 w-full items-end"></div>
+                <div class="flex h-12 w-full items-end">
+                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
+                </div>
                 <div class="flex h-12 w-full space-x-3"></div>
-                <div class="flex h-12 w-full items-center"></div>
+                <div class="flex h-12 w-full items-center"><div class="mt-4 h-1 w-32 bg-zinc-800"></div></div>
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full items-start">
                     <div class="h-6 w-6 animate-spin bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
-                <div
-                    v-for="club in props.gunClubs"
-                    :key="club.id"
-                    class="flex h-52 w-52 flex-col transition-transform duration-300 ease-in-out hover:scale-110"
-                >
-                    <img :src="club.logo" :alt="club.name + ' logo'" class="mb-2 max-h-52 w-full object-contain" />
-                    <div class="text-center font-semibold text-white uppercase">{{ club.name }}</div>
-                </div>
-            </div>
+            <Carousel v-bind="gunClubsConfig">
+                <Slide v-for="image in gunClubImages" :key="image.id">
+                    <div class="carousel__item">
+                        <img :src="image.url" alt="image" />
+                    </div>
+                </Slide>
+
+                <template #addons>
+                    <Navigation />
+                    <Pagination />
+                </template>
+            </Carousel>
         </section>
 
         <!-- Footer -->
@@ -286,25 +303,14 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-    transition: all 0.3s ease;
-}
-.fade-slide-enter-from {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-.fade-slide-leave-to {
-    opacity: 0;
-    transform: translateY(-10px);
+:root {
+    background-color: #242424;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.2s ease-in-out;
-}
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
+.carousel {
+    --vc-pgn-background-color: rgba(255, 255, 255, 0.7);
+    --vc-pgn-active-color: rgba(255, 255, 255, 1);
+    --vc-nav-background: rgba(255, 255, 255, 0.7);
+    --vc-nav-border-radius: 100%;
 }
 </style>
