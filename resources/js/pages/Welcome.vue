@@ -86,7 +86,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                     <!-- Navigation -->
                     <nav
                         :class="[
-                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-12 lg:space-y-0 dark:text-[#EDEDEC]',
+                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0 dark:text-[#EDEDEC]',
                             isOpen ? 'mt-5 flex' : 'hidden lg:flex',
                         ]"
                         class="transition-all duration-300 ease-in-out"
@@ -96,13 +96,13 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                             <div
                                 class="absolute z-10 hidden w-52 rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
                             >
-                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
                                     >New Member</Link
                                 >
-                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
                                     >Membership Renewal</Link
                                 >
-                                <Link :href="route('register-gunclub')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-gunclub')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
                                     >Gun Club</Link
                                 >
                             </div>
@@ -115,10 +115,10 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                             <div
                                 class="absolute z-10 hidden min-w-[150px] rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
                             >
-                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
                                     >PSMOC Rulebook</Link
                                 >
-                                <Link :href="route('register-member')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary"
+                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
                                     >ISMOC Airsoft Rulebook</Link
                                 >
                             </div>
@@ -264,11 +264,11 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                 <!-- Text Content -->
                 <div class="flex flex-col lg:flex-row">
                     <div class="flex items-start space-x-3 lg:justify-center">
-                        <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-8 object-contain lg:w-96" />
+                        <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-8 object-contain lg:w-32" />
                         <img src="../../assets/images/qoute.svg" alt="" class="h-auto w-8 object-contain lg:w-96" />
                     </div>
 
-                    <div class="mt-0 flex flex-col lg:mt-48">
+                    <div class="mt-0 flex flex-col lg:mt-32">
                         <p class="text-justify text-xl leading-normal tracking-wider text-zinc-50">
                             Dear PSMOC Family members, <br /><br />
                             It is with great honor and pride that I announce the creation of the International Shooters and Match Officers
@@ -383,7 +383,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                     <div class="h-1 w-32 bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="flex w-full flex-col justify-center rounded-2xl bg-zinc-700 px-5 py-5 lg:p-32">
+            <div class="flex w-full flex-col justify-center rounded-2xl bg-zinc-800 px-5 py-5 lg:p-32">
                 <h1 class="text-center text-2xl font-bold text-zinc-50 lg:text-start lg:text-5xl">Check Our Facebook Page</h1>
                 <div class="mt-6 flex flex-col-reverse lg:flex-row">
                     <div class="flex flex-col items-center space-y-5 space-x-5 lg:items-start">
