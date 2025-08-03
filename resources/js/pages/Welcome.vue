@@ -27,6 +27,33 @@ const gunClubsConfig = {
     gap: 5,
     autoplay: true,
 };
+
+const currentSlide = ref(0);
+
+const slideTo = (nextSlide) => (currentSlide.value = nextSlide);
+
+const galleryConfig = {
+    itemsToShow: 1,
+    wrapAround: true,
+    slideEffect: 'fade',
+    mouseDrag: false,
+    touchDrag: false,
+    height: 420,
+    autoplay: 4000,
+};
+
+const thumbnailsConfig = {
+    height: 80,
+    itemsToShow: 6,
+    wrapAround: true,
+    touchDrag: false,
+    gap: 10,
+};
+
+const galleryImages = Array.from({ length: 21 }, (_, index) => ({
+    id: index + 1,
+    url: new URL(`../../assets/images/gallery/${index + 1}.jpg`, import.meta.url).href,
+}));
 </script>
 <template>
     <Head title="Welcome">
@@ -59,7 +86,7 @@ const gunClubsConfig = {
                     <!-- Navigation -->
                     <nav
                         :class="[
-                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold capitalize lg:flex lg:w-auto lg:flex-row lg:justify-center lg:gap-12 lg:space-y-0 dark:text-[#EDEDEC]',
+                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-12 lg:space-y-0 dark:text-[#EDEDEC]',
                             isOpen ? 'mt-5 flex' : 'hidden lg:flex',
                         ]"
                         class="transition-all duration-300 ease-in-out"
@@ -128,7 +155,7 @@ const gunClubsConfig = {
 
             <!-- Main Hero -->
             <div
-                class="relative flex h-full w-full flex-col items-center justify-center bg-cover text-center text-white lg:pt-52"
+                class="relative flex h-full w-full flex-col items-center justify-center bg-cover bg-center bg-no-repeat text-center text-white sm:bg-[length:120%] lg:bg-cover lg:pt-52"
                 :style="`background-image: url(${welcome})`"
             >
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20"></div>
@@ -262,7 +289,7 @@ const gunClubsConfig = {
             </div>
         </section>
 
-        <!-- Section C -->
+        <!-- Section Gun Clubs -->
         <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Registered Gun Clubs</h1>
             <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-400 lg:text-2xl">
@@ -295,6 +322,96 @@ const gunClubsConfig = {
             </Carousel>
         </section>
 
+        <!-- Section Gallery -->
+        <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
+            <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Gallery</h1>
+            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-400 lg:text-2xl">
+                A curated collection of memorable events, trainings, and activities showcasing the spirit and dedication of our shooting community.
+            </p>
+            <div class="mt-5 flex w-full">
+                <div class="flex h-full w-full items-start justify-center">
+                    <div class="h-2 w-2 bg-zinc-800"></div>
+                </div>
+                <div class="flex h-12 w-full space-x-3"></div>
+                <div class="flex h-12 w-full items-center">
+                    <div class="h-2 w-2 bg-zinc-800"></div>
+                </div>
+                <div class="flex h-12 w-full items-end"></div>
+                <div class="flex h-full w-full items-end justify-center space-x-2">
+                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
+                </div>
+            </div>
+            <Carousel id="gallery" v-bind="galleryConfig" v-model="currentSlide">
+                <Slide v-for="image in galleryImages" :key="image.id">
+                    <img :src="image.url" alt="Gallery Image" class="gallery-image" />
+                </Slide>
+            </Carousel>
+
+            <Carousel id="thumbnails" v-bind="thumbnailsConfig" v-model="currentSlide">
+                <Slide v-for="image in galleryImages" :key="image.id">
+                    <template #default="{ currentIndex, isActive }">
+                        <div :class="['thumbnail', { 'is-active': isActive }]" @click="slideTo(currentIndex)">
+                            <img :src="image.url" alt="Thumbnail Image" class="thumbnail-image" />
+                        </div>
+                    </template>
+                </Slide>
+
+                <template #addons>
+                    <Navigation />
+                </template>
+            </Carousel>
+        </section>
+
+        <!-- Section Gallery -->
+        <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
+            <div class="mb-5 flex w-full">
+                <div class="flex h-12 w-full items-end">
+                    <div class="h-1 w-6 bg-zinc-800"></div>
+                </div>
+                <div class="flex h-12 w-full space-x-3">
+                    <div class="h-2 w-2 animate-spin bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-800"></div>
+                </div>
+                <div class="flex h-12 w-full items-center">
+                    <div class="h-6 w-6 bg-zinc-800"></div>
+                </div>
+                <div class="flex h-12 w-full items-end">
+                    <div class="h-1 w-4 animate-bounce bg-zinc-800"></div>
+                </div>
+                <div class="flex h-12 w-full items-start">
+                    <div class="h-1 w-32 bg-zinc-800"></div>
+                </div>
+            </div>
+            <div class="flex w-full flex-col justify-center rounded-2xl bg-zinc-700 px-5 py-5 lg:p-32">
+                <h1 class="text-center text-2xl font-bold text-zinc-50 lg:text-start lg:text-5xl">Check Our Facebook Page</h1>
+                <div class="mt-6 flex flex-col-reverse lg:flex-row">
+                    <div class="flex flex-col items-center space-y-5 space-x-5 lg:items-start">
+                        <p class="mt-5 max-w-2xl text-center text-base text-zinc-300 md:text-start lg:mt-0 lg:text-lg">
+                            Stay connected with the Philippine Shooters and Match Officers Confederation (PSMOC) through our official Facebook page.
+                            Get the latest updates on upcoming events, training sessions, match results, and behind-the-scenes action straight from
+                            the range. Whether you're a competitive shooter, a range officer, or just passionate about the sport, our Facebook
+                            community is the place to be. Follow us now and be part of the growing force that's redefining shooting sports in the
+                            Philippines.
+                        </p>
+                        <a
+                            href="https://www.facebook.com/psmoc.main"
+                            target="_blank"
+                            class="mt-5 w-fit items-center justify-center rounded-full bg-primary p-4 font-bold text-white hover:bg-primary/80 lg:mt-0 lg:inline-flex"
+                        >
+                            <strong>Follow us on Facebook</strong>
+                        </a>
+                    </div>
+                    <div class="aspect-w-16 aspect-h-9">
+                        <video class="h-auto w-full rounded-lg shadow-lg" controls playsinline>
+                            <source src="../../assets/videos/1.mp4" type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer class="flex w-full flex-col items-center justify-center py-5">
             <div class="flex items-center justify-center px-16 text-zinc-50">Copyright © 2025 PSMOC. All Rights Reserved.</div>
@@ -312,5 +429,26 @@ const gunClubsConfig = {
     --vc-pgn-active-color: rgba(255, 255, 255, 1);
     --vc-nav-background: rgba(255, 255, 255, 0.7);
     --vc-nav-border-radius: 100%;
+}
+
+.gallery-image {
+    border-radius: 16px;
+}
+
+#thumbnails {
+    margin-top: 10px;
+}
+
+.thumbnail {
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.thumbnail.is-active,
+.thumbnail:hover {
+    opacity: 1;
 }
 </style>
