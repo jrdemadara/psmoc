@@ -148,10 +148,12 @@ const submit = () => {
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
-    <div class="flex h-screen w-screen text-[#1b1b18] dark:text-white">
-        <div class="relative flex h-full w-[580px] flex-col justify-between overflow-hidden bg-zinc-200 p-10 dark:bg-zinc-900">
+    <div class="flex h-screen w-screen flex-col text-[#1b1b18] lg:flex-row dark:bg-zinc-900 dark:text-white">
+        <div
+            class="relative flex w-full flex-col items-center justify-between overflow-hidden bg-zinc-100 p-10 lg:h-full lg:w-[580px] lg:items-start lg:bg-zinc-200 dark:bg-zinc-900"
+        >
             <!-- Background image layer with opacity -->
-            <div class="absolute inset-0 bg-cover bg-center opacity-5" :style="`background-image: url(${bulletsCover})`"></div>
+            <div class="absolute inset-0 hidden bg-cover bg-center opacity-5 lg:block" :style="`background-image: url(${bulletsCover})`"></div>
 
             <!-- Foreground content -->
             <div class="relative z-10 flex h-full flex-col justify-between">
@@ -160,9 +162,9 @@ const submit = () => {
                     <AppLogoSecondary class="w-64 text-zinc-950 dark:text-zinc-50" />
                 </div>
 
-                <div class="h-full">
-                    <h4 class="mt-10 h-fit text-xl font-medium text-zinc-950 dark:text-zinc-50">Gun Club Registration</h4>
-                    <div class="mx-5 mt-8 flex flex-col items-start justify-start space-y-2">
+                <div class="h-full lg:mt-8">
+                    <h4 class="h-fit text-center text-xl font-medium text-zinc-950 lg:text-start dark:text-zinc-50">Gunclun Registration</h4>
+                    <div class="mx-5 mt-8 hidden flex-col items-start justify-start space-y-2 lg:flex">
                         <div class="flex w-full items-center justify-between space-x-2">
                             <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
                                 <icons.Goal />
@@ -209,7 +211,7 @@ const submit = () => {
 
                 <Link
                     :href="route('home')"
-                    class="mt-10 flex h-10 w-32 items-center justify-center space-x-2 text-zinc-900 hover:text-primary/80 dark:text-zinc-50"
+                    class="mt-5 flex h-10 items-center justify-center space-x-2 text-zinc-900 hover:text-primary lg:mt-10 lg:w-32 dark:text-zinc-50 dark:hover:text-primary"
                 >
                     <icons.ArrowLeft />
                     <span class="cursor-default">Back to main</span>
@@ -217,9 +219,9 @@ const submit = () => {
             </div>
         </div>
 
-        <div class="flex h-full w-full items-center justify-center bg-zinc-100 p-5 dark:bg-zinc-900/80">
-            <div>
-                <div class="flex">
+        <div class="flex w-full items-center justify-center bg-zinc-100 p-5 lg:h-full dark:bg-zinc-900 lg:dark:bg-zinc-950/20">
+            <div class="w-full px-0 lg:px-32">
+                <div class="hidden lg:flex">
                     <div class="flex items-center justify-center space-x-2">
                         <div class="rounded bg-zinc-200 p-2 dark:bg-zinc-800">
                             <component :is="IconComponent" class="icon" />
@@ -231,8 +233,8 @@ const submit = () => {
                         </div>
                     </div>
                 </div>
-                <form @submit.prevent="submit" class="mt-10 flex flex-col items-end">
-                    <div v-if="step == 0" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <form @submit.prevent="submit" class="mt-10 flex flex-col">
+                    <div v-if="step == 0" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
                         <div class="grid gap-2">
                             <Label for="name">Gun Club Name</Label>
                             <Input id="name" type="text" required autofocus :tabindex="1" autocomplete="name" v-model="form.name" />
@@ -301,7 +303,7 @@ const submit = () => {
                             <InputError :message="form.errors.logo || logoError" />
                         </div>
                     </div>
-                    <div v-if="step == 1" class="flex w-[680px] flex-col items-center justify-center">
+                    <div v-if="step == 1" class="flex flex-col items-center justify-center lg:w-[680px]">
                         <div v-if="form.wasSuccessful == false" class="rounded-md bg-yellow-50 p-4 text-lg text-yellow-800">
                             <strong>ᡕᠵデᡁ᠊╾━💥 Double-check your details so everything hits the mark — no one likes a misfire.</strong>
                         </div>
@@ -337,24 +339,24 @@ const submit = () => {
 
                     <div
                         v-if="isSubmitSuccess == false"
-                        class="mt-8 flex flex-col-reverse items-center justify-end space-y-4 space-x-0 sm:flex-row sm:space-y-0 sm:space-x-4"
+                        class="mt-8 flex flex-row items-center justify-end space-y-4 space-x-1 sm:flex-row sm:space-y-0 sm:space-x-4 lg:flex-row lg:space-x-4"
                     >
                         <Button
                             type="button"
                             v-if="step > 0"
                             @click="prevStep()"
-                            class="mt-4 h-10 w-full bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 sm:w-52 dark:bg-zinc-700"
+                            class="mt-4 h-10 w-1/2 bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 lg:w-52 dark:bg-zinc-700"
                             :tabindex="4"
                         >
                             <icons.ArrowLeft class="h-4 w-4" />
                             Previous
                         </Button>
 
-                        <Button v-if="step < 1" type="button" @click="nextStep()" class="h-10 w-full text-white sm:w-52" :tabindex="4">
+                        <Button v-if="step < 1" type="button" @click="nextStep()" class="h-10 w-1/2 text-white lg:w-52" :tabindex="4">
                             Next
                             <icons.ArrowRight class="h-4 w-4" />
                         </Button>
-                        <Button v-if="step == 1" class="h-10 w-52 text-white" :tabindex="4" :disabled="form.processing">
+                        <Button v-if="step == 1" class="h-10 w-1/2 text-white lg:w-full" :tabindex="4" :disabled="form.processing">
                             <template v-if="form.processing">
                                 <icons.LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
                                 Submitting…
