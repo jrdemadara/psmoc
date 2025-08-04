@@ -264,7 +264,7 @@ const submit = () => {
                             <InputError :message="form.errors.address" />
                         </div>
                         <div class="grid gap-2">
-                            <Label for="contact_person">Contact Person</Label>
+                            <Label for="contact_person">President</Label>
                             <Input
                                 id="contact_person"
                                 type="text"
