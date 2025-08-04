@@ -5,6 +5,8 @@ import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-n
 import { PropType, ref } from 'vue';
 import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
+import PSMOCRulebookPDF from '../../assets/files/PSMOC-Rulebook.pdf';
+import iASRulebookPDF from '../../assets/files/iAS-Rulebook.pdf';
 import welcome from '../../assets/images/welcome.jpg';
 
 const isOpen = ref(false);
@@ -54,6 +56,18 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
     id: index + 1,
     url: new URL(`../../assets/images/gallery/${index + 1}.jpg`, import.meta.url).href,
 }));
+
+function openPSMOCPDF() {
+    setTimeout(() => {
+        window.open(PSMOCRulebookPDF, '_blank');
+    }, 500);
+}
+
+function iASPDF() {
+    setTimeout(() => {
+        window.open(iASRulebookPDF, '_blank');
+    }, 500);
+}
 </script>
 <template>
     <Head title="Welcome">
@@ -108,32 +122,37 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                             </div>
                         </div>
 
-                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Matches</Link>
+                        <Link :href="route('home')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Matches</Link>
 
                         <div class="group relative">
                             <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Rulebook</button>
                             <div
                                 class="absolute z-10 hidden min-w-[150px] rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
                             >
-                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
-                                    >PSMOC Rulebook</Link
+                                <a href="#" @click="openPSMOCPDF()" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
+                                    >PSMOC Rulebook</a
                                 >
-                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
-                                    >ISMOC Airsoft Rulebook</Link
+                                <a href="#" @click="iASPDF()" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
+                                    >ISMOC Rulebook</a
                                 >
                             </div>
                         </div>
 
-                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Gun Clubs</Link>
-                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Match Officers</Link>
-                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">About</Link>
+                        <a href="#gunclubs" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Gun Clubs</a>
+                        <a href="#gallery" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Gallery</a>
+                        <!-- <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Match Officers</Link>
+                        <Link :href="route('login')" class="inline-block px-5 py-1.5 uppercase hover:text-primary">About</Link> -->
 
                         <!-- Socials + CTA -->
                         <div class="flex flex-col items-center space-y-3 pt-4 lg:ml-8 lg:flex-row lg:space-y-0 lg:space-x-3 lg:pt-0">
                             <div class="flex space-x-3">
-                                <div class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40">
+                                <a
+                                    href="https://www.facebook.com/psmoc.main"
+                                    target="_blank"
+                                    class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40"
+                                >
                                     <Facebook color="white" :size="22" />
-                                </div>
+                                </a>
                                 <div class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40">
                                     <Instagram color="white" :size="22" />
                                 </div>
@@ -303,7 +322,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
         </section>
 
         <!-- Section Gun Clubs -->
-        <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
+        <section id="gunclubs" class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Registered Gun Clubs</h1>
             <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-600 lg:text-2xl dark:text-zinc-400">
                 Discover gun clubs officially registered under ISMOC, representing excellence in sportsmanship, safety, and competition across the
@@ -338,7 +357,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
         </section>
 
         <!-- Section Gallery -->
-        <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
+        <section id="gallery" class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Gallery</h1>
             <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-600 lg:text-2xl dark:text-zinc-400">
                 A curated collection of memorable events, trainings, and activities showcasing the spirit and dedication of our shooting community.
@@ -399,7 +418,7 @@ const galleryImages = Array.from({ length: 21 }, (_, index) => ({
                 </div>
             </div>
             <div
-                class="flex w-full flex-col justify-center rounded-2xl bg-zinc-100 px-5 py-5 shadow shadow-zinc-200 lg:p-32 dark:bg-zinc-800 dark:shadow-zinc-900"
+                class="flex w-full flex-col justify-center rounded-tl-4xl rounded-br-4xl bg-zinc-100 px-5 py-5 shadow shadow-zinc-200 lg:p-32 dark:bg-zinc-800 dark:shadow-zinc-900"
             >
                 <h1 class="text-center text-2xl font-bold lg:text-start lg:text-5xl dark:text-zinc-50">Check Our Facebook Page</h1>
                 <div class="mt-6 flex flex-col-reverse lg:flex-row">
