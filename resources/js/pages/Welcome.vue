@@ -40,12 +40,12 @@ const galleryConfig = {
     slideEffect: 'fade',
     mouseDrag: false,
     touchDrag: false,
-    height: 420,
+    height: 680,
     autoplay: 4000,
 };
 
 const thumbnailsConfig = {
-    height: 80,
+    height: 180,
     itemsToShow: 6,
     wrapAround: true,
     touchDrag: false,
