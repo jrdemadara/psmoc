@@ -15,11 +15,11 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class MemberRegisterController extends Controller
+class RegisterMemberController extends Controller
 {
     public function create(): Response
     {
-        $gunClubs = Gunclub::select('id', 'name')->orderBy('name')->get();
+        $gunClubs = Gunclub::select('id', 'name')->where('status', 'approved')->orderBy('name')->get();
 
         return Inertia::render('MemberRegister', [
             'gunClubs' => $gunClubs,

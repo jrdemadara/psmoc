@@ -11,10 +11,10 @@ class WelcomeController extends Controller
 {
     public function create(): Response
     {
-        $gunClubs = Gunclub::select('id', 'name', 'logo')->orderBy('name')->get();
+        $gunClubs = Gunclub::select('id', 'name', 'logo')->where('status', 'approved')->orderBy('name')->get();
 
         foreach ($gunClubs as $gunClub) {
-            $gunClub->logo = Storage::temporaryUrl($gunClub->logo, now()->addMinutes(10));
+            $gunClub->logo = Storage::temporaryUrl($gunClub->logo, now()->addDays(3));
         }
 
         return Inertia::render('Welcome', [

@@ -608,7 +608,7 @@ onUnmounted(() => {
     </Head>
     <div class="flex h-screen w-screen flex-col text-[#1b1b18] lg:flex-row dark:bg-zinc-900 dark:text-white">
         <div
-            class="relative flex w-full flex-col items-center justify-between overflow-hidden bg-zinc-100 p-10 lg:h-full lg:w-[580px] lg:items-start lg:bg-zinc-200 dark:bg-zinc-900"
+            class="relative flex w-full scale-100 scale-[0.75] flex-col items-center justify-between overflow-hidden bg-zinc-100 p-10 sm:scale-[0.85] md:scale-[1] lg:h-full lg:w-[580px] lg:items-start lg:bg-zinc-200 dark:bg-zinc-900"
         >
             <!-- Background image layer with opacity -->
             <div class="absolute inset-0 hidden bg-cover bg-center opacity-5 lg:block" :style="`background-image: url(${bulletsCover})`"></div>

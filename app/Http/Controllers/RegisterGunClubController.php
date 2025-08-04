@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class GunClubRegisterController extends Controller
+class RegisterGunClubController extends Controller
 {
     public function create(): Response
     {
