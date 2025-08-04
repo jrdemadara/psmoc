@@ -606,7 +606,7 @@ onUnmounted(() => {
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
-    <div class="flex h-screen w-screen flex-col text-[#1b1b18] lg:flex-row dark:text-white">
+    <div class="flex h-screen w-screen flex-col text-[#1b1b18] lg:flex-row dark:bg-zinc-900 dark:text-white">
         <div
             class="relative flex w-full flex-col items-center justify-between overflow-hidden bg-zinc-100 p-10 lg:h-full lg:w-[580px] lg:items-start lg:bg-zinc-200 dark:bg-zinc-900"
         >
@@ -807,7 +807,7 @@ onUnmounted(() => {
 
                 <Link
                     :href="route('home')"
-                    class="mt-5 flex h-10 items-center justify-center space-x-2 text-zinc-900 hover:text-primary/80 lg:mt-10 lg:w-32 dark:text-zinc-50"
+                    class="mt-5 flex h-10 items-center justify-center space-x-2 text-zinc-900 hover:text-primary lg:mt-10 lg:w-32 dark:text-zinc-50 dark:hover:text-primary"
                 >
                     <icons.ArrowLeft />
                     <span class="cursor-default">Back to main</span>
@@ -815,7 +815,7 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <div class="flex w-full items-center justify-center bg-zinc-100 p-5 lg:h-full dark:bg-zinc-900/80">
+        <div class="flex w-full items-center justify-center bg-zinc-100 p-5 lg:h-full dark:bg-zinc-900 lg:dark:bg-zinc-950/20">
             <div class="w-full px-0 lg:px-32">
                 <div class="hidden lg:flex">
                     <div class="flex items-center justify-center space-x-2">
@@ -833,7 +833,15 @@ onUnmounted(() => {
                     <div v-if="step == 0" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
                         <div class="grid gap-2">
                             <Label for="application_venue">Application Venue</Label>
-                            <Input id="application_venue" type="text" required autofocus autocomplete="age" v-model="form.application_venue" />
+                            <Input
+                                id="application_venue"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                autocomplete="age"
+                                v-model="form.application_venue"
+                            />
                             <InputError :message="form.errors.application_venue" />
                         </div>
                         <div class="grid gap-2">
@@ -889,7 +897,7 @@ onUnmounted(() => {
                         </div>
                         <div class="grid gap-2">
                             <Label for="ltopf_no">LTOPF No.</Label>
-                            <Input id="ltopf_no" type="text" required autofocus v-model="form.ltopf_no" />
+                            <Input id="ltopf_no" type="text" class="uppercase" required autofocus v-model="form.ltopf_no" />
                             <InputError :message="form.errors.ltopf_no" />
                         </div>
                         <div class="grid gap-2">
@@ -948,37 +956,77 @@ onUnmounted(() => {
                     <div v-if="step == 1" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         <div class="grid gap-2">
                             <Label for="lastname">Lastname</Label>
-                            <Input id="lastname" type="text" required autofocus autocomplete="lastname" v-model="form.last_name" />
+                            <Input id="lastname" type="text" class="capitalize" required autofocus autocomplete="lastname" v-model="form.last_name" />
                             <InputError :message="form.errors.last_name" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="firstname">Firstname</Label>
-                            <Input id="firstname" type="text" required autofocus autocomplete="firstname" v-model="form.first_name" />
+                            <Input
+                                id="firstname"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                autocomplete="firstname"
+                                v-model="form.first_name"
+                            />
                             <InputError :message="form.errors.first_name" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="middlename">Middlename</Label>
-                            <Input id="middlename" type="text" required autofocus autocomplete="middlename" v-model="form.middle_name" />
+                            <Input
+                                id="middlename"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                autocomplete="middlename"
+                                v-model="form.middle_name"
+                            />
                             <InputError :message="form.errors.middle_name" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="extension">Extension</Label>
-                            <Input id="extension" type="text" required autofocus autocomplete="extension" v-model="form.extension" />
+                            <Input
+                                id="extension"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                autocomplete="extension"
+                                v-model="form.extension"
+                            />
                             <InputError :message="form.errors.extension" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="birth_date">Birth Date</Label>
-                            <Input id="birth_date" type="date" required autofocus autocomplete="birth_date" v-model="form.birth_date" />
+                            <Input
+                                id="birth_date"
+                                type="date"
+                                class="capitalize"
+                                required
+                                autofocus
+                                autocomplete="birth_date"
+                                v-model="form.birth_date"
+                            />
                             <InputError :message="form.errors.birth_date" />
                         </div>
 
                         <div class="grid gap-2">
                             <Label for="birth_place">Birth Place</Label>
-                            <Input id="birth_place" type="text" required autofocus autocomplete="birth_place" v-model="form.birth_place" />
+                            <Input
+                                id="birth_place"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                autocomplete="birth_place"
+                                v-model="form.birth_place"
+                            />
                             <InputError :message="form.errors.birth_place" />
                         </div>
 
@@ -1369,12 +1417,12 @@ onUnmounted(() => {
                         </div>
                         <div class="grid gap-2">
                             <Label for="purok">Purok</Label>
-                            <Input id="purok" type="text" required autofocus autocomplete="purok" v-model="form.purok" />
+                            <Input id="purok" type="text" class="capitalize" required autofocus autocomplete="purok" v-model="form.purok" />
                             <InputError :message="form.errors.purok" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="street">Street</Label>
-                            <Input id="street" type="text" required autofocus autocomplete="street" v-model="form.street" />
+                            <Input id="street" type="text" class="capitalize" required autofocus autocomplete="street" v-model="form.street" />
                             <InputError :message="form.errors.street" />
                         </div>
                     </div>
@@ -1382,17 +1430,32 @@ onUnmounted(() => {
                     <div v-if="step == 3" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         <div class="grid gap-2">
                             <Label for="occupation">Occupation</Label>
-                            <Input id="occupation" type="text" required autofocus autocomplete="occupation" v-model="form.occupation" />
+                            <Input
+                                id="occupation"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                autocomplete="occupation"
+                                v-model="form.occupation"
+                            />
                             <InputError :message="form.errors.occupation" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="company_organization">Company/Organization</Label>
-                            <Input id="company_organization" type="text" autofocus autocomplete="purok" v-model="form.company_organization" />
+                            <Input
+                                id="company_organization"
+                                type="text"
+                                class="capitalize"
+                                autofocus
+                                autocomplete="purok"
+                                v-model="form.company_organization"
+                            />
                             <InputError :message="form.errors.company_organization" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="position">Position</Label>
-                            <Input id="position" type="text" required autofocus autocomplete="position" v-model="form.position" />
+                            <Input id="position" type="text" class="capitalize" required autofocus autocomplete="position" v-model="form.position" />
                             <InputError :message="form.errors.position" />
                         </div>
                         <div class="grid gap-2">
@@ -1400,6 +1463,7 @@ onUnmounted(() => {
                             <Input
                                 id="office_business_address"
                                 type="text"
+                                class="capitalize"
                                 autofocus
                                 autocomplete="office_business_address"
                                 v-model="form.office_business_address"
@@ -1662,19 +1726,19 @@ onUnmounted(() => {
                             </div>
                             <div class="grid gap-2">
                                 <Label for="make">Make</Label>
-                                <Input id="make" type="text" required autofocus v-model="newFirearm.make" />
+                                <Input id="make" type="text" class="uppercase" required autofocus v-model="newFirearm.make" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="model">Model</Label>
-                                <Input id="make" type="text" required autofocus v-model="newFirearm.model" />
+                                <Input id="make" type="text" class="uppercase" required autofocus v-model="newFirearm.model" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="caliber">Caliber</Label>
-                                <Input id="caliber" type="text" required autofocus v-model="newFirearm.caliber" />
+                                <Input id="caliber" type="text" class="uppercase" required autofocus v-model="newFirearm.caliber" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="serial_no">Serial No.</Label>
-                                <Input id="serial_no" type="text" required autofocus v-model="newFirearm.serial_no" />
+                                <Input id="serial_no" type="text" class="uppercase" required autofocus v-model="newFirearm.serial_no" />
                             </div>
                             <div class="grid gap-2">
                                 <Label for="serial_no" class="text-transparent">Action</Label>
@@ -1723,8 +1787,8 @@ onUnmounted(() => {
                         </table>
                     </div>
 
-                    <div v-if="step == 7" class="flex flex-col items-center justify-center lg:w-[680px]">
-                        <div v-if="form.wasSuccessful == false" class="rounded-md bg-zinc-200 p-4 text-lg dark:bg-zinc-800 dark:text-zinc-50">
+                    <div v-if="step == 7" class="flex flex-col items-center justify-center lg:w-full">
+                        <div v-if="form.wasSuccessful == false" class="w-full rounded-md bg-zinc-200 p-4 text-lg dark:bg-zinc-800 dark:text-zinc-50">
                             <strong>ᡕᠵデᡁ᠊╾━💥 Double-check your details so everything hits the mark — no one likes a misfire.</strong>
                         </div>
                         <div v-if="form.wasSuccessful" class="mb-5 rounded-md bg-green-950 p-4 text-lg text-green-100">
@@ -1795,7 +1859,7 @@ onUnmounted(() => {
                             Next
                             <icons.ArrowRight class="h-4 w-4" />
                         </Button>
-                        <Button v-if="step == 7" class="h-10 w-1/2 text-white lg:w-full" :tabindex="4" :disabled="form.processing">
+                        <Button v-if="step == 7" class="h-10 w-1/2 text-white lg:w-52" :tabindex="4" :disabled="form.processing">
                             <template v-if="form.processing">
                                 <icons.LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
                                 Submitting…
