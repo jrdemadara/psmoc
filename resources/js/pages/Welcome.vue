@@ -68,6 +68,17 @@ function iASPDF() {
         window.open(iASRulebookPDF, '_blank');
     }, 500);
 }
+
+const isRegisterOpen = ref(false);
+const isRulebookOpen = ref(false);
+
+function toggleRegisterDropdown() {
+    isRegisterOpen.value = !isRegisterOpen.value;
+}
+
+function toggleRulebookDropdown() {
+    isRulebookOpen.value = !isRulebookOpen.value;
+}
 </script>
 <template>
     <Head title="Welcome">
@@ -106,9 +117,13 @@ function iASPDF() {
                         class="transition-all duration-300 ease-in-out"
                     >
                         <div class="group relative">
-                            <button class="inline-block px-5 py-1.5 uppercase hover:text-primary">Register</button>
+                            <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Register</button>
                             <div
-                                class="absolute z-10 hidden w-52 rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
+                                class="absolute z-10 w-52 rounded bg-white text-[#1b1b18] shadow-lg dark:bg-zinc-900 dark:text-[#EDEDEC]"
+                                :class="[
+                                    isRegisterOpen ? 'block' : 'hidden',
+                                    'group-hover:block', // still allows desktop hover
+                                ]"
                             >
                                 <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
                                     >New Member</Link
@@ -125,9 +140,10 @@ function iASPDF() {
                         <Link :href="route('home')" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Matches</Link>
 
                         <div class="group relative">
-                            <button class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Rulebook</button>
+                            <button @click="toggleRulebookDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Rulebook</button>
                             <div
-                                class="absolute z-10 hidden min-w-[150px] rounded bg-white text-[#1b1b18] shadow-lg group-hover:block dark:bg-zinc-900 dark:text-[#EDEDEC]"
+                                class="absolute z-10 min-w-[150px] rounded bg-white text-[#1b1b18] shadow-lg dark:bg-zinc-900 dark:text-[#EDEDEC]"
+                                :class="[isRulebookOpen ? 'block' : 'hidden', 'group-hover:block']"
                             >
                                 <a href="#" @click="openPSMOCPDF()" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
                                     >PSMOC Rulebook</a
