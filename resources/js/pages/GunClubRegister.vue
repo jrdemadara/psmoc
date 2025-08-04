@@ -237,12 +237,30 @@ const submit = () => {
                     <div v-if="step == 0" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
                         <div class="grid gap-2">
                             <Label for="name">Gun Club Name</Label>
-                            <Input id="name" type="text" required autofocus :tabindex="1" autocomplete="name" v-model="form.name" />
+                            <Input
+                                id="name"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                :tabindex="1"
+                                autocomplete="name"
+                                v-model="form.name"
+                            />
                             <InputError :message="form.errors.name" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="address">Address</Label>
-                            <Input id="address" type="text" required autofocus :tabindex="1" autocomplete="address" v-model="form.address" />
+                            <Input
+                                id="address"
+                                type="text"
+                                class="capitalize"
+                                required
+                                autofocus
+                                :tabindex="1"
+                                autocomplete="address"
+                                v-model="form.address"
+                            />
                             <InputError :message="form.errors.address" />
                         </div>
                         <div class="grid gap-2">
@@ -303,8 +321,8 @@ const submit = () => {
                             <InputError :message="form.errors.logo || logoError" />
                         </div>
                     </div>
-                    <div v-if="step == 1" class="flex flex-col items-center justify-center lg:w-[680px]">
-                        <div v-if="form.wasSuccessful == false" class="rounded-md bg-yellow-50 p-4 text-lg text-yellow-800">
+                    <div v-if="step == 1" class="flex flex-col items-center justify-center lg:w-full">
+                        <div v-if="form.wasSuccessful == false" class="w-full rounded-md bg-yellow-50 p-4 text-lg text-yellow-800">
                             <strong>ᡕᠵデᡁ᠊╾━💥 Double-check your details so everything hits the mark — no one likes a misfire.</strong>
                         </div>
                         <div v-if="form.wasSuccessful" class="mb-5 rounded-md bg-green-950 p-4 text-lg text-green-100">
@@ -356,7 +374,7 @@ const submit = () => {
                             Next
                             <icons.ArrowRight class="h-4 w-4" />
                         </Button>
-                        <Button v-if="step == 1" class="h-10 w-1/2 text-white lg:w-full" :tabindex="4" :disabled="form.processing">
+                        <Button v-if="step == 1" class="h-10 w-1/2 text-white lg:w-52" :tabindex="4" :disabled="form.processing">
                             <template v-if="form.processing">
                                 <icons.LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
                                 Submitting…
