@@ -117,7 +117,7 @@ function toggleRulebookDropdown() {
                         class="transition-all duration-300 ease-in-out"
                     >
                         <div class="group relative">
-                            <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Register</button>
+                            <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Registers</button>
                             <div
                                 class="absolute z-10 w-52 rounded bg-white text-[#1b1b18] shadow-lg dark:bg-zinc-900 dark:text-[#EDEDEC]"
                                 :class="[
