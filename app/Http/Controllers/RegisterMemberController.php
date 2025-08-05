@@ -21,7 +21,7 @@ class RegisterMemberController extends Controller
     {
         $gunClubs = Gunclub::select('id', 'name')->where('status', 'approved')->orderBy('name')->get();
 
-        return Inertia::render('MemberRegister', [
+        return Inertia::render('RegisterMember', [
             'gunClubs' => $gunClubs,
         ]);
     }
