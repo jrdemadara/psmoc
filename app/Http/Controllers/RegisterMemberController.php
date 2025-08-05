@@ -85,6 +85,7 @@ class RegisterMemberController extends Controller
             // 1. Save Profile
             Log::info('Attempting to create profile...');
             $profile = Profile::create([
+                'qrcode' => $this->generateQRCode(),
                 'reg_type' => "new",
                 'application_venue' => $request->application_venue,
                 'licensed_shooter' => $request->licensed_shooter === 'Yes',
@@ -246,4 +247,13 @@ class RegisterMemberController extends Controller
 
         return redirect()->back()->with('success', 'Profile deleted successfully.');
     }
+
+    function generateQRCode(): string
+    {
+        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        return collect(range(1, 12))
+            ->map(fn () => $characters[random_int(0, strlen($characters) - 1)])
+            ->join('');
+    }
+
 }
