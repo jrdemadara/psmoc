@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
+            $table->string('qrcode');
             $table->enum('reg_type', ['new', 'renewal']);
             $table->string('application_venue');
             $table->string('ltopf_no');
