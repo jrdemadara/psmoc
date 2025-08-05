@@ -24,7 +24,7 @@ const gunClubImages = Array.from({ length: props.gunClubs.length }, (_, index) =
 }));
 
 const gunClubsConfig = {
-    height: 200,
+    height: 280,
     itemsToShow: 4,
     gap: 5,
     autoplay: true,
@@ -117,7 +117,7 @@ function toggleRulebookDropdown() {
                         class="transition-all duration-300 ease-in-out"
                     >
                         <div class="group relative">
-                            <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Registers</button>
+                            <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Register</button>
                             <div
                                 class="absolute z-10 w-52 rounded bg-white text-[#1b1b18] shadow-lg dark:bg-zinc-900 dark:text-[#EDEDEC]"
                                 :class="[
