@@ -33,11 +33,87 @@ import type { FunctionalComponent } from 'vue';
 import { computed, nextTick, onMounted, onUnmounted, PropType, reactive, ref, Ref, watch } from 'vue';
 import cameraSound from '../../assets/audio/camera.mp3';
 import bulletsCover from '../../assets/images/bullets-cover.svg';
+
+interface Gunclub {
+    id: number;
+    name: string;
+}
+
+interface GunclubMember {
+    id: number;
+    gunclub: Gunclub;
+    is_main: boolean;
+}
+
+interface Firearm {
+    id: number;
+    type: string;
+    make: string;
+    model: string;
+    caliber: string;
+    serial_no: string;
+}
+
+interface Profile {
+    id: number;
+    qrcode: string;
+    reg_type: string;
+    licensed_shooter: string;
+    application_venue: string;
+    ltopf_no: string;
+    license_type: string;
+
+    last_name: string;
+    first_name: string;
+    middle_name: string | null;
+    extension: string | null;
+
+    birth_date: string;
+    birth_place: string;
+    age: number;
+    gender: string;
+    civil_status: string;
+    blood_type: string;
+    email: string;
+    phone: string;
+
+    region: string;
+    province: string;
+    city_municipality: string;
+    barangay: string;
+    street: string;
+    purok: string;
+
+    occupation: string;
+    company_organization: string | null;
+    position: string | null;
+    office_business_address: string | null;
+    office_landline: string | null;
+    office_email: string | null;
+
+    photo: string | null;
+    signature: string | null;
+
+    gunclub_members: GunclubMember[];
+    firearms: Firearm[];
+}
+
 const props = defineProps({
-    gunClubs: {
-        type: Array as PropType<{ id: number; name: string }[]>,
+    profile: {
+        type: Object as PropType<Profile>,
         required: true,
     },
+});
+
+// Firearms
+console.log(props.profile.firearms);
+
+// Gun clubs
+console.log(props.profile.gunclub_members);
+
+// Gun club name example
+props.profile.gunclub_members.forEach((member) => {
+    console.log(member.gunclub.name);
 });
 
 const successToastOpen = ref(false);
@@ -259,7 +335,7 @@ const firearmTypeOptions = [
 const isSubmitSuccess = ref<boolean>(false);
 const formErrorMessage = ref<string>('');
 const submit = () => {
-    form.post(route('register-member.store'), {
+    form.patch(route('register-member.store'), {
         forceFormData: true,
         onSuccess: () => {
             isSubmitSuccess.value = true;
