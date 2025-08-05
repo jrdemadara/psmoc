@@ -31,18 +31,18 @@ class RegisterGunClubController extends Controller
 
         // Save the gunclub first without the logo
         $gunclub = Gunclub::create([
-            'name' => $validated['name'],
-            'address' => $validated['address'],
-            'contact_person' => $validated['contact_person'],
+            'name' => Str::lower(trim($validated['name'])),
+            'address' => Str::lower(trim($validated['address'])),
+            'contact_person' => Str::lower(trim($validated['contact_person'])),
             'contact_no' => $validated['contact_no'],
-            'email_address' => $validated['email_address'],
+            'email_address' => Str::lower(trim($validated['email_address'])),
         ]);
 
         // Handle logo upload
         if ($request->hasFile('logo')) {
-            $gunclubName = Str::slug($gunclub->name);
+            $gunclubId = Str::slug($gunclub->id);
             $extension = $request->file('logo')->getClientOriginalExtension();
-            $filename = "{$gunclubName}.{$extension}";
+            $filename = "{$gunclubId}.{$extension}";
             $path = $request->file('logo')->storeAs('gunclubs', $filename, 's3');
 
             // Update the gunclub with the logo path
