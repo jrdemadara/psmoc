@@ -86,11 +86,11 @@ function toggleRulebookDropdown() {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
 
-    <div class="max-w-screen-3xl mx-auto flex flex-col items-center bg-[#FDFDFC] text-[#1b1b18] dark:bg-black">
+    <div class="max-w-screen-3xl mx-auto flex flex-col items-center bg-zinc-900">
         <!-- Section that fills the screen -->
         <section class="relative h-screen w-full">
             <!-- Header -->
-            <header class="absolute top-0 left-0 z-20 w-full bg-zinc-50 text-white dark:bg-black">
+            <header class="absolute top-0 left-0 z-20 w-full bg-zinc-900 text-white">
                 <div class="flex flex-wrap items-center justify-between px-4 py-5 lg:px-16">
                     <!-- Logo -->
                     <div class="flex items-center space-x-2">
@@ -193,13 +193,8 @@ function toggleRulebookDropdown() {
                 class="relative flex h-full w-full flex-col items-center justify-center bg-cover bg-center bg-no-repeat text-center text-white sm:bg-[length:120%] lg:bg-cover lg:pt-52"
                 :style="`background-image: url(${welcome})`"
             >
-                <!-- Gradient overlay for both light and dark modes -->
                 <div class="absolute inset-0 z-0">
-                    <!-- Light mode gradient -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-white/20 dark:hidden"></div>
-
-                    <!-- Dark mode gradient -->
-                    <div class="absolute inset-0 hidden bg-gradient-to-t from-black via-black/80 to-black/20 dark:block"></div>
+                    <div class="absolute inset-0 hidden bg-gradient-to-t from-zinc-900 via-zinc-900/80 to-zinc-900/20 dark:block"></div>
                 </div>
 
                 <div class="relative z-10 flex h-full w-full flex-col items-center justify-center rounded-lg px-5 lg:space-y-28 lg:px-16">
