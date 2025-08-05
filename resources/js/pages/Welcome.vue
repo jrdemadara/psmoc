@@ -24,7 +24,7 @@ const gunClubImages = Array.from({ length: props.gunClubs.length }, (_, index) =
 }));
 
 const gunClubsConfig = {
-    height: 280,
+    height: 180,
     itemsToShow: 4,
     gap: 5,
     autoplay: true,
@@ -40,12 +40,12 @@ const galleryConfig = {
     slideEffect: 'fade',
     mouseDrag: false,
     touchDrag: false,
-    height: 680,
+    height: 300,
     autoplay: 4000,
 };
 
 const thumbnailsConfig = {
-    height: 180,
+    height: 200,
     itemsToShow: 6,
     wrapAround: true,
     touchDrag: false,
@@ -95,11 +95,11 @@ function toggleRulebookDropdown() {
                     <!-- Logo -->
                     <div class="flex items-center space-x-2">
                         <img src="../../assets/images/logo.png" alt="Logo" class="h-14 w-auto" />
-                        <AppLogoSecondary class="text-black dark:text-zinc-50" />
+                        <AppLogoSecondary class="text-zinc-50" />
                     </div>
 
                     <!-- Hamburger -->
-                    <button @click="isOpen = !isOpen" class="text-black focus:outline-none lg:hidden dark:text-zinc-50">
+                    <button @click="isOpen = !isOpen" class="text-zinc-50 focus:outline-none lg:hidden">
                         <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -111,7 +111,7 @@ function toggleRulebookDropdown() {
                     <!-- Navigation -->
                     <nav
                         :class="[
-                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold text-black capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0 dark:text-zinc-50',
+                            'w-full flex-col items-start space-y-4 text-center text-sm font-semibold text-zinc-50 capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0',
                             isOpen ? 'mt-5 flex' : 'hidden lg:flex',
                         ]"
                         class="transition-all duration-300 ease-in-out"
@@ -119,21 +119,15 @@ function toggleRulebookDropdown() {
                         <div class="group relative">
                             <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Register</button>
                             <div
-                                class="absolute z-10 w-52 rounded bg-white text-[#1b1b18] shadow-lg dark:bg-zinc-900 dark:text-[#EDEDEC]"
+                                class="absolute z-10 w-52 rounded bg-zinc-900 text-zinc-50 shadow-lg"
                                 :class="[
                                     isRegisterOpen ? 'block' : 'hidden',
                                     'group-hover:block', // still allows desktop hover
                                 ]"
                             >
-                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
-                                    >New Member</Link
-                                >
-                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
-                                    >Membership Renewal</Link
-                                >
-                                <Link :href="route('register-gunclub')" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
-                                    >Gun Club</Link
-                                >
+                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-primary">New Member</Link>
+                                <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-primary">Membership Renewal</Link>
+                                <Link :href="route('register-gunclub')" class="block px-4 py-2 text-start hover:bg-primary">Gun Club</Link>
                             </div>
                         </div>
 
@@ -142,15 +136,11 @@ function toggleRulebookDropdown() {
                         <div class="group relative">
                             <button @click="toggleRulebookDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-red-500">Rulebook</button>
                             <div
-                                class="absolute z-10 min-w-[150px] rounded bg-white text-[#1b1b18] shadow-lg dark:bg-zinc-900 dark:text-[#EDEDEC]"
+                                class="absolute z-10 min-w-[150px] rounded bg-zinc-900 text-zinc-50 shadow-lg"
                                 :class="[isRulebookOpen ? 'block' : 'hidden', 'group-hover:block']"
                             >
-                                <a href="#" @click="openPSMOCPDF()" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
-                                    >PSMOC Rulebook</a
-                                >
-                                <a href="#" @click="iASPDF()" class="block px-4 py-2 text-start hover:bg-gray-100 dark:hover:bg-primary"
-                                    >ISMOC Rulebook</a
-                                >
+                                <a href="#" @click="openPSMOCPDF()" class="block px-4 py-2 text-start hover:bg-primary">PSMOC Rulebook</a>
+                                <a href="#" @click="iASPDF()" class="block px-4 py-2 text-start hover:bg-primary">ISMOC Rulebook</a>
                             </div>
                         </div>
 
@@ -165,14 +155,14 @@ function toggleRulebookDropdown() {
                                 <a
                                     href="https://www.facebook.com/psmoc.main"
                                     target="_blank"
-                                    class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40"
+                                    class="rounded-full bg-primary/40 p-3 hover:bg-primary/60"
                                 >
                                     <Facebook color="white" :size="22" />
                                 </a>
-                                <div class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40">
+                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
                                     <Instagram color="white" :size="22" />
                                 </div>
-                                <div class="rounded-full bg-primary p-3 hover:bg-primary/60 dark:bg-primary/40">
+                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
                                     <Youtube color="white" :size="22" />
                                 </div>
                             </div>
@@ -194,16 +184,14 @@ function toggleRulebookDropdown() {
                 :style="`background-image: url(${welcome})`"
             >
                 <div class="absolute inset-0 z-0">
-                    <div class="absolute inset-0 hidden bg-gradient-to-t from-zinc-900 via-zinc-900/80 to-zinc-900/20 dark:block"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/80 to-zinc-900/20"></div>
                 </div>
 
                 <div class="relative z-10 flex h-full w-full flex-col items-center justify-center rounded-lg px-5 lg:space-y-28 lg:px-16">
                     <div class="flex h-full flex-col items-center justify-center">
-                        <img src="../../assets/images/header.svg" alt="" class="w-[680px]" />
-                        <p class="text-xl font-bold tracking-wider text-zinc-800 lg:text-2xl dark:text-zinc-200">
-                            Philippine Shooters and Match Officers Confederation
-                        </p>
-                        <p class="mt-5 text-xl tracking-wider text-zinc-700 lg:text-2xl dark:text-zinc-400">
+                        <img src="../../assets/images/header.svg" alt="" class="w-64 lg:w-[680px]" />
+                        <p class="text-lg font-bold tracking-wider text-zinc-200 lg:text-2xl">Philippine Shooters and Match Officers Confederation</p>
+                        <p class="mt-5 tracking-wider text-zinc-200 lg:text-2xl">
                             No gimmicks. Just pure firepower. At PSMOC, we take shooting to the extreme — <br />
                             live matches, advanced setups, and raw intensity that hits you like recoil.
                         </p>
@@ -220,20 +208,20 @@ function toggleRulebookDropdown() {
 
                     <div class="mb-5 flex w-full">
                         <div class="flex h-12 w-full items-end">
-                            <div class="h-1 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
+                            <div class="h-1 w-6 bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full space-x-3">
-                            <div class="h-2 w-2 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
-                            <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
+                            <div class="h-2 w-2 animate-spin bg-zinc-800"></div>
+                            <div class="h-2 w-2 bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full items-center">
-                            <div class="h-6 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
+                            <div class="h-6 w-6 bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full items-end">
-                            <div class="h-1 w-4 animate-bounce bg-zinc-200 dark:bg-zinc-800"></div>
+                            <div class="h-1 w-4 animate-bounce bg-zinc-800"></div>
                         </div>
                         <div class="flex h-12 w-full items-start">
-                            <div class="h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
+                            <div class="h-1 w-32 bg-zinc-800"></div>
                         </div>
                     </div>
                 </div>
@@ -242,23 +230,21 @@ function toggleRulebookDropdown() {
 
         <!-- Section A -->
         <section class="flex w-full flex-col items-center justify-center px-5 lg:px-16">
-            <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Competitive Shooting Matches</h1>
-            <div class="mt-5 flex w-full">
+            <h1 class="text-center text-3xl font-bold text-zinc-50 lg:text-7xl">Competitive Shooting Matches</h1>
+            <div class="flex w-full lg:mt-5">
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full space-x-3"></div>
                 <div class="flex h-12 w-full items-center"></div>
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full items-start">
-                    <div class="h-6 w-6 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-6 w-6 animate-spin bg-zinc-800"></div>
                 </div>
             </div>
             <div class="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-300 px-5 dark:border-zinc-400">
+                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-400 px-5">
                     <div class="flex size-12 items-center justify-center rounded-full bg-primary p-2 text-3xl font-black text-zinc-50">1</div>
-                    <h4 class="text-2xl font-bold text-zinc-800 dark:text-zinc-50">Nationwide Competition</h4>
-                    <p class="text-xl text-zinc-600 dark:text-zinc-400">
-                        Open to participants from all over the country. Join and showcase your skills.
-                    </p>
+                    <h4 class="text-2xl font-bold text-zinc-50">Nationwide Competition</h4>
+                    <p class="text-xl text-zinc-400">Open to participants from all over the country. Join and showcase your skills.</p>
                 </div>
 
                 <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg bg-primary px-5">
@@ -267,12 +253,10 @@ function toggleRulebookDropdown() {
                     <p class="text-xl text-zinc-100">Led by top-tier professionals ensuring fairness and precision in every match.</p>
                 </div>
 
-                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-300 px-5 dark:border-zinc-400">
+                <div class="flex h-52 flex-col items-start justify-center space-y-3 rounded-lg border border-zinc-400 px-5">
                     <div class="flex size-12 items-center justify-center rounded-full bg-primary p-2 text-3xl font-black text-zinc-50">3</div>
-                    <h4 class="text-2xl font-bold text-zinc-800 dark:text-zinc-50">Live-Fire Challenges</h4>
-                    <p class="text-xl text-zinc-600 dark:text-zinc-400">
-                        Experience intense, real-world scenarios that push your skills to the limit.
-                    </p>
+                    <h4 class="text-2xl font-bold text-zinc-50">Live-Fire Challenges</h4>
+                    <p class="text-xl text-zinc-400">Experience intense, real-world scenarios that push your skills to the limit.</p>
                 </div>
             </div>
         </section>
@@ -281,21 +265,21 @@ function toggleRulebookDropdown() {
         <section class="mt-16 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <div class="mt-5 flex h-24 w-full">
                 <div class="flex h-full w-full flex-col items-start justify-end">
-                    <div class="h-1 w-24 bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="mt-4 h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-24 bg-zinc-800"></div>
+                    <div class="mt-4 h-1 w-32 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-center justify-center space-x-3">
-                    <div class="h-6 w-6 animate-pulse bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-6 w-6 animate-pulse bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-start justify-center">
-                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-end justify-center space-x-2">
-                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-full w-full items-end justify-end">
-                    <div class="h-4 w-4 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-4 w-4 bg-zinc-800"></div>
                 </div>
             </div>
             <div class="mt-10 flex w-full flex-col items-center gap-8 lg:flex-row">
@@ -312,7 +296,7 @@ function toggleRulebookDropdown() {
                     </div>
 
                     <div class="mt-0 flex flex-col lg:mt-32">
-                        <p class="text-justify text-xl leading-normal tracking-wider text-black dark:text-zinc-50">
+                        <p class="text-justify leading-normal tracking-wider text-zinc-50 lg:text-xl">
                             Dear PSMOC Family members, <br /><br />
                             It is with great honor and pride that I announce the creation of the International Shooters and Match Officers
                             Confederation (ISMOC), Inc.—the first international shooting organization founded and headquartered in the Philippines.
@@ -321,7 +305,7 @@ function toggleRulebookDropdown() {
                             of our officers, Match Officers, members, and staff—thank you all. As reflected in our logo, ISMOC thrives with dynamic
                             energy, united by a shared passion for the shooting sport. Mabuhay!
                         </p>
-                        <span class="mt-5 text-black dark:text-zinc-50">
+                        <span class="mt-5 text-zinc-50">
                             <strong class="">CONG. SUHARTO “Teng” MANGUDADATU, Ph.D.</strong><br />
                             Representative, 1st District of Sultan Kudarat, <br />
                             Philippines President, International Shooters and Match Officers Confederation President, <br />
@@ -334,23 +318,23 @@ function toggleRulebookDropdown() {
 
         <!-- Section Gun Clubs -->
         <section id="gunclubs" class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
-            <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Registered Gun Clubs</h1>
-            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-600 lg:text-2xl dark:text-zinc-400">
+            <h1 class="text-center text-3xl font-bold text-zinc-50 lg:text-7xl">Registered Gun Clubs</h1>
+            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-400 lg:text-2xl">
                 Discover gun clubs officially registered under ISMOC, representing excellence in sportsmanship, safety, and competition across the
                 Philippines and beyond.
             </p>
-            <div class="mt-5 flex w-full">
+            <div class="flex w-full lg:mt-5">
                 <div class="flex h-12 w-full items-end">
-                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full space-x-3"></div>
                 <div class="flex h-12 w-full items-center">
-                    <div class="mt-4 h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="mt-4 h-1 w-32 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-12 w-full items-start">
-                    <div class="h-6 w-6 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-6 w-6 animate-spin bg-zinc-800"></div>
                 </div>
             </div>
             <Carousel v-bind="gunClubsConfig">
@@ -369,22 +353,22 @@ function toggleRulebookDropdown() {
 
         <!-- Section Gallery -->
         <section id="gallery" class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
-            <h1 class="text-center text-4xl font-bold lg:text-7xl dark:text-zinc-50">Gallery</h1>
-            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-600 lg:text-2xl dark:text-zinc-400">
+            <h1 class="text-center text-4xl font-bold text-zinc-50 lg:text-7xl">Gallery</h1>
+            <p class="mx-auto mt-5 max-w-6xl text-center text-lg tracking-wider text-zinc-400 lg:text-2xl">
                 A curated collection of memorable events, trainings, and activities showcasing the spirit and dedication of our shooting community.
             </p>
             <div class="mt-5 flex w-full">
                 <div class="flex h-full w-full items-start justify-center">
-                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full space-x-3"></div>
                 <div class="flex h-12 w-full items-center">
-                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-end"></div>
                 <div class="flex h-full w-full items-end justify-center space-x-2">
-                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="h-1 w-1 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
+                    <div class="h-1 w-1 bg-zinc-800"></div>
                 </div>
             </div>
             <Carousel id="gallery" v-bind="galleryConfig" v-model="currentSlide">
@@ -412,29 +396,27 @@ function toggleRulebookDropdown() {
         <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
             <div class="mb-5 flex w-full">
                 <div class="flex h-12 w-full items-end">
-                    <div class="h-1 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-6 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full space-x-3">
-                    <div class="h-2 w-2 animate-spin bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="h-2 w-2 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-2 w-2 animate-spin bg-zinc-800"></div>
+                    <div class="h-2 w-2 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-center">
-                    <div class="h-6 w-6 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-6 w-6 bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-end">
-                    <div class="h-1 w-4 animate-bounce bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-4 animate-bounce bg-zinc-800"></div>
                 </div>
                 <div class="flex h-12 w-full items-start">
-                    <div class="h-1 w-32 bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="h-1 w-32 bg-zinc-800"></div>
                 </div>
             </div>
-            <div
-                class="flex w-full flex-col justify-center rounded-tl-4xl rounded-br-4xl bg-zinc-100 px-5 py-5 shadow shadow-zinc-200 lg:p-32 dark:bg-zinc-800 dark:shadow-zinc-900"
-            >
-                <h1 class="text-center text-2xl font-bold lg:text-start lg:text-5xl dark:text-zinc-50">Check Our Facebook Page</h1>
+            <div class="flex w-full flex-col justify-center rounded-tl-4xl rounded-br-4xl bg-zinc-800 px-5 py-5 shadow shadow-zinc-900 lg:p-32">
+                <h1 class="text-center text-2xl font-bold text-zinc-50 lg:text-start lg:text-5xl">Check Our Facebook Page</h1>
                 <div class="mt-6 flex flex-col-reverse lg:flex-row">
                     <div class="flex flex-col items-center space-y-5 space-x-5 lg:items-start">
-                        <p class="mt-5 max-w-2xl text-center text-lg md:text-start lg:mt-0 lg:text-xl dark:text-zinc-300">
+                        <p class="mt-5 max-w-2xl text-center text-lg text-zinc-300 md:text-start lg:mt-0 lg:text-xl">
                             Stay connected with the Philippine Shooters and Match Officers Confederation (PSMOC) through our official Facebook page.
                             Get the latest updates on upcoming events, training sessions, match results, and behind-the-scenes action straight from
                             the range. Whether you're a competitive shooter, a range officer, or just passionate about the sport, our Facebook
@@ -460,17 +442,14 @@ function toggleRulebookDropdown() {
         </section>
 
         <!-- Footer -->
-        <footer class="flex w-full flex-col items-center justify-center py-5">
-            <div class="flex items-center justify-center px-16 dark:text-zinc-50">Copyright © 2025 PSMOC. All Rights Reserved.</div>
+        <footer class="flex w-full flex-col items-center justify-center py-5 lg:flex-row lg:space-x-2">
+            <div class="flex items-center justify-end text-center text-zinc-50">Copyright © 2025 PSMOC.</div>
+            <div class="flex items-center justify-start text-center text-zinc-50">All Rights Reserved.</div>
         </footer>
     </div>
 </template>
 
 <style scoped>
-:root {
-    background-color: #242424;
-}
-
 .carousel {
     --vc-pgn-background-color: rgba(255, 255, 255, 0.7);
     --vc-pgn-active-color: rgba(255, 255, 255, 1);
@@ -480,10 +459,6 @@ function toggleRulebookDropdown() {
 
 .gallery-image {
     border-radius: 16px;
-}
-
-#thumbnails {
-    margin-top: 10px;
 }
 
 .thumbnail {
