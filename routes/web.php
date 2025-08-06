@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RegisterGunClubController;
 use App\Http\Controllers\RegisterMemberController;
+use App\Http\Controllers\RequestMemberUpdateController;
 use App\Http\Controllers\UpdateMemberController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,13 @@ Route::get('register-gunclub', [RegisterGunClubController::class, 'create'])
 Route::post('register-gunclub', [RegisterGunClubController::class, 'store'])
     ->name('register-gunclub.store');
 
-Route::get('update-member/{qrcode}', [UpdateMemberController::class, 'create'])
+Route::get('request-member-update', [RequestMemberUpdateController::class, 'create'])
+    ->name('request-member-update');
+
+Route::post('request-member-update', [RequestMemberUpdateController::class, 'store'])
+    ->name('request-member-update.store');
+
+Route::get('update-member/{token}', [UpdateMemberController::class, 'create'])
     ->name('update-member');
 
 require __DIR__.'/settings.php';

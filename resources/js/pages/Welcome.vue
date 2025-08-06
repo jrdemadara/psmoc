@@ -135,7 +135,7 @@ onUnmounted(() => {
                         class="transition-all duration-300 ease-in-out"
                     >
                         <div class="group relative">
-                            <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Register</button>
+                            <button @click="toggleRegisterDropdown" class="inline-block px-5 py-1.5 uppercase hover:text-primary">Member</button>
                             <div
                                 class="absolute z-10 w-52 rounded bg-zinc-900 text-zinc-50 shadow-lg"
                                 :class="[
@@ -145,6 +145,12 @@ onUnmounted(() => {
                             >
                                 <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-primary">New Member</Link>
                                 <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-primary">Membership Renewal</Link>
+<<<<<<< HEAD
+=======
+                                <Link :href="route('request-member-update')" class="block px-4 py-2 text-start hover:bg-primary"
+                                    >Request Profile Update</Link
+                                >
+>>>>>>> feature/update-member
                                 <Link :href="route('register-gunclub')" class="block px-4 py-2 text-start hover:bg-primary">Gun Club</Link>
                             </div>
                         </div>

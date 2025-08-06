@@ -185,7 +185,7 @@ class RegisterMemberController extends Controller
             ];
 
             Log::info('Attempting to send onboarding email.');
-            Mail::to($profile->email)->send(new MemberOnboardingMail($data));
+            Mail::mailer('smtp-noreply')->to($profile->email)->send(new MemberOnboardingMail($data));
             Log::info('Onboarding email sent.');
 
             return redirect()->back()->with('success', 'Profile created successfully.');
