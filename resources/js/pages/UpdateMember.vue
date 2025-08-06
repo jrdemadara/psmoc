@@ -103,7 +103,17 @@ const props = defineProps({
         type: Object as PropType<Profile>,
         required: true,
     },
+    token: {
+        type: String,
+        required: true,
+    },
 });
+
+// Token
+console.log(props.token);
+
+// Profile
+console.log(props.profile);
 
 // Firearms
 console.log(props.profile.firearms);
@@ -192,40 +202,40 @@ const IconComponent = computed<FunctionalComponent>(() => {
 
 const form = useForm({
     //step 0 - Application Details
-    application_venue: '',
-    licensed_shooter: null,
-    ltopf_no: '',
-    license_type: '',
+    application_venue: props.profile.application_venue,
+    licensed_shooter: props.profile.licensed_shooter ? 'Yes' : 'No',
+    ltopf_no: props.profile.ltopf_no,
+    license_type: props.profile.license_type,
 
     // step 1 - Personal Details
-    last_name: '',
-    first_name: '',
-    middle_name: '',
-    extension: '',
-    email: '',
-    phone: '',
-    birth_date: '',
-    birth_place: '',
-    age: '',
-    gender: '',
-    civil_status: '',
-    blood_type: '',
+    last_name: props.profile.last_name,
+    first_name: props.profile.first_name,
+    middle_name: props.profile.middle_name,
+    extension: props.profile.extension,
+    email: props.profile.email,
+    phone: props.profile.phone,
+    birth_date: props.profile.birth_date,
+    birth_place: props.profile.birth_place,
+    age: props.profile.age,
+    gender: props.profile.gender,
+    civil_status: props.profile.civil_status,
+    blood_type: props.profile.blood_type,
 
     //step 2 - Address Details
-    street: '',
-    purok: '',
-    barangay: '',
-    city_municipality: '',
-    province: '',
-    region: '',
+    street: props.profile.street,
+    purok: props.profile.purok,
+    barangay: props.profile.barangay,
+    city_municipality: props.profile.city_municipality,
+    province: props.profile.province,
+    region: props.profile.region,
 
     //step 3 - Work Details
-    occupation: '',
-    company_organization: '',
-    position: '',
-    office_business_address: '',
-    office_landline: '',
-    office_email: '',
+    occupation: props.profile.occupation,
+    company_organization: props.profile.company_organization,
+    position: props.profile.position,
+    office_business_address: props.profile.office_business_address,
+    office_landline: props.profile.office_landline,
+    office_email: props.profile.office_email,
 
     //step 4 - Photo & Signature
     photo: null as File | null,
@@ -1568,7 +1578,7 @@ onUnmounted(() => {
                                 <audio ref="captureSound" :src="captureSoundSrc"></audio>
                                 <img
                                     v-if="cameraState === 'capture'"
-                                    :src="photo ?? undefined"
+                                    :src="props.profile.photo ?? undefined"
                                     alt="Captured"
                                     class="w-full cursor-pointer object-cover lg:w-1/2"
                                     @click="startCamera"

@@ -29,8 +29,8 @@ class MemberProfileUpdateMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('no-reply@psmoc.org', 'PSMOC'),
-            subject: 'Profile Updated',
+            from: new Address('secureupdate@psmoc.org', 'PSMOC'),
+            subject: 'Profile Update Link',
         );
     }
 

@@ -53,7 +53,7 @@ class RegisterGunClubController extends Controller
             'name' => Str::upper($gunclub->name),
         ];
 
-        Mail::to($gunclub->email_address)->send(new ClubOnboardingMail($data));
+        Mail::mailer('smtp-noreply')->to($gunclub->email_address)->send(new ClubOnboardingMail($data));
 
         return redirect()->back()->with('success', 'Gun Club created successfully.');
     }

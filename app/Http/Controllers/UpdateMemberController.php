@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -20,11 +21,18 @@ class UpdateMemberController extends Controller
 {
     public function create(Request $request): Response
     {
+        $qrcode = Redis::get("profile_update_token:{$request->token}");
+
+        if (! $qrcode) {
+              abort(403, 'Invalid or expired update link.');
+        }
+
         $profile = Profile::with([
             'gunclubMembers.gunclub',
             'firearms',
         ])
-        ->where('qrcode', $request->qrcode)
+        ->where('qrcode', $qrcode)
+        ->where('status', 'pending')
         ->firstOrFail();
 
         $profile->photo = $profile->photo
@@ -37,6 +45,7 @@ class UpdateMemberController extends Controller
 
         return Inertia::render('UpdateMember', [
             'profile' => $profile,
+            'token' => $request->token,
         ]);
     }
 
