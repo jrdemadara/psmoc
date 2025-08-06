@@ -420,7 +420,7 @@ onUnmounted(() => {
             </Carousel>
         </section>
 
-        <!-- Section Gallery -->
+        <!-- Section FB Page -->
         <section class="flex w-full flex-col items-center justify-center px-5 lg:mt-32 lg:px-16">
             <div class="mb-5 flex w-full">
                 <div class="flex h-12 w-full items-end">
