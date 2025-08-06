@@ -2,7 +2,7 @@
 import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
 import { Link } from '@inertiajs/vue3';
 import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-next';
-import { PropType, ref } from 'vue';
+import { onMounted, onUnmounted, PropType, ref } from 'vue';
 import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
 import PSMOCRulebookPDF from '../../assets/files/PSMOC-Rulebook.pdf';
@@ -34,19 +34,28 @@ const currentSlide = ref(0);
 
 const slideTo = (nextSlide) => (currentSlide.value = nextSlide);
 
-const galleryConfig = {
+const galleryConfig = ref({
     itemsToShow: 1,
     wrapAround: true,
     slideEffect: 'fade',
     mouseDrag: false,
     touchDrag: false,
-    height: 300,
+    height: 600,
     autoplay: 4000,
-};
+});
+
+function updateGalleryHeight() {
+    if (window.matchMedia('(min-width: 1536px)').matches) galleryConfig.value.height = 700;
+    else if (window.matchMedia('(min-width: 1280px)').matches) galleryConfig.value.height = 650;
+    else if (window.matchMedia('(min-width: 1024px)').matches) galleryConfig.value.height = 600;
+    else if (window.matchMedia('(min-width: 768px)').matches) galleryConfig.value.height = 500;
+    else if (window.matchMedia('(min-width: 640px)').matches) galleryConfig.value.height = 400;
+    else galleryConfig.value.height = 300;
+}
 
 const thumbnailsConfig = {
     height: 200,
-    itemsToShow: 6,
+    itemsToShow: 4,
     wrapAround: true,
     touchDrag: false,
     gap: 10,
@@ -79,6 +88,15 @@ function toggleRegisterDropdown() {
 function toggleRulebookDropdown() {
     isRulebookOpen.value = !isRulebookOpen.value;
 }
+
+onMounted(() => {
+    updateGalleryHeight();
+    window.addEventListener('resize', updateGalleryHeight);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', updateGalleryHeight);
+});
 </script>
 <template>
     <Head title="Welcome">
