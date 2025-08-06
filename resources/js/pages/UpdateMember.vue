@@ -33,13 +33,6 @@ import type { FunctionalComponent } from 'vue';
 import { computed, nextTick, onMounted, onUnmounted, PropType, reactive, ref, Ref, watch } from 'vue';
 import cameraSound from '../../assets/audio/camera.mp3';
 import bulletsCover from '../../assets/images/bullets-cover.svg';
-<<<<<<< HEAD
-const props = defineProps({
-    gunClubs: {
-        type: Array as PropType<{ id: number; name: string }[]>,
-        required: true,
-    },
-=======
 
 interface Gunclub {
     id: number;
@@ -128,12 +121,6 @@ console.log(props.profile.firearms);
 // Gun clubs
 console.log(props.profile.gunclub_members);
 
-// Gun club name example
-props.profile.gunclub_members.forEach((member) => {
-    console.log(member.gunclub.name);
->>>>>>> feature/update-member
-});
-
 const successToastOpen = ref(false);
 const errorToastOpen = ref(false);
 const eventDateRef = ref(new Date());
@@ -210,42 +197,6 @@ const IconComponent = computed<FunctionalComponent>(() => {
 
 const form = useForm({
     //step 0 - Application Details
-<<<<<<< HEAD
-    application_venue: '',
-    licensed_shooter: null,
-    ltopf_no: '',
-    license_type: '',
-
-    // step 1 - Personal Details
-    last_name: '',
-    first_name: '',
-    middle_name: '',
-    extension: '',
-    email: '',
-    phone: '',
-    birth_date: '',
-    birth_place: '',
-    age: '',
-    gender: '',
-    civil_status: '',
-    blood_type: '',
-
-    //step 2 - Address Details
-    street: '',
-    purok: '',
-    barangay: '',
-    city_municipality: '',
-    province: '',
-    region: '',
-
-    //step 3 - Work Details
-    occupation: '',
-    company_organization: '',
-    position: '',
-    office_business_address: '',
-    office_landline: '',
-    office_email: '',
-=======
     application_venue: props.profile.application_venue,
     licensed_shooter: props.profile.licensed_shooter ? 'Yes' : 'No',
     ltopf_no: props.profile.ltopf_no,
@@ -280,7 +231,6 @@ const form = useForm({
     office_business_address: props.profile.office_business_address,
     office_landline: props.profile.office_landline,
     office_email: props.profile.office_email,
->>>>>>> feature/update-member
 
     //step 4 - Photo & Signature
     photo: null as File | null,
@@ -390,11 +340,7 @@ const firearmTypeOptions = [
 const isSubmitSuccess = ref<boolean>(false);
 const formErrorMessage = ref<string>('');
 const submit = () => {
-<<<<<<< HEAD
-    form.post(route('register-member.store'), {
-=======
     form.patch(route('register-member.store'), {
->>>>>>> feature/update-member
         forceFormData: true,
         onSuccess: () => {
             isSubmitSuccess.value = true;
@@ -1627,11 +1573,7 @@ onUnmounted(() => {
                                 <audio ref="captureSound" :src="captureSoundSrc"></audio>
                                 <img
                                     v-if="cameraState === 'capture'"
-<<<<<<< HEAD
                                     :src="photo ?? undefined"
-=======
-                                    :src="props.profile.photo ?? undefined"
->>>>>>> feature/update-member
                                     alt="Captured"
                                     class="w-full cursor-pointer object-cover lg:w-1/2"
                                     @click="startCamera"
