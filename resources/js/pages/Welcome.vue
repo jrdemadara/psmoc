@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
 import { Link } from '@inertiajs/vue3';
-import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-next';
-import { PropType, ref } from 'vue';
+import { Crosshair, Facebook, Mail, MoveRight, Phone, Smartphone } from 'lucide-vue-next';
+import { onMounted, onUnmounted, PropType, ref } from 'vue';
 import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
 import PSMOCRulebookPDF from '../../assets/files/PSMOC-Rulebook.pdf';
@@ -34,19 +34,28 @@ const currentSlide = ref(0);
 
 const slideTo = (nextSlide) => (currentSlide.value = nextSlide);
 
-const galleryConfig = {
+const galleryConfig = ref({
     itemsToShow: 1,
     wrapAround: true,
     slideEffect: 'fade',
     mouseDrag: false,
     touchDrag: false,
-    height: 300,
+    height: 600,
     autoplay: 4000,
-};
+});
+
+function updateGalleryHeight() {
+    if (window.matchMedia('(min-width: 1536px)').matches) galleryConfig.value.height = 700;
+    else if (window.matchMedia('(min-width: 1280px)').matches) galleryConfig.value.height = 650;
+    else if (window.matchMedia('(min-width: 1024px)').matches) galleryConfig.value.height = 600;
+    else if (window.matchMedia('(min-width: 768px)').matches) galleryConfig.value.height = 500;
+    else if (window.matchMedia('(min-width: 640px)').matches) galleryConfig.value.height = 400;
+    else galleryConfig.value.height = 300;
+}
 
 const thumbnailsConfig = {
     height: 200,
-    itemsToShow: 6,
+    itemsToShow: 4,
     wrapAround: true,
     touchDrag: false,
     gap: 10,
@@ -79,6 +88,15 @@ function toggleRegisterDropdown() {
 function toggleRulebookDropdown() {
     isRulebookOpen.value = !isRulebookOpen.value;
 }
+
+onMounted(() => {
+    updateGalleryHeight();
+    window.addEventListener('resize', updateGalleryHeight);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', updateGalleryHeight);
+});
 </script>
 <template>
     <Head title="Welcome">
@@ -152,19 +170,29 @@ function toggleRulebookDropdown() {
                         <!-- Socials + CTA -->
                         <div class="flex flex-col items-center space-y-3 pt-4 lg:ml-8 lg:flex-row lg:space-y-0 lg:space-x-3 lg:pt-0">
                             <div class="flex space-x-3">
+                                <a href="tel:+63 975 357 7935">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60">
+                                        <Smartphone color="white" :size="22" />
+                                    </div>
+                                </a>
+                                <a href="tel:(02) 8995 4941">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60">
+                                        <Phone color="white" :size="22" />
+                                    </div>
+                                </a>
+                                <a href="mailto:contact@psmoc.org">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60">
+                                        <Mail color="white" :size="22" />
+                                    </div>
+                                </a>
+
                                 <a
                                     href="https://www.facebook.com/psmoc.main"
                                     target="_blank"
-                                    class="rounded-full bg-primary/40 p-3 hover:bg-primary/60"
+                                    class="rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60"
                                 >
                                     <Facebook color="white" :size="22" />
                                 </a>
-                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
-                                    <Instagram color="white" :size="22" />
-                                </div>
-                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
-                                    <Youtube color="white" :size="22" />
-                                </div>
                             </div>
 
                             <Link
@@ -412,11 +440,11 @@ function toggleRulebookDropdown() {
                     <div class="h-1 w-32 bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="flex w-full flex-col justify-center rounded-tl-4xl rounded-br-4xl bg-zinc-800 px-5 py-5 shadow shadow-zinc-900 lg:p-32">
+            <div class="flex w-full flex-col justify-center rounded-4xl bg-zinc-800 px-5 py-5 shadow shadow-zinc-900 lg:p-32">
                 <h1 class="text-center text-2xl font-bold text-zinc-50 lg:text-start lg:text-5xl">Check Our Facebook Page</h1>
-                <div class="mt-6 flex flex-col-reverse lg:flex-row">
+                <div class="mt-6 flex flex-col-reverse justify-between lg:flex-row">
                     <div class="flex flex-col items-center space-y-5 space-x-5 lg:items-start">
-                        <p class="mt-5 max-w-2xl text-center text-lg text-zinc-300 md:text-start lg:mt-0 lg:text-xl">
+                        <p class="mt-5 max-w-2xl text-center text-lg text-zinc-300 md:text-start lg:mt-0 lg:text-2xl">
                             Stay connected with the Philippine Shooters and Match Officers Confederation (PSMOC) through our official Facebook page.
                             Get the latest updates on upcoming events, training sessions, match results, and behind-the-scenes action straight from
                             the range. Whether you're a competitive shooter, a range officer, or just passionate about the sport, our Facebook
