@@ -171,17 +171,17 @@ onUnmounted(() => {
                         <div class="flex flex-col items-center space-y-3 pt-4 lg:ml-8 lg:flex-row lg:space-y-0 lg:space-x-3 lg:pt-0">
                             <div class="flex space-x-3">
                                 <a href="tel:+63 975 357 7935">
-                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60">
                                         <Smartphone color="white" :size="22" />
                                     </div>
                                 </a>
                                 <a href="tel:(02) 8995 4941">
-                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60">
                                         <Phone color="white" :size="22" />
                                     </div>
                                 </a>
                                 <a href="mailto:contact@psmoc.org">
-                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60">
                                         <Mail color="white" :size="22" />
                                     </div>
                                 </a>
@@ -189,7 +189,7 @@ onUnmounted(() => {
                                 <a
                                     href="https://www.facebook.com/psmoc.main"
                                     target="_blank"
-                                    class="rounded-full bg-primary/40 p-3 hover:bg-primary/60"
+                                    class="rounded-full bg-primary/40 p-3 hover:animate-pulse hover:bg-primary/60"
                                 >
                                     <Facebook color="white" :size="22" />
                                 </a>
