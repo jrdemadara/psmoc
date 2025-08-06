@@ -421,7 +421,7 @@ onUnmounted(() => {
         </section>
 
         <!-- Section Gallery -->
-        <section class="mt-32 flex w-full flex-col items-center justify-center px-5 lg:px-16">
+        <section class="flex w-full flex-col items-center justify-center px-5 lg:mt-32 lg:px-16">
             <div class="mb-5 flex w-full">
                 <div class="flex h-12 w-full items-end">
                     <div class="h-1 w-6 bg-zinc-800"></div>
