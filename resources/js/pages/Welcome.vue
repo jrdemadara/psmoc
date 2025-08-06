@@ -430,11 +430,11 @@ onUnmounted(() => {
                     <div class="h-1 w-32 bg-zinc-800"></div>
                 </div>
             </div>
-            <div class="flex w-full flex-col justify-center rounded-tl-4xl rounded-br-4xl bg-zinc-800 px-5 py-5 shadow shadow-zinc-900 lg:p-32">
+            <div class="flex w-full flex-col justify-center rounded-4xl bg-zinc-800 px-5 py-5 shadow shadow-zinc-900 lg:p-32">
                 <h1 class="text-center text-2xl font-bold text-zinc-50 lg:text-start lg:text-5xl">Check Our Facebook Page</h1>
-                <div class="mt-6 flex flex-col-reverse lg:flex-row">
+                <div class="mt-6 flex flex-col-reverse justify-between lg:flex-row">
                     <div class="flex flex-col items-center space-y-5 space-x-5 lg:items-start">
-                        <p class="mt-5 max-w-2xl text-center text-lg text-zinc-300 md:text-start lg:mt-0 lg:text-xl">
+                        <p class="mt-5 max-w-2xl text-center text-lg text-zinc-300 md:text-start lg:mt-0 lg:text-2xl">
                             Stay connected with the Philippine Shooters and Match Officers Confederation (PSMOC) through our official Facebook page.
                             Get the latest updates on upcoming events, training sessions, match results, and behind-the-scenes action straight from
                             the range. Whether you're a competitive shooter, a range officer, or just passionate about the sport, our Facebook
