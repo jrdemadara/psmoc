@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
 import { Link } from '@inertiajs/vue3';
-import { Crosshair, Facebook, Instagram, MoveRight, Youtube } from 'lucide-vue-next';
+import { Crosshair, Facebook, Mail, MoveRight, Phone, Smartphone } from 'lucide-vue-next';
 import { onMounted, onUnmounted, PropType, ref } from 'vue';
 import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel';
 import 'vue3-carousel/carousel.css';
@@ -170,6 +170,22 @@ onUnmounted(() => {
                         <!-- Socials + CTA -->
                         <div class="flex flex-col items-center space-y-3 pt-4 lg:ml-8 lg:flex-row lg:space-y-0 lg:space-x-3 lg:pt-0">
                             <div class="flex space-x-3">
+                                <a href="tel:+63 975 357 7935">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                        <Smartphone color="white" :size="22" />
+                                    </div>
+                                </a>
+                                <a href="tel:(02) 8995 4941">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                        <Phone color="white" :size="22" />
+                                    </div>
+                                </a>
+                                <a href="mailto:contact@psmoc.org">
+                                    <div class="cursor-pointer rounded-full bg-primary/40 p-3 hover:bg-primary/60">
+                                        <Mail color="white" :size="22" />
+                                    </div>
+                                </a>
+
                                 <a
                                     href="https://www.facebook.com/psmoc.main"
                                     target="_blank"
@@ -177,12 +193,6 @@ onUnmounted(() => {
                                 >
                                     <Facebook color="white" :size="22" />
                                 </a>
-                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
-                                    <Instagram color="white" :size="22" />
-                                </div>
-                                <div class="rounded-full bg-primary/40 p-3 hover:bg-primary/60">
-                                    <Youtube color="white" :size="22" />
-                                </div>
                             </div>
 
                             <Link
