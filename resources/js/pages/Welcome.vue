@@ -180,7 +180,7 @@ function toggleRulebookDropdown() {
 
             <!-- Main Hero -->
             <div
-                class="relative flex h-full w-full flex-col items-center justify-center bg-cover bg-center bg-no-repeat text-center text-white sm:bg-[length:120%] lg:bg-cover lg:pt-52"
+                class="relative flex h-full w-full flex-col items-center justify-center bg-cover bg-center bg-no-repeat text-center text-white sm:bg-[length:120%] lg:bg-top lg:pt-52"
                 :style="`background-image: url(${welcome})`"
             >
                 <div class="absolute inset-0 z-0">
