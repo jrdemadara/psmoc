@@ -145,12 +145,10 @@ onUnmounted(() => {
                             >
                                 <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-primary">New Member</Link>
                                 <Link :href="route('register-member')" class="block px-4 py-2 text-start hover:bg-primary">Membership Renewal</Link>
-<<<<<<< HEAD
-=======
+
                                 <Link :href="route('request-member-update')" class="block px-4 py-2 text-start hover:bg-primary"
                                     >Request Profile Update</Link
                                 >
->>>>>>> feature/update-member
                                 <Link :href="route('register-gunclub')" class="block px-4 py-2 text-start hover:bg-primary">Gun Club</Link>
                             </div>
                         </div>
