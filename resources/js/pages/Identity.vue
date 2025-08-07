@@ -1,108 +1,53 @@
 <script setup lang="ts">
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
+import bulletsCover from '../../assets/images/bullets-cover.svg';
 
-import DeleteUser from '@/components/DeleteUser.vue';
-import HeadingSmall from '@/components/HeadingSmall.vue';
-import InputError from '@/components/InputError.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
-import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { type BreadcrumbItem, type User } from '@/types';
-
-interface Props {
-    mustVerifyEmail: boolean;
-    status?: string;
+interface Ranking {
+    id: number;
+    match: string | null;
+    division: string | null;
+    category: string | null;
+    score: number;
 }
 
-defineProps<Props>();
+interface Gunclub {
+    id: number;
+    name: string;
+}
 
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: '/settings/profile',
-    },
-];
+interface Profile {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    photo: string | null;
+    main_gunclub: Gunclub | null;
+    rankings: Ranking[];
+}
 
-const page = usePage();
-const user = page.props.auth.user as User;
+interface Props {
+    profile: Profile;
+    token?: string; // only if you’re also passing token from controller
+}
 
-const form = useForm({
-    name: user.name,
-    email: user.email,
-});
+const props = defineProps<Props>();
 
-const submit = () => {
-    form.patch(route('profile.update'), {
-        preserveScroll: true,
-    });
-};
+console.log(props);
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Profile settings" />
-
-        <SettingsLayout>
-            <div class="flex flex-col space-y-6">
-                <HeadingSmall title="Profile information" description="Update your name and email address" />
-
-                <form @submit.prevent="submit" class="space-y-6">
-                    <div class="grid gap-2">
-                        <Label for="name">Name</Label>
-                        <Input id="name" class="mt-1 block w-full" v-model="form.name" required autocomplete="name" placeholder="Full name" />
-                        <InputError class="mt-2" :message="form.errors.name" />
-                    </div>
-
-                    <div class="grid gap-2">
-                        <Label for="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            class="mt-1 block w-full"
-                            v-model="form.email"
-                            required
-                            autocomplete="username"
-                            placeholder="Email address"
-                        />
-                        <InputError class="mt-2" :message="form.errors.email" />
-                    </div>
-
-                    <div v-if="mustVerifyEmail && !user.email_verified_at">
-                        <p class="-mt-4 text-sm text-muted-foreground">
-                            Your email address is unverified.
-                            <Link
-                                :href="route('verification.send')"
-                                method="post"
-                                as="button"
-                                class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-                            >
-                                Click here to resend the verification email.
-                            </Link>
-                        </p>
-
-                        <div v-if="status === 'verification-link-sent'" class="mt-2 text-sm font-medium text-green-600">
-                            A new verification link has been sent to your email address.
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing">Save</Button>
-
-                        <Transition
-                            enter-active-class="transition ease-in-out"
-                            enter-from-class="opacity-0"
-                            leave-active-class="transition ease-in-out"
-                            leave-to-class="opacity-0"
-                        >
-                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">Saved.</p>
-                        </Transition>
-                    </div>
-                </form>
+    <div class="flex h-screen w-screen flex-col bg-zinc-900">
+        <div class="flex items-center space-x-2 p-5">
+            <img src="../../assets/images/logo.png" alt="Logo" class="h-14 w-auto" />
+            <AppLogoSecondary />
+        </div>
+        <div class="relative flex h-full flex-col bg-cover bg-center" :style="`background-image: url(${bulletsCover})`">
+            <div class="overflow-hidden rounded-2xl border-2 border-zinc-800">
+                <img :src="props.profile.photo ?? ''" alt="Profile Photo" class="h-full w-full object-cover" />
             </div>
-
-            <DeleteUser />
-        </SettingsLayout>
-    </AppLayout>
+            <div class="justify-top mt-52 flex h-full w-full flex-col items-center bg-zinc-800/20">
+                <h4 class="text-2xl capitalize">{{ props.profile.last_name }} {{ props.profile.last_name }}</h4>
+            </div>
+        </div>
+    </div>
 </template>

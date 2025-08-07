@@ -20,4 +20,19 @@ class Ranking extends Model
     {
         return $this->belongsTo(Profile::class);
     }
+
+    public function match(): BelongsTo
+    {
+        return $this->belongsTo(Matchches::class); // replace with your real model name
+    }
+
+    public function division(): BelongsTo
+    {
+        return $this->belongsTo(Division::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

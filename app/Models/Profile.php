@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Profile extends Model
 {
@@ -52,4 +53,15 @@ class Profile extends Model
     {
         return $this->hasMany(Firearm::class);
     }
+
+    public function mainGunclub(): HasOne
+    {
+        return $this->hasOne(GunclubMember::class)->where('is_main', true);
+    }
+
+    public function rankings(): HasMany
+    {
+        return $this->hasMany(Ranking::class);
+    }
+
 }

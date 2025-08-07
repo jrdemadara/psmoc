@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\RegisterGunClubController;
 use App\Http\Controllers\RegisterMemberController;
 use App\Http\Controllers\RequestMemberUpdateController;
@@ -30,6 +31,9 @@ Route::post('request-member-update', [RequestMemberUpdateController::class, 'sto
 
 Route::get('update-member/{token}', [UpdateMemberController::class, 'create'])
     ->name('update-member');
+
+Route::get('identity/{qrcode}', [IdentityController::class, 'index'])
+    ->name('identity');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
