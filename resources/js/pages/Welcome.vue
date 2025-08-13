@@ -27,7 +27,8 @@ const gunClubsConfig = {
     height: 180,
     itemsToShow: 4,
     gap: 5,
-    autoplay: true,
+    autoplay: 4000,
+    pauseAutoplayOnHover: true,
 };
 
 const currentSlide = ref(0);
