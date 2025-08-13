@@ -1,16 +1,38 @@
 <script setup lang="ts">
-import { PropType, ref } from 'vue';
-import UpdateAddress from './profile/UpdateAddress.vue';
-import UpdateApplicationDetails from './profile/UpdateApplicationDetails.vue';
-import UpdateFirearms from './profile/UpdateFirearms.vue';
-import UpdateGunClubs from './profile/UpdateGunClubs.vue';
-import UpdatePersonalDetails from './profile/UpdatePersonalDetails.vue';
-import UpdatePhotoSignature from './profile/UpdatePhotoSignature.vue';
-import UpdateWorkDetails from './profile/UpdateWorkDetails.vue';
-
-const isOpen = ref(false);
-
-const currentNav = ref(0);
+import AppLogoSecondary from '@/components/AppLogoSecondary.vue';
+import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Link, useForm } from '@inertiajs/vue3';
+import { VueSignaturePad } from '@selemondev/vue3-signature-pad';
+import axios from 'axios';
+import * as icons from 'lucide-vue-next';
+import {
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectItemIndicator,
+    SelectItemText,
+    SelectLabel,
+    SelectPortal,
+    SelectRoot,
+    SelectScrollDownButton,
+    SelectScrollUpButton,
+    SelectTrigger,
+    SelectValue,
+    SelectViewport,
+    ToastAction,
+    ToastDescription,
+    ToastProvider,
+    ToastRoot,
+    ToastTitle,
+    ToastViewport,
+} from 'reka-ui';
+import type { FunctionalComponent } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, PropType, reactive, ref, Ref, watch } from 'vue';
+import cameraSound from '../../assets/audio/camera.mp3';
+import bulletsCover from '../../assets/images/bullets-cover.svg';
 
 interface Gunclub {
     id: number;
@@ -46,7 +68,6 @@ interface Profile {
     first_name: string;
     middle_name: string | null;
     extension: string | null;
-
     birth_date: string;
     birth_place: string;
     age: number;
@@ -70,8 +91,8 @@ interface Profile {
     office_landline: string | null;
     office_email: string | null;
 
-    photo: string;
-    signature: string;
+    photo: string | null;
+    signature: string | null;
 
     gunclub_members: GunclubMember[];
     firearms: Firearm[];
@@ -92,7 +113,6 @@ const props = defineProps({
     },
 });
 
-<<<<<<< HEAD
 // Token
 console.log(props.token);
 
@@ -104,6 +124,11 @@ console.log(props.profile.firearms);
 
 // Gun clubs
 console.log(props.profile.gunclub_members);
+
+// Gun club name example
+props.profile.gunclub_members.forEach((member) => {
+    console.log(member.gunclub.name);
+});
 
 const successToastOpen = ref(false);
 const errorToastOpen = ref(false);
@@ -180,22 +205,18 @@ const IconComponent = computed<FunctionalComponent>(() => {
 });
 
 const form = useForm({
+    token: 'asdasdasd',
     //step 0 - Application Details
-=======
-const applicationDetailsData = {
-    reg_type: props.profile.reg_type,
-    licensed_shooter: props.profile.licensed_shooter,
->>>>>>> feature/update-member
     application_venue: props.profile.application_venue,
+    licensed_shooter: props.profile.licensed_shooter ? 'Yes' : 'No',
     ltopf_no: props.profile.ltopf_no,
     license_type: props.profile.license_type,
-};
 
-const personalDetailsData = {
+    // step 1 - Personal Details
     last_name: props.profile.last_name,
     first_name: props.profile.first_name,
-    middle_name: props.profile.middle_name ?? '',
-    extension: props.profile.extension ?? 'None',
+    middle_name: props.profile.middle_name,
+    extension: props.profile.extension,
     email: props.profile.email,
     phone: props.profile.phone,
     birth_date: props.profile.birth_date,
@@ -204,71 +225,697 @@ const personalDetailsData = {
     gender: props.profile.gender,
     civil_status: props.profile.civil_status,
     blood_type: props.profile.blood_type,
-};
 
-const addressData = {
-    region: props.profile.region,
-    province: props.profile.province,
-    city_municipality: props.profile.city_municipality,
-    barangay: props.profile.barangay,
-    purok: props.profile.purok,
+    //step 2 - Address Details
     street: props.profile.street,
-};
+    purok: props.profile.purok,
+    barangay: props.profile.barangay,
+    city_municipality: props.profile.city_municipality,
+    province: props.profile.province,
+    region: props.profile.region,
 
-const workDetailsData = {
+    //step 3 - Work Details
     occupation: props.profile.occupation,
-    company_organization: props.profile.company_organization || '',
-    position: props.profile.position || '',
-    office_business_address: props.profile.office_business_address || '',
-    office_landline: props.profile.office_landline || '',
-    office_email: props.profile.office_email || '',
+    company_organization: props.profile.company_organization,
+    position: props.profile.position,
+    office_business_address: props.profile.office_business_address,
+    office_landline: props.profile.office_landline,
+    office_email: props.profile.office_email,
+
+    //step 4 - Photo & Signature
+    photo: null as File | null,
+    signature: null as File | null,
+
+    //step 5 - Gun Clubs
+    gunclubs: props.profile.gunclub_members.map((member) => ({
+        gunclub_id: member.gunclub.id,
+        years_no: member.years_no, // Make sure this exists; you said it does.
+        is_main: !!member.is_main,
+    })),
+
+    // step 6 - Firearms
+    firearms: props.profile.firearms.map((firearm) => ({
+        type: firearm.type,
+        make: firearm.make,
+        model: firearm.model,
+        caliber: firearm.caliber,
+        serial_no: firearm.serial_no,
+    })),
+});
+
+const isStep0Valid = ref(false);
+const isStep1Valid = ref(false);
+const isStep2Valid = ref(false);
+const isStep3Valid = ref(false);
+const isStep4Valid = ref(false);
+const isStep5Valid = ref(false);
+const isStep6Valid = ref(false);
+const isStep7Valid = ref(false);
+
+function validateStep(currentStep: number): boolean {
+    let valid = true;
+    return valid;
+    switch (currentStep) {
+        case 0:
+            valid = !!form.application_venue && form.licensed_shooter !== null && !!form.ltopf_no && !!form.license_type;
+            isStep0Valid.value = valid;
+            return valid;
+        case 1:
+            valid =
+                !!form.last_name &&
+                !!form.first_name &&
+                !!form.middle_name &&
+                !!form.birth_date &&
+                !!form.birth_place &&
+                !!form.age &&
+                !!form.gender &&
+                !!form.civil_status &&
+                !!form.blood_type &&
+                !!form.email &&
+                !!form.phone;
+            isStep1Valid.value = valid;
+            return valid;
+        case 2:
+            valid = !!form.street && !!form.purok && !!form.barangay && !!form.city_municipality && !!form.province && !!form.region;
+            isStep2Valid.value = valid;
+            return valid;
+        case 3:
+            valid =
+                !!form.occupation &&
+                !!form.company_organization &&
+                !!form.position &&
+                !!form.office_business_address &&
+                !!form.office_landline &&
+                !!form.office_email;
+            isStep3Valid.value = valid;
+            return valid;
+        case 4:
+            valid = form.photo !== null && form.signature !== null;
+            isStep4Valid.value = valid;
+            return valid;
+        case 5:
+            valid = form.gunclubs.length > 0;
+            isStep5Valid.value = valid;
+            return valid;
+        case 6:
+            valid = form.firearms.length > 0;
+            isStep6Valid.value = valid;
+            return valid;
+        case 7:
+            isStep7Valid.value = true;
+            return true;
+        default:
+            return true;
+    }
+}
+
+const licensedShooterOptions = ['Yes', 'No'];
+const licenseTypeOptions = ['Type 1', 'Type 2', 'Type 3', 'Type 4', 'Type 5'];
+const genderOptions = ['Male', 'Female', 'Others'];
+const civilStatusOptions = ['Single', 'Married', 'Separated', 'Divorced', 'Widowed'];
+const bloodTypeOptions = ['O+', 'O−', 'A+', 'A−', 'B+', 'B−', 'AB+', 'AB−', 'A1', 'A2', 'A1B', 'A2B'];
+const firearmTypeOptions = [
+    'Pistol',
+    'Revolver',
+    'Shotgun',
+    'Rifle',
+    'Submachine Gun',
+    'Assault Rifle',
+    'Sniper Rifle',
+    'Carbine',
+    'Machine Gun',
+    'Other',
+];
+
+const isSubmitSuccess = ref<boolean>(false);
+const formErrorMessage = ref<string>('');
+
+const submit = () => {
+    console.log(form.token);
+    form.patch(route('update-member.store'), {
+        forceFormData: true,
+        onSuccess: () => {
+            isSubmitSuccess.value = true;
+            popSuccessToast();
+            //form.reset();
+        },
+        onError: (errors) => {
+            formErrorMessage.value = Object.values(errors)[0]?.[0] ?? 'Something went wrong';
+            console.error('Validation failed:', errors);
+        },
+    });
 };
 
-const photoSignatureData = {
-    photo: props.profile.photo,
-    signature: props.profile.signature,
+interface Location {
+    code: string;
+    name: string;
+}
+
+// Loading flags
+const isRegionLoading = ref<boolean>(false);
+const isProvinceLoading = ref<boolean>(false);
+const isCityLoading = ref<boolean>(false);
+const isBarangayLoading = ref<boolean>(false);
+const isProvinceRequired = ref<boolean>(false);
+
+// Data lists
+const regionsList = ref<Location[]>([]);
+const provincesList = ref<Location[]>([]);
+const citiesList = ref<Location[]>([]);
+const barangaysList = ref<Location[]>([]);
+
+function getAddressCodeByName(obj: Ref<Location[]>, name: string): string {
+    const match = obj.value.find((loc) => loc.name.trim() === name.trim());
+    return match ? match.code : 'Not found';
+}
+
+const handleRegionChange = async (regionName: string) => {
+    const code = getAddressCodeByName(regionsList, regionName);
+    if (!code) return;
+
+    if (code === '1300000000') {
+        isProvinceRequired.value = false;
+        isCityLoading.value = true;
+
+        try {
+            const { data } = await axios.get<Location[]>(`/api/proxy/municipalities/${code}`);
+            citiesList.value = data.filter((item) => item.code !== '1380600000');
+        } catch (e) {
+            console.error('Error loading cities:', e);
+        } finally {
+            isCityLoading.value = false;
+        }
+    } else {
+        isProvinceLoading.value = true;
+
+        try {
+            const { data } = await axios.get<Location[]>(`/api/proxy/provinces/${code}`);
+            provincesList.value = data;
+            handleProvinceChange(props.profile.province);
+        } catch (e) {
+            console.error('Error loading provinces:', e);
+        } finally {
+            isProvinceLoading.value = false;
+        }
+    }
 };
 
-const gunclubsData = {
-    gunclub: props.gunClubs,
-    member_gunclubs: props.profile.gunclub_members || [],
+const handleProvinceChange = async (provinceName: string) => {
+    citiesList.value = [];
+    barangaysList.value = [];
+    console.log(provinceName);
+    form.province = provinceName;
+
+    const code = getAddressCodeByName(provincesList, provinceName);
+    if (!code) return;
+
+    isCityLoading.value = true;
+
+    try {
+        const { data } = await axios.get<Location[]>(`/api/proxy/municipalities/${code}`);
+        citiesList.value = data;
+        handleCityChange(props.profile.city_municipality);
+    } catch (e) {
+        console.error('Error loading provinces:', e);
+    } finally {
+        isCityLoading.value = false;
+    }
 };
 
-const firearmsData = {
-    firearms: props.profile.firearms || [],
+const handleCityChange = async (cityName: string) => {
+    barangaysList.value = [];
+    form.city_municipality = cityName;
+
+    const code = getAddressCodeByName(citiesList, cityName);
+    if (!code) return;
+
+    isBarangayLoading.value = true;
+    try {
+        const { data } = await axios.get<Location[]>(`/api/proxy/barangays/${code}`);
+        barangaysList.value = data;
+    } catch (e) {
+        console.error('Error loading provinces:', e);
+    } finally {
+        isBarangayLoading.value = false;
+    }
 };
+
+watch(
+    () => form.region,
+    (newVal: string) => {
+        provincesList.value = [];
+        citiesList.value = [];
+        barangaysList.value = [];
+        form.region = newVal;
+        handleRegionChange(newVal);
+    },
+);
+
+watch(
+    () => form.province,
+    (newVal: string) => {
+        citiesList.value = [];
+        barangaysList.value = [];
+        form.province = newVal;
+        handleProvinceChange(newVal);
+    },
+);
+
+watch(
+    () => form.city_municipality,
+    (newVal: string) => {
+        barangaysList.value = [];
+        form.city_municipality = newVal;
+        handleCityChange(newVal);
+    },
+);
+
+const state = ref({
+    options: {
+        penColor: 'rgb(0, 0, 0)',
+        backgroundColor: 'rgb(124, 124, 134)',
+    },
+    disabled: false,
+});
+
+const signature = ref();
+const changeSignature = ref(false);
+
+const handleSave = (format = 'image/png') => {
+    const base64 = signature.value.saveSignature(format);
+    const blob = dataURLToBlob(base64);
+    const file = new File([blob], 'signature.png', { type: blob.type });
+
+    form.signature = file;
+};
+
+const handleClear = () => {
+    return signature.value.clearCanvas();
+};
+
+const newGunClub = reactive({
+    gunclub_id: undefined as number | undefined,
+    years_no: undefined as number | undefined,
+    is_main: false,
+});
+
+const addGunClub = () => {
+    const { gunclub_id, years_no, is_main } = newGunClub;
+
+    if (gunclub_id !== undefined && years_no !== undefined) {
+        form.gunclubs.push({
+            gunclub_id,
+            years_no,
+            is_main,
+        });
+
+        // Reset
+        Object.assign(newGunClub, {
+            gunclub_id: null,
+            years_no: null,
+            is_main: false,
+        });
+    } else {
+        alert('Complete all gun club fields with valid numbers.');
+    }
+};
+
+const query = ref('');
+const filteredOptions = computed(() => {
+    return props.gunClubs.filter((club) => {
+        const alreadySelected = form.gunclubs.some((selected) => selected.gunclub_id === club.id);
+        return !alreadySelected && club.name.toLowerCase().includes(query.value.toLowerCase());
+    });
+});
+
+watch(
+    () => form.gunclubs,
+    () => {
+        query.value = '';
+    },
+    { deep: true },
+);
+
+type FirearmField = string | null;
+
+const newFirearm = reactive<Record<'type' | 'make' | 'model' | 'caliber' | 'serial_no', FirearmField>>({
+    type: null,
+    make: null,
+    model: null,
+    caliber: null,
+    serial_no: null,
+});
+
+const addFirearm = () => {
+    const { type, make, model, caliber, serial_no } = newFirearm;
+
+    if (type && make && model && caliber && serial_no) {
+        form.firearms.push({
+            type,
+            make,
+            model,
+            caliber,
+            serial_no, // you had a typo here, wrote `serial`
+        });
+
+        // Reset all fields
+        Object.keys(newFirearm).forEach((key) => {
+            newFirearm[key as keyof typeof newFirearm] = null;
+        });
+    } else {
+        alert('Complete all firearm fields first.');
+    }
+};
+
+const videoRef = ref<HTMLVideoElement | null>(null);
+const photo = ref<string | File | null>(props.profile.photo ?? null);
+const canvas = ref<HTMLCanvasElement | null>(null);
+let stream: MediaStream | null = null;
+const cameraState = ref<'idle' | 'active' | 'capture'>('idle');
+const captureSoundSrc = cameraSound;
+const startCamera = async () => {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        cameraState.value = 'active';
+        await nextTick(); // Wait for DOM to render the videoRef
+        if (videoRef.value) {
+            videoRef.value.srcObject = stream;
+            await videoRef.value.play();
+        }
+    } catch (err) {
+        console.error('Failed to access camera:', err);
+    }
+};
+const capturePhoto = () => {
+    if (videoRef.value && canvas.value) {
+        const context = canvas.value.getContext('2d');
+        if (context) {
+            canvas.value.width = videoRef.value.videoWidth;
+            canvas.value.height = videoRef.value.videoHeight;
+
+            // Flip the canvas horizontally
+            context.translate(canvas.value.width, 0);
+            context.scale(-1, 1);
+
+            // Draw the mirrored video frame
+            context.drawImage(videoRef.value, 0, 0, canvas.value.width, canvas.value.height);
+
+            photo.value = canvas.value.toDataURL('image/jpeg');
+
+            const blob = dataURLToBlob(photo.value);
+            form.photo = new File([blob], 'photo.jpeg', {
+                type: 'image/jpeg',
+            });
+
+            const audioElement = document.querySelector('audio') as HTMLAudioElement;
+            if (audioElement) audioElement.play();
+
+            cameraState.value = 'capture';
+
+            if (stream) {
+                stream.getTracks().forEach((track) => track.stop());
+            }
+        }
+    }
+};
+
+function dataURLToBlob(dataUrl: string): Blob {
+    const byteString = atob(dataUrl.split(',')[1]);
+    const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0];
+    const buffer = new ArrayBuffer(byteString.length);
+    const uintArray = new Uint8Array(buffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+        uintArray[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([uintArray], { type: mimeString });
+}
+
+function formatPhone(e: any) {
+    let input = e.target.value;
+
+    // Remove all non-digit characters
+    input = input.replace(/\D/g, '');
+
+    // Limit to 11 digits
+    input = input.substring(0, 11);
+
+    // Format as 4-3-4 (e.g. 0997 243 0944)
+    if (input.length >= 8) {
+        input = input.replace(/(\d{4})(\d{3})(\d{0,4})/, '$1 $2 $3');
+    } else if (input.length >= 5) {
+        input = input.replace(/(\d{4})(\d{0,3})/, '$1 $2');
+    }
+
+    form.phone = input.trim();
+}
+
+const urlToFile = async (url: string, filename: string): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+};
+
+onMounted(async () => {
+    if (props.profile.photo) {
+        form.photo = await urlToFile(props.profile.photo, 'photo.jpg');
+    }
+    if (props.profile.signature) {
+        form.signature = await urlToFile(props.profile.signature, 'signature.jpg');
+    }
+});
+
+onMounted(() => {
+    isRegionLoading.value = true;
+    axios
+        .get('/api/proxy/regions')
+        .then(function (response) {
+            regionsList.value = response.data;
+            isRegionLoading.value = false;
+            handleRegionChange(props.profile.region);
+        })
+        .catch(function () {
+            isRegionLoading.value = false;
+        });
+});
+
+// Cleanup when component unmounts
+onUnmounted(() => {
+    if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+    }
+});
 </script>
 
 <template>
-    <div class="flex h-screen flex-col bg-zinc-900">
-        <!-- Sticky header -->
-        <header class="sticky top-0 left-0 z-20 w-full border-b border-b-zinc-800 bg-zinc-900 text-white">
-            <div class="flex flex-wrap items-center justify-between px-4 py-3 lg:px-16">
-                <!-- Logo -->
-                <div class="flex items-center space-x-2">
-                    <img src="../../assets/images/logo.png" alt="Logo" class="h-10 w-auto" />
-                    <h4 class="text-lg font-medium">Update Profile</h4>
+    <Head title="Register">
+        <link rel="preconnect" href="https://rsms.me/" />
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    </Head>
+    <div class="flex h-screen w-screen flex-col text-[#1b1b18] lg:flex-row dark:bg-zinc-900 dark:text-white">
+        <div
+            class="relative flex w-full scale-100 scale-[0.75] flex-col items-center justify-between overflow-hidden bg-zinc-100 p-10 sm:scale-[0.85] md:scale-[1] lg:h-full lg:w-[580px] lg:items-start lg:bg-zinc-200 dark:bg-zinc-900"
+        >
+            <!-- Background image layer with opacity -->
+            <div class="absolute inset-0 hidden bg-cover bg-center opacity-5 lg:block" :style="`background-image: url(${bulletsCover})`"></div>
+
+            <!-- Foreground content -->
+            <div class="relative z-10 flex h-full flex-col justify-between">
+                <div class="flex w-fit items-center justify-start space-x-2">
+                    <img src="../../assets/images/logo.png" alt="Logo" class="h-16" />
+                    <AppLogoSecondary class="w-64 text-zinc-950 dark:text-zinc-50" />
                 </div>
 
-                <!-- Hamburger -->
-                <button @click="isOpen = !isOpen" class="text-zinc-50 focus:outline-none lg:hidden">
-                    <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                <div>
+                    <h4 class="h-fit text-center text-xl font-medium text-zinc-950 lg:text-start dark:text-zinc-50">Member Registration</h4>
+                    <div class="mx-5 mt-8 hidden flex-col items-start justify-start space-y-2 lg:flex">
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.FilePlus class="text-primary" />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h2 class="text-sm font-bold">Application Type</h2>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">How you'd like to proceed?</p>
+                            </div>
+                            <span v-if="isStep0Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep0Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
 
-                <!-- Navigation -->
-                <nav
-                    :class="[
-                        'flex w-full flex-col items-start space-y-4 text-center text-sm font-semibold whitespace-nowrap text-zinc-50 capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0',
-                        isOpen ? 'mt-5 flex' : 'hidden lg:flex',
-                    ]"
-                    class="transition-all duration-300 ease-in-out"
+                        <div class="flex w-12 items-center justify-center">
+                            <div class="mr-0.5 h-8 w-0.5 rounded-full bg-zinc-800"></div>
+                        </div>
+
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.UserRound />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h2 class="text-sm font-bold">Personal Information</h2>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">Tell us about yourself</p>
+                            </div>
+                            <span v-if="isStep1Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep1Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
+
+                        <div class="flex w-12 items-center justify-center">
+                            <div class="mr-0.5 h-8 w-0.5 rounded-full bg-zinc-800"></div>
+                        </div>
+
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.MapPinHouse />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h2 class="text-sm font-bold">Home Address</h2>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">Verify your address</p>
+                            </div>
+                            <span v-if="isStep2Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep2Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
+
+                        <div class="flex w-12 items-center justify-center">
+                            <div class="mr-0.5 h-8 w-0.5 rounded-full bg-zinc-800"></div>
+                        </div>
+
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.BriefcaseBusiness />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h2 class="text-sm font-bold">Work Details</h2>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">Tell us about your work</p>
+                            </div>
+                            <span v-if="isStep3Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep3Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
+
+                        <div class="flex w-12 items-center justify-center">
+                            <div class="mr-0.5 h-8 w-0.5 rounded-full bg-zinc-800"></div>
+                        </div>
+
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.Signature />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h4 class="text-sm font-bold">Photo & Signature</h4>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">Verify your identity</p>
+                            </div>
+                            <span v-if="isStep4Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep4Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
+
+                        <div class="flex w-12 items-center justify-center">
+                            <div class="mr-0.5 h-8 w-0.5 rounded-full bg-zinc-800"></div>
+                        </div>
+
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.Goal />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h4 class="text-sm font-bold">Gun Club</h4>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">Select your gun club</p>
+                            </div>
+                            <span v-if="isStep5Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep5Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
+
+                        <div class="flex w-12 items-center justify-center">
+                            <div class="mr-0.5 h-8 w-0.5 rounded-full bg-zinc-800"></div>
+                        </div>
+
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.Crosshair />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h4 class="text-sm font-bold">Firearms Details</h4>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">Indicate your firearms</p>
+                            </div>
+                            <span v-if="isStep6Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep6Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
+
+                        <div class="flex w-12 items-center justify-center">
+                            <div class="mr-0.5 h-8 w-0.5 rounded-full bg-zinc-800"></div>
+                        </div>
+
+                        <div class="flex w-full items-center justify-between space-x-2">
+                            <div class="flex h-10 w-14 items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-800">
+                                <icons.CheckCircle />
+                            </div>
+                            <div class="flex w-full flex-col justify-start">
+                                <h4 class="text-sm font-bold">Review & Submit</h4>
+                                <p class="text-sm text-zinc-600 dark:text-zinc-400">Confirm and finish</p>
+                            </div>
+                            <span v-if="isStep7Valid == null">
+                                <icons.Loader2 class="animate-spin" :size="24" />
+                            </span>
+                            <span v-else-if="isStep7Valid">
+                                <icons.Check class="text-green-600" :size="24" />
+                            </span>
+                            <span v-else>
+                                <icons.X class="text-red-600" :size="24" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <Link
+                    :href="route('home')"
+                    class="mt-5 flex h-10 items-center justify-center space-x-2 text-zinc-900 hover:text-primary lg:mt-10 lg:w-32 dark:text-zinc-50 dark:hover:text-primary"
                 >
-<<<<<<< HEAD
                     <icons.ArrowLeft />
                     <span class="cursor-default">Back to main</span>
                 </Link>
@@ -951,20 +1598,12 @@ const firearmsData = {
                                 <!-- Image Display (Click to Open Camera) -->
                                 <audio ref="captureSound" :src="captureSoundSrc"></audio>
                                 <img
-                                    v-if="cameraState === 'capture'"
+                                    v-if="cameraState === 'idle' || cameraState === 'capture'"
                                     :src="photo ?? undefined"
                                     alt="Captured"
-                                    class="w-full cursor-pointer object-cover lg:w-1/2"
+                                    class="h-80 w-full cursor-pointer object-cover lg:w-1/2"
                                     @click="startCamera"
                                 />
-                                <div
-                                    v-if="cameraState === 'idle'"
-                                    class="flex w-full cursor-pointer items-center justify-center space-x-2 rounded border border-zinc-400 bg-zinc-200/60 p-5 font-bold text-zinc-800 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-50"
-                                    @click="startCamera"
-                                >
-                                    <icons.Camera />
-                                    <span>Click to shoot yourself!</span>
-                                </div>
 
                                 <!-- Video Feed for Camera -->
                                 <div v-if="cameraState === 'active'" class="h-full w-full">
@@ -988,7 +1627,10 @@ const firearmsData = {
                         <div class="grid gap-2">
                             <Label for="signature">Signature</Label>
                             <div class="flex flex-col items-start justify-start space-y-4">
-                                <div>
+                                <div v-if="!changeSignature" class="w-full">
+                                    <img :src="props.profile.signature ?? undefined" class="h-[200px] w-full" />
+                                </div>
+                                <div v-else>
                                     <VueSignaturePad
                                         ref="signature"
                                         height="200px"
@@ -1005,8 +1647,12 @@ const firearmsData = {
                                 <div class="flex w-full items-start justify-between">
                                     <InputError :message="form.errors.signature" />
                                     <div class="flex w-full justify-end space-x-5">
-                                        <button type="button" class="w-24 rounded bg-blue-500 p-2 font-bold text-zinc-50" @click="handleUndo">
-                                            Undo
+                                        <button
+                                            type="button"
+                                            class="w-24 rounded bg-blue-500 p-2 font-bold text-zinc-50"
+                                            @click="changeSignature = true"
+                                        >
+                                            Change
                                         </button>
                                         <button
                                             type="button"
@@ -1303,91 +1949,45 @@ const firearmsData = {
                     <div
                         v-if="isSubmitSuccess == false"
                         class="mt-8 flex flex-row items-center justify-end space-y-4 space-x-1 sm:flex-row sm:space-y-0 sm:space-x-4 lg:flex-row lg:space-x-4"
-=======
-                    <button
-                        @click="currentNav = 0"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
-                        :class="currentNav == 0 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
->>>>>>> feature/update-member
                     >
-                        Application Details
-                    </button>
-                    <button
-                        @click="currentNav = 1"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
-                        :class="currentNav == 1 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
-                    >
-                        Personal Details
-                    </button>
-                    <button
-                        @click="currentNav = 2"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
-                        :class="currentNav == 2 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
-                    >
-                        Address
-                    </button>
-                    <button
-                        @click="currentNav = 3"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
-                        :class="currentNav == 3 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
-                    >
-                        Work
-                    </button>
-                    <button
-                        @click="currentNav = 4"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
-                        :class="currentNav == 4 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
-                    >
-                        Photo & Signature
-                    </button>
-                    <button
-                        @click="currentNav = 5"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
-                        :class="currentNav == 5 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
-                    >
-                        Gun Clubs
-                    </button>
-                    <button
-                        @click="currentNav = 6"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
-                        :class="currentNav == 6 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
-                    >
-                        Firearms
-                    </button>
-                </nav>
-            </div>
-        </header>
+                        <Button
+                            type="button"
+                            v-if="step > 0"
+                            @click="prevStep()"
+                            class="mt-4 h-10 w-1/2 bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 lg:w-52 dark:bg-zinc-700"
+                            :tabindex="4"
+                        >
+                            <icons.ArrowLeft class="h-4 w-4" />
+                            Previous
+                        </Button>
 
-        <!-- Scrollable content -->
-        <div class="flex-1 overflow-y-auto">
-            <!-- Example long content -->
-            <div class="space-y-4 p-6">
-                <div v-if="currentNav == 0">
-                    <UpdateApplicationDetails :token="props.token" :data="applicationDetailsData" />
-                </div>
-
-                <div v-if="currentNav == 1">
-                    <UpdatePersonalDetails :token="props.token" :data="personalDetailsData" />
-                </div>
-
-                <div v-if="currentNav == 2">
-                    <UpdateAddress :token="props.token" :data="addressData" />
-                </div>
-
-                <div v-if="currentNav == 3">
-                    <UpdateWorkDetails :token="props.token" :data="workDetailsData" />
-                </div>
-
-                <div v-if="currentNav == 4">
-                    <UpdatePhotoSignature :token="props.token" :data="photoSignatureData" />
-                </div>
-
-                <div v-if="currentNav == 5">
-                    <UpdateGunClubs :token="props.token" :data="gunclubsData" />
-                </div>
-                <div v-if="currentNav == 6">
-                    <UpdateFirearms :token="props.token" :data="firearmsData" />
-                </div>
+                        <Button v-if="step < 7" type="button" @click="nextStep()" class="h-10 w-1/2 text-white lg:w-52" :tabindex="4">
+                            Next
+                            <icons.ArrowRight class="h-4 w-4" />
+                        </Button>
+                        <Button v-if="step == 7" class="h-10 w-1/2 text-white lg:w-52" :tabindex="4" :disabled="form.processing">
+                            <template v-if="form.processing">
+                                <icons.LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+                                Submitting…
+                            </template>
+                            <template v-else>
+                                Submit
+                                <icons.Check class="ml-2 h-4 w-4" />
+                            </template>
+                        </Button>
+                    </div>
+                    <Link v-if="form.wasSuccessful" :href="route('home')">
+                        <Button
+                            type="button"
+                            @click="form.reset()"
+                            class="mt-10 h-10 w-full bg-zinc-400 text-white hover:bg-zinc-400 sm:mt-0 sm:w-52 dark:bg-zinc-700"
+                            :tabindex="4"
+                        >
+                            <icons.ArrowLeft class="h-4 w-4" />
+                            Back to main
+                        </Button>
+                    </Link>
+                </form>
             </div>
         </div>
     </div>

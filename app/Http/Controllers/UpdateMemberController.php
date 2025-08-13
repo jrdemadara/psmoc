@@ -43,74 +43,91 @@ class UpdateMemberController extends Controller
             ? Storage::temporaryUrl($profile->signature, Carbon::now()->addMinutes(10))
             : null;
 
+        $gunClubs = Gunclub::select('id', 'name')->get();
+
+
         return Inertia::render('UpdateMember', [
             'profile' => $profile,
             'token' => $request->token,
+            'gunClubs'  => $gunClubs,
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        Log::info('Starting profile store process.');
         $request->validate([
-        'qrcode' => 'required|string|max:255',
-        'application_venue' => 'required|string|max:255',
-        'licensed_shooter' => 'required|string|max:255',
-        'ltopf_no' => 'required|string|max:255',
-        'license_type' => 'required|string|max:255',
+            'token' => 'required|string|max:255',
+        ]);
+    }
+    public function update(Request $request): RedirectResponse
+    {
+        Log::info('Starting profile update process.');
+        $request->validate([
+        'token' => 'required|string|max:255',
+        // 'application_venue' => 'required|string|max:255',
+        // 'licensed_shooter' => 'required|string|max:255',
+        // 'ltopf_no' => 'required|string|max:255',
+        // 'license_type' => 'required|string|max:255',
 
-        'last_name' => 'required|string|max:255',
-        'first_name' => 'required|string|max:255',
-        'middle_name' => 'nullable|string|max:255',
-        'extension' => 'nullable|string|max:255',
-        'birth_date' => 'required|date',
-        'birth_place' => 'required|string|max:255',
-        'age' => 'required|integer|min:0',
-        'gender' => 'required|string|max:255',
-        'civil_status' => 'required|string|max:255',
-        'blood_type' => 'required|string|max:3',
-        'email' => 'required|email|max:255',
-        'phone' => 'required|string|max:15',
+        // 'last_name' => 'required|string|max:255',
+        // 'first_name' => 'required|string|max:255',
+        // 'middle_name' => 'nullable|string|max:255',
+        // 'extension' => 'nullable|string|max:255',
+        // 'birth_date' => 'required|date',
+        // 'birth_place' => 'required|string|max:255',
+        // 'age' => 'required|integer|min:0',
+        // 'gender' => 'required|string|max:255',
+        // 'civil_status' => 'required|string|max:255',
+        // 'blood_type' => 'required|string|max:3',
+        // 'email' => 'required|email|max:255',
+        // 'phone' => 'required|string|max:15',
 
-        'region' => 'required|string|max:255',
-        'province' => 'required|string|max:255',
-        'city_municipality' => 'required|string|max:255',
-        'barangay' => 'required|string|max:255',
-        'purok' => 'required|string|max:255',
-        'street' => 'required|string|max:255',
+        // 'region' => 'required|string|max:255',
+        // 'province' => 'required|string|max:255',
+        // 'city_municipality' => 'required|string|max:255',
+        // 'barangay' => 'required|string|max:255',
+        // 'purok' => 'required|string|max:255',
+        // 'street' => 'required|string|max:255',
 
-        'occupation' => 'required|string|max:255',
-        'company_organization' => 'nullable|string|max:255',
-        'position' => 'nullable|string|max:255',
-        'office_business_address' => 'nullable|string|max:255',
-        'office_landline' => 'nullable|string|max:20',
-        'office_email' => 'nullable|email|max:255',
+        // 'occupation' => 'required|string|max:255',
+        // 'company_organization' => 'nullable|string|max:255',
+        // 'position' => 'nullable|string|max:255',
+        // 'office_business_address' => 'nullable|string|max:255',
+        // 'office_landline' => 'nullable|string|max:20',
+        // 'office_email' => 'nullable|email|max:255',
 
-        'photo' => 'required|file|mimes:jpeg,jpg,png|max:5000',
-        'signature' => 'required|file|mimes:png|max:5000',
+        // 'photo' => 'required|file|mimes:jpeg,jpg,png|max:5000',
+        // 'signature' => 'required|file|mimes:png|max:5000',
 
-        'gunclubs' => 'required|array|min:1',
-        'gunclubs.*.id' => 'required|integer',
-        'gunclubs.*.gunclub_id' => 'required|exists:gunclubs,id',
-        'gunclubs.*.years_no' => 'required|integer|min:0|max:100',
-        'gunclubs.*.is_main' => 'required|boolean',
+        // 'gunclubs' => 'required|array|min:1',
+        // 'gunclubs.*.id' => 'required|integer',
+        // 'gunclubs.*.gunclub_id' => 'required|exists:gunclubs,id',
+        // 'gunclubs.*.years_no' => 'required|integer|min:0|max:100',
+        // 'gunclubs.*.is_main' => 'required|boolean',
 
-        'firearms' => 'required|array|min:1',
-        'firearms.*.id' => 'required|integer',
-        'firearms.*.type' => 'required|string|max:255',
-        'firearms.*.make' => 'required|string|max:255',
-        'firearms.*.model' => 'required|string|max:255',
-        'firearms.*.caliber' => 'required|string|max:50',
-        'firearms.*.serial_no' => 'required|string|max:255',
+        // 'firearms' => 'required|array|min:1',
+        // 'firearms.*.id' => 'required|integer',
+        // 'firearms.*.type' => 'required|string|max:255',
+        // 'firearms.*.make' => 'required|string|max:255',
+        // 'firearms.*.model' => 'required|string|max:255',
+        // 'firearms.*.caliber' => 'required|string|max:50',
+        // 'firearms.*.serial_no' => 'required|string|max:255',
         ]);
         Log::info('Request validated successfully.');
+         dd($request->token);
+        $qrcode = Redis::get("profile_update_token:{$request->token}");
+
+
+        if (! $qrcode) {
+              abort(403, 'Invalid or expired update link.');
+        }
 
         DB::beginTransaction();
 
         try {
             // 1. Save Profile
             Log::info('Attempting to update profile...');
-            Profile::where('qrcode', $request->qrcode)->update([
+            Profile::where('qrcode', $qrcode)->update([
                 'application_venue' => $request->application_venue,
                 'licensed_shooter' => $request->licensed_shooter === 'Yes',
                 'ltopf_no' => $request->ltopf_no,

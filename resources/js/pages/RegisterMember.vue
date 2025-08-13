@@ -240,7 +240,7 @@ function validateStep(currentStep: number): boolean {
 
 const licensedShooterOptions = ['Yes', 'No'];
 const licenseTypeOptions = ['Type 1', 'Type 2', 'Type 3', 'Type 4', 'Type 5'];
-const genderOptions = ['Male', 'Female', 'Others'];
+const genderOptions = ['Male', 'Female'];
 const civilStatusOptions = ['Single', 'Married', 'Separated', 'Divorced', 'Widowed'];
 const bloodTypeOptions = ['O+', 'O−', 'A+', 'A−', 'B+', 'B−', 'AB+', 'AB−', 'A1', 'A2', 'A1B', 'A2B'];
 const firearmTypeOptions = [
