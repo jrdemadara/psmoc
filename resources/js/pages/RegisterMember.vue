@@ -241,6 +241,7 @@ function validateStep(currentStep: number): boolean {
 const licensedShooterOptions = ['Yes', 'No'];
 const licenseTypeOptions = ['Type 1', 'Type 2', 'Type 3', 'Type 4', 'Type 5'];
 const genderOptions = ['Male', 'Female'];
+const extensionOptions = ['None', 'Sr.', 'Jr.', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
 const civilStatusOptions = ['Single', 'Married', 'Separated', 'Divorced', 'Widowed'];
 const bloodTypeOptions = ['O+', 'O−', 'A+', 'A−', 'B+', 'B−', 'AB+', 'AB−', 'A1', 'A2', 'A1B', 'A2B'];
 const firearmTypeOptions = [
@@ -829,7 +830,7 @@ onUnmounted(() => {
                         </div>
                     </div>
                 </div>
-                <form @submit.prevent="submit" class="mt-10 flex flex-col">
+                <form @submit.prevent="submit" class="flex flex-col lg:mt-10">
                     <div v-if="step == 0" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
                         <div class="grid gap-2">
                             <Label for="application_venue">Application Venue</Label>
@@ -989,16 +990,54 @@ onUnmounted(() => {
                         </div>
 
                         <div class="grid gap-2">
-                            <Label for="extension">Extension</Label>
-                            <Input
-                                id="extension"
-                                type="text"
-                                class="capitalize"
-                                required
-                                autofocus
-                                autocomplete="extension"
-                                v-model="form.extension"
-                            />
+                            <Label for="civil_status">Extension</Label>
+                            <SelectRoot v-model="form.extension">
+                                <SelectTrigger
+                                    class="data-[placeholder]:text-green9 inline-flex h-10 min-w-[160px] items-center justify-between gap-[5px] rounded-lg border px-[15px] text-xs leading-none shadow-sm outline-none hover:bg-stone-50 focus:shadow-[0_0_0_2px] focus:shadow-black dark:bg-input/30"
+                                    aria-label="Customise options"
+                                >
+                                    <SelectValue placeholder="" />
+                                    <ChevronDown icon="radix-icons:chevron-down" class="h-3.5 w-3.5" />
+                                </SelectTrigger>
+
+                                <SelectPortal>
+                                    <SelectContent
+                                        class="data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade z-[100] min-w-[160px] rounded-lg border bg-zinc-100 shadow-sm will-change-[opacity,transform] dark:bg-zinc-800"
+                                        :side-offset="5"
+                                    >
+                                        <SelectScrollUpButton
+                                            class="flex h-[25px] cursor-default items-center justify-center bg-zinc-200 dark:bg-zinc-700"
+                                        >
+                                            <ArrowUp :size="16" />
+                                        </SelectScrollUpButton>
+
+                                        <SelectViewport class="p-[5px]">
+                                            <SelectLabel class="px-[25px] text-xs leading-[25px] font-medium"> Extension </SelectLabel>
+                                            <SelectGroup>
+                                                <SelectItem
+                                                    v-for="(option, index) in extensionOptions"
+                                                    :key="index"
+                                                    class="data-[highlighted]:text-green1 relative flex h-[25px] items-center rounded-[3px] pr-[35px] pl-[25px] text-xs leading-none select-none hover:bg-zinc-300 data-[disabled]:pointer-events-none data-[highlighted]:outline-none hover:dark:bg-zinc-700"
+                                                    :value="option"
+                                                >
+                                                    <SelectItemIndicator class="absolute left-0 inline-flex w-[25px] items-center justify-center">
+                                                        <Icon icon="radix-icons:check" />
+                                                    </SelectItemIndicator>
+                                                    <SelectItemText>
+                                                        {{ option }}
+                                                    </SelectItemText>
+                                                </SelectItem>
+                                            </SelectGroup>
+                                        </SelectViewport>
+
+                                        <SelectScrollDownButton
+                                            class="flex h-[25px] cursor-default items-center justify-center bg-zinc-200 dark:bg-zinc-700"
+                                        >
+                                            <ArrowDown :size="16" />
+                                        </SelectScrollDownButton>
+                                    </SelectContent>
+                                </SelectPortal>
+                            </SelectRoot>
                             <InputError :message="form.errors.extension" />
                         </div>
 
@@ -1007,7 +1046,7 @@ onUnmounted(() => {
                             <Input
                                 id="birth_date"
                                 type="date"
-                                class="capitalize"
+                                class="w-full capitalize"
                                 required
                                 autofocus
                                 autocomplete="birth_date"
@@ -1427,7 +1466,7 @@ onUnmounted(() => {
                         </div>
                     </div>
 
-                    <div v-if="step == 3" class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div v-if="step == 3" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         <div class="grid gap-2">
                             <Label for="occupation">Occupation</Label>
                             <Input
@@ -1636,40 +1675,42 @@ onUnmounted(() => {
                             </div>
                         </div>
 
-                        <table v-if="form.gunclubs.length > 0" class="mt-5 min-w-full table-auto border border-zinc-600 text-sm text-white">
-                            <thead class="bg-zinc-800">
-                                <tr>
-                                    <th class="px-3 py-2 text-left">#</th>
-                                    <th class="px-3 py-2 text-left">Gun Club</th>
-                                    <th class="px-3 py-2 text-left">Membership Years</th>
-                                    <th class="px-3 py-2 text-left">Main</th>
-                                    <th class="px-3 py-2 text-left">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    v-for="(gunclub, index) in form.gunclubs"
-                                    :key="index"
-                                    class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
-                                >
-                                    <td class="px-3 py-2">{{ index + 1 }}</td>
-                                    <td class="px-3 py-2">
-                                        {{ props.gunClubs.find((club) => club.id === gunclub.gunclub_id)?.name || 'Unknown' }}
-                                    </td>
-                                    <td class="px-3 py-2">{{ gunclub.years_no }}</td>
-                                    <td class="px-3 py-2">{{ gunclub.is_main ? 'Yes' : 'No' }}</td>
-                                    <td class="px-3 py-2">
-                                        <Button
-                                            type="button"
-                                            @click="form.gunclubs.splice(index, 1)"
-                                            class="bg-primary text-white hover:bg-primary/80"
-                                        >
-                                            <icons.X />
-                                        </Button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="mt-3 max-h-64 overflow-y-auto border border-zinc-600">
+                            <table v-if="form.gunclubs.length > 0" class="mt-5 min-w-full table-auto border border-zinc-600 text-sm text-white">
+                                <thead class="bg-zinc-800">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left">#</th>
+                                        <th class="px-3 py-2 text-left">Gun Club</th>
+                                        <th class="px-3 py-2 text-left">Membership Years</th>
+                                        <th class="px-3 py-2 text-left">Main</th>
+                                        <th class="px-3 py-2 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(gunclub, index) in form.gunclubs"
+                                        :key="index"
+                                        class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
+                                    >
+                                        <td class="px-3 py-2">{{ index + 1 }}</td>
+                                        <td class="px-3 py-2">
+                                            {{ props.gunClubs.find((club) => club.id === gunclub.gunclub_id)?.name || 'Unknown' }}
+                                        </td>
+                                        <td class="px-3 py-2">{{ gunclub.years_no }}</td>
+                                        <td class="px-3 py-2">{{ gunclub.is_main ? 'Yes' : 'No' }}</td>
+                                        <td class="px-3 py-2">
+                                            <Button
+                                                type="button"
+                                                @click="form.gunclubs.splice(index, 1)"
+                                                class="bg-primary text-white hover:bg-primary/80"
+                                            >
+                                                <icons.X />
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div v-if="step == 6" class="flex flex-col space-y-4">
@@ -1749,42 +1790,44 @@ onUnmounted(() => {
                             </div>
                         </div>
 
-                        <table v-if="form.firearms.length > 0" class="mt-3 min-w-full table-auto border border-zinc-600 text-sm text-white">
-                            <thead class="bg-zinc-800">
-                                <tr>
-                                    <th class="px-3 py-2 text-left">#</th>
-                                    <th class="px-3 py-2 text-left">Type</th>
-                                    <th class="px-3 py-2 text-left">Make</th>
-                                    <th class="px-3 py-2 text-left">Model</th>
-                                    <th class="px-3 py-2 text-left">Caliber</th>
-                                    <th class="px-3 py-2 text-left">Serial No.</th>
-                                    <th class="px-3 py-2 text-left">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    v-for="(firearm, index) in form.firearms"
-                                    :key="index"
-                                    class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
-                                >
-                                    <td class="px-3 py-2">{{ index + 1 }}</td>
-                                    <td class="px-3 py-2">{{ firearm.type }}</td>
-                                    <td class="px-3 py-2">{{ firearm.make }}</td>
-                                    <td class="px-3 py-2">{{ firearm.model }}</td>
-                                    <td class="px-3 py-2">{{ firearm.caliber }}</td>
-                                    <td class="px-3 py-2">{{ firearm.serial_no }}</td>
-                                    <td class="px-3 py-2">
-                                        <Button
-                                            type="button"
-                                            @click="form.firearms.splice(index, 1)"
-                                            class="bg-primary text-white hover:bg-primary/80"
-                                        >
-                                            <icons.X />
-                                        </Button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="mt-3 max-h-64 overflow-y-auto border border-zinc-600">
+                            <table v-if="form.firearms.length > 0" class="mt-3 min-w-full table-auto border border-zinc-600 text-sm text-white">
+                                <thead class="bg-zinc-800">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left">#</th>
+                                        <th class="px-3 py-2 text-left">Type</th>
+                                        <th class="px-3 py-2 text-left">Make</th>
+                                        <th class="px-3 py-2 text-left">Model</th>
+                                        <th class="px-3 py-2 text-left">Caliber</th>
+                                        <th class="px-3 py-2 text-left">Serial No.</th>
+                                        <th class="px-3 py-2 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(firearm, index) in form.firearms"
+                                        :key="index"
+                                        class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
+                                    >
+                                        <td class="px-3 py-2">{{ index + 1 }}</td>
+                                        <td class="px-3 py-2">{{ firearm.type }}</td>
+                                        <td class="px-3 py-2">{{ firearm.make }}</td>
+                                        <td class="px-3 py-2">{{ firearm.model }}</td>
+                                        <td class="px-3 py-2">{{ firearm.caliber }}</td>
+                                        <td class="px-3 py-2">{{ firearm.serial_no }}</td>
+                                        <td class="px-3 py-2">
+                                            <Button
+                                                type="button"
+                                                @click="form.firearms.splice(index, 1)"
+                                                class="bg-primary text-white hover:bg-primary/80"
+                                            >
+                                                <icons.X />
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div v-if="step == 7" class="flex flex-col items-center justify-center lg:w-full">
