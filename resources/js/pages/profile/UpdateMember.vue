@@ -33,11 +33,101 @@ import type { FunctionalComponent } from 'vue';
 import { computed, nextTick, onMounted, onUnmounted, PropType, reactive, ref, Ref, watch } from 'vue';
 import cameraSound from '../../assets/audio/camera.mp3';
 import bulletsCover from '../../assets/images/bullets-cover.svg';
+
+interface Gunclub {
+    id: number;
+    name: string;
+}
+
+interface GunclubMember {
+    id: number;
+    gunclub: Gunclub;
+    years_no: number;
+    is_main: boolean;
+}
+
+interface Firearm {
+    id: number;
+    type: string;
+    make: string;
+    model: string;
+    caliber: string;
+    serial_no: string;
+}
+
+interface Profile {
+    id: number;
+    qrcode: string;
+    reg_type: string;
+    licensed_shooter: string;
+    application_venue: string;
+    ltopf_no: string;
+    license_type: string;
+
+    last_name: string;
+    first_name: string;
+    middle_name: string | null;
+    extension: string | null;
+    birth_date: string;
+    birth_place: string;
+    age: number;
+    gender: string;
+    civil_status: string;
+    blood_type: string;
+    email: string;
+    phone: string;
+
+    region: string;
+    province: string;
+    city_municipality: string;
+    barangay: string;
+    street: string;
+    purok: string;
+
+    occupation: string;
+    company_organization: string | null;
+    position: string | null;
+    office_business_address: string | null;
+    office_landline: string | null;
+    office_email: string | null;
+
+    photo: string | null;
+    signature: string | null;
+
+    gunclub_members: GunclubMember[];
+    firearms: Firearm[];
+}
+
 const props = defineProps({
-    gunClubs: {
-        type: Array as PropType<{ id: number; name: string }[]>,
+    profile: {
+        type: Object as PropType<Profile>,
         required: true,
     },
+    token: {
+        type: String,
+        required: true,
+    },
+    gunClubs: {
+        type: Array as PropType<Gunclub[]>,
+        required: true,
+    },
+});
+
+// Token
+console.log(props.token);
+
+// Profile
+console.log(props.profile);
+
+// Firearms
+console.log(props.profile.firearms);
+
+// Gun clubs
+console.log(props.profile.gunclub_members);
+
+// Gun club name example
+props.profile.gunclub_members.forEach((member) => {
+    console.log(member.gunclub.name);
 });
 
 const successToastOpen = ref(false);
@@ -115,61 +205,62 @@ const IconComponent = computed<FunctionalComponent>(() => {
 });
 
 const form = useForm({
+    token: 'asdasdasd',
     //step 0 - Application Details
-    application_venue: '',
-    licensed_shooter: null,
-    ltopf_no: '',
-    license_type: '',
+    application_venue: props.profile.application_venue,
+    licensed_shooter: props.profile.licensed_shooter ? 'Yes' : 'No',
+    ltopf_no: props.profile.ltopf_no,
+    license_type: props.profile.license_type,
 
     // step 1 - Personal Details
-    last_name: '',
-    first_name: '',
-    middle_name: '',
-    extension: '',
-    email: '',
-    phone: '',
-    birth_date: '',
-    birth_place: '',
-    age: '',
-    gender: '',
-    civil_status: '',
-    blood_type: '',
+    last_name: props.profile.last_name,
+    first_name: props.profile.first_name,
+    middle_name: props.profile.middle_name,
+    extension: props.profile.extension,
+    email: props.profile.email,
+    phone: props.profile.phone,
+    birth_date: props.profile.birth_date,
+    birth_place: props.profile.birth_place,
+    age: props.profile.age,
+    gender: props.profile.gender,
+    civil_status: props.profile.civil_status,
+    blood_type: props.profile.blood_type,
 
     //step 2 - Address Details
-    street: '',
-    purok: '',
-    barangay: '',
-    city_municipality: '',
-    province: '',
-    region: '',
+    street: props.profile.street,
+    purok: props.profile.purok,
+    barangay: props.profile.barangay,
+    city_municipality: props.profile.city_municipality,
+    province: props.profile.province,
+    region: props.profile.region,
 
     //step 3 - Work Details
-    occupation: '',
-    company_organization: '',
-    position: '',
-    office_business_address: '',
-    office_landline: '',
-    office_email: '',
+    occupation: props.profile.occupation,
+    company_organization: props.profile.company_organization,
+    position: props.profile.position,
+    office_business_address: props.profile.office_business_address,
+    office_landline: props.profile.office_landline,
+    office_email: props.profile.office_email,
 
     //step 4 - Photo & Signature
     photo: null as File | null,
     signature: null as File | null,
 
     //step 5 - Gun Clubs
-    gunclubs: [] as {
-        gunclub_id: number;
-        years_no: number;
-        is_main: boolean;
-    }[],
+    gunclubs: props.profile.gunclub_members.map((member) => ({
+        gunclub_id: member.gunclub.id,
+        years_no: member.years_no, // Make sure this exists; you said it does.
+        is_main: !!member.is_main,
+    })),
 
     // step 6 - Firearms
-    firearms: [] as {
-        type: string;
-        make: string;
-        model: string;
-        caliber: string;
-        serial_no: string;
-    }[],
+    firearms: props.profile.firearms.map((firearm) => ({
+        type: firearm.type,
+        make: firearm.make,
+        model: firearm.model,
+        caliber: firearm.caliber,
+        serial_no: firearm.serial_no,
+    })),
 });
 
 const isStep0Valid = ref(false);
@@ -182,8 +273,8 @@ const isStep6Valid = ref(false);
 const isStep7Valid = ref(false);
 
 function validateStep(currentStep: number): boolean {
-    let valid = false;
-
+    let valid = true;
+    return valid;
     switch (currentStep) {
         case 0:
             valid = !!form.application_venue && form.licensed_shooter !== null && !!form.ltopf_no && !!form.license_type;
@@ -240,7 +331,7 @@ function validateStep(currentStep: number): boolean {
 
 const licensedShooterOptions = ['Yes', 'No'];
 const licenseTypeOptions = ['Type 1', 'Type 2', 'Type 3', 'Type 4', 'Type 5'];
-const genderOptions = ['Male', 'Female'];
+const genderOptions = ['Male', 'Female', 'Others'];
 const civilStatusOptions = ['Single', 'Married', 'Separated', 'Divorced', 'Widowed'];
 const bloodTypeOptions = ['O+', 'O−', 'A+', 'A−', 'B+', 'B−', 'AB+', 'AB−', 'A1', 'A2', 'A1B', 'A2B'];
 const firearmTypeOptions = [
@@ -258,8 +349,10 @@ const firearmTypeOptions = [
 
 const isSubmitSuccess = ref<boolean>(false);
 const formErrorMessage = ref<string>('');
+
 const submit = () => {
-    form.post(route('register-member.store'), {
+    console.log(form.token);
+    form.patch(route('update-member.store'), {
         forceFormData: true,
         onSuccess: () => {
             isSubmitSuccess.value = true;
@@ -268,7 +361,6 @@ const submit = () => {
         },
         onError: (errors) => {
             formErrorMessage.value = Object.values(errors)[0]?.[0] ?? 'Something went wrong';
-            popErrorToast();
             console.error('Validation failed:', errors);
         },
     });
@@ -306,7 +398,7 @@ const handleRegionChange = async (regionName: string) => {
         isCityLoading.value = true;
 
         try {
-            const { data } = await axios.get<Location[]>(`api/proxy/municipalities/${code}`);
+            const { data } = await axios.get<Location[]>(`/api/proxy/municipalities/${code}`);
             citiesList.value = data.filter((item) => item.code !== '1380600000');
         } catch (e) {
             console.error('Error loading cities:', e);
@@ -317,8 +409,9 @@ const handleRegionChange = async (regionName: string) => {
         isProvinceLoading.value = true;
 
         try {
-            const { data } = await axios.get<Location[]>(`api/proxy/provinces/${code}`);
+            const { data } = await axios.get<Location[]>(`/api/proxy/provinces/${code}`);
             provincesList.value = data;
+            handleProvinceChange(props.profile.province);
         } catch (e) {
             console.error('Error loading provinces:', e);
         } finally {
@@ -339,8 +432,9 @@ const handleProvinceChange = async (provinceName: string) => {
     isCityLoading.value = true;
 
     try {
-        const { data } = await axios.get<Location[]>(`api/proxy/municipalities/${code}`);
+        const { data } = await axios.get<Location[]>(`/api/proxy/municipalities/${code}`);
         citiesList.value = data;
+        handleCityChange(props.profile.city_municipality);
     } catch (e) {
         console.error('Error loading provinces:', e);
     } finally {
@@ -357,7 +451,7 @@ const handleCityChange = async (cityName: string) => {
 
     isBarangayLoading.value = true;
     try {
-        const { data } = await axios.get<Location[]>(`api/proxy/barangays/${code}`);
+        const { data } = await axios.get<Location[]>(`/api/proxy/barangays/${code}`);
         barangaysList.value = data;
     } catch (e) {
         console.error('Error loading provinces:', e);
@@ -405,6 +499,7 @@ const state = ref({
 });
 
 const signature = ref();
+const changeSignature = ref(false);
 
 const handleSave = (format = 'image/png') => {
     const base64 = signature.value.saveSignature(format);
@@ -416,9 +511,6 @@ const handleSave = (format = 'image/png') => {
 
 const handleClear = () => {
     return signature.value.clearCanvas();
-};
-const handleUndo = () => {
-    return signature.value.undo();
 };
 
 const newGunClub = reactive({
@@ -496,12 +588,11 @@ const addFirearm = () => {
 };
 
 const videoRef = ref<HTMLVideoElement | null>(null);
-const photo = ref<string | null>(null);
+const photo = ref<string | File | null>(props.profile.photo ?? null);
 const canvas = ref<HTMLCanvasElement | null>(null);
 let stream: MediaStream | null = null;
 const cameraState = ref<'idle' | 'active' | 'capture'>('idle');
 const captureSoundSrc = cameraSound;
-
 const startCamera = async () => {
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -580,13 +671,29 @@ function formatPhone(e: any) {
     form.phone = input.trim();
 }
 
+const urlToFile = async (url: string, filename: string): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+};
+
+onMounted(async () => {
+    if (props.profile.photo) {
+        form.photo = await urlToFile(props.profile.photo, 'photo.jpg');
+    }
+    if (props.profile.signature) {
+        form.signature = await urlToFile(props.profile.signature, 'signature.jpg');
+    }
+});
+
 onMounted(() => {
     isRegionLoading.value = true;
     axios
-        .get('api/proxy/regions')
+        .get('/api/proxy/regions')
         .then(function (response) {
             regionsList.value = response.data;
             isRegionLoading.value = false;
+            handleRegionChange(props.profile.region);
         })
         .catch(function () {
             isRegionLoading.value = false;
@@ -1491,20 +1598,12 @@ onUnmounted(() => {
                                 <!-- Image Display (Click to Open Camera) -->
                                 <audio ref="captureSound" :src="captureSoundSrc"></audio>
                                 <img
-                                    v-if="cameraState === 'capture'"
+                                    v-if="cameraState === 'idle' || cameraState === 'capture'"
                                     :src="photo ?? undefined"
                                     alt="Captured"
-                                    class="w-full cursor-pointer object-cover lg:w-1/2"
+                                    class="h-80 w-full cursor-pointer object-cover lg:w-1/2"
                                     @click="startCamera"
                                 />
-                                <div
-                                    v-if="cameraState === 'idle'"
-                                    class="flex w-full cursor-pointer items-center justify-center space-x-2 rounded border border-zinc-400 bg-zinc-200/60 p-5 font-bold text-zinc-800 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-50"
-                                    @click="startCamera"
-                                >
-                                    <icons.Camera />
-                                    <span>Click to shoot yourself!</span>
-                                </div>
 
                                 <!-- Video Feed for Camera -->
                                 <div v-if="cameraState === 'active'" class="h-full w-full">
@@ -1528,7 +1627,10 @@ onUnmounted(() => {
                         <div class="grid gap-2">
                             <Label for="signature">Signature</Label>
                             <div class="flex flex-col items-start justify-start space-y-4">
-                                <div>
+                                <div v-if="!changeSignature" class="w-full">
+                                    <img :src="props.profile.signature ?? undefined" class="h-[200px] w-full" />
+                                </div>
+                                <div v-else>
                                     <VueSignaturePad
                                         ref="signature"
                                         height="200px"
@@ -1545,8 +1647,12 @@ onUnmounted(() => {
                                 <div class="flex w-full items-start justify-between">
                                     <InputError :message="form.errors.signature" />
                                     <div class="flex w-full justify-end space-x-5">
-                                        <button type="button" class="w-24 rounded bg-blue-500 p-2 font-bold text-zinc-50" @click="handleUndo">
-                                            Undo
+                                        <button
+                                            type="button"
+                                            class="w-24 rounded bg-blue-500 p-2 font-bold text-zinc-50"
+                                            @click="changeSignature = true"
+                                        >
+                                            Change
                                         </button>
                                         <button
                                             type="button"

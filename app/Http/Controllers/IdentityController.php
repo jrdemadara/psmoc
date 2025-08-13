@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gunclub;
 use App\Models\Profile;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -21,23 +22,28 @@ class IdentityController extends Controller
             'rankings.category',
         ])->findOrFail($request->qrcode);
 
+        // Generate temporary photo URL
+        $photoUrl = $profile->photo
+            ? Storage::temporaryUrl($profile->photo, Carbon::now()->addMinutes(20))
+            : null;
+
         return Inertia::render('Identity', [
             'profile' => [
                 ...$profile->only([
-                    'id', 'first_name', 'last_name', 'email', 'phone', // etc
+                    'first_name', 'last_name', 'email', 'phone',
                 ]),
+                'photo' => $photoUrl, // ✅ added here
                 'main_gunclub' => optional($profile->mainGunclub?->gunclub)->only(['id', 'name']),
-                'rankings' => $profile->rankings->map(function ($ranking) {
-                    return [
-                        'id' => $ranking->id,
-                        'match' => $ranking->match->name ?? null,
-                        'division' => $ranking->division->name ?? null,
-                        'category' => $ranking->category->name ?? null,
-                        'score' => $ranking->score,
-                    ];
-                }),
+                'rankings' => $profile->rankings->map(fn($ranking) => [
+                    'id' => $ranking->id,
+                    'match' => $ranking->match->name ?? null,
+                    'division' => $ranking->division->name ?? null,
+                    'category' => $ranking->category->name ?? null,
+                    'score' => $ranking->score,
+                ]),
             ]
         ]);
+
 
     }
 }
