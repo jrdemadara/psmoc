@@ -156,10 +156,11 @@ onUnmounted(() => {
         <form @submit.prevent="submit" class="flex w-full flex-col space-y-10">
             <h4 class="text-xl font-semibold text-zinc-50">Photo & Signature</h4>
 
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
+            <div class="grid grid-cols-1 gap-6 lg:flex lg:flex-col lg:items-start lg:justify-start lg:space-y-8">
+                <!-- Photo Section -->
                 <div class="grid gap-2">
                     <div class="flex items-center space-x-1 text-primary"><Info /><strong>Reminder:</strong></div>
-                    <div class="mx-auto max-w-xl rounded-lg border border-primary p-6 shadow-md">
+                    <div class="rounded-lg border border-primary p-6 shadow-md">
                         <h2 class="mb-4 font-semibold">📸 Photo Submission Guidelines for ID</h2>
                         <ul class="list-inside list-disc space-y-2 text-sm">
                             <li>Take the photo in good lighting.</li>
@@ -170,10 +171,12 @@ onUnmounted(() => {
                         </ul>
                         <p class="mt-4 text-sm">This photo will be used for your official ID, so please make sure it is clear and professional.</p>
                     </div>
+
                     <Label for="photo">Photo</Label>
+
                     <div
                         v-if="cameraState === 'idle' || cameraState === 'captured'"
-                        class="flex flex-col overflow-hidden rounded-lg border-2 border-zinc-800"
+                        class="flex w-full flex-col overflow-hidden rounded-lg border-2 border-zinc-800"
                     >
                         <img :src="photo" alt="" />
                         <button @click="startCamera" type="button" class="flex h-12 w-full items-center justify-center bg-blue-500 hover:bg-blue-600">
@@ -181,7 +184,7 @@ onUnmounted(() => {
                         </button>
                     </div>
 
-                    <div v-if="cameraState === 'active'" class="flex h-fit flex-col overflow-hidden rounded-lg border-2 border-zinc-800">
+                    <div v-if="cameraState === 'active'" class="flex h-fit w-full flex-col overflow-hidden rounded-lg border-2 border-zinc-800">
                         <video ref="videoRef" autoplay playsinline class="h-full w-full scale-x-[-1]"></video>
                         <button
                             @click="capturePhoto"
@@ -197,9 +200,10 @@ onUnmounted(() => {
                     <InputError :message="form.errors.photo" />
                 </div>
 
+                <!-- Signature Section -->
                 <div class="grid gap-2">
                     <Label for="signature">Signature</Label>
-                    <div class="flex flex-col items-start justify-start overflow-hidden rounded-lg">
+                    <div class="flex w-full flex-col items-start justify-start overflow-hidden rounded-lg">
                         <div v-if="!changeSignature" class="w-full">
                             <img :src="props.data.signature ?? undefined" class="h-[200px] w-full" />
                         </div>

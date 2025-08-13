@@ -3,8 +3,28 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
-import { ToastAction, ToastDescription, ToastProvider, ToastRoot, ToastTitle, ToastViewport } from 'reka-ui';
+import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle, Plus, X } from 'lucide-vue-next';
+import {
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectItemIndicator,
+    SelectItemText,
+    SelectLabel,
+    SelectPortal,
+    SelectRoot,
+    SelectScrollDownButton,
+    SelectScrollUpButton,
+    SelectTrigger,
+    SelectValue,
+    SelectViewport,
+    ToastAction,
+    ToastDescription,
+    ToastProvider,
+    ToastRoot,
+    ToastTitle,
+    ToastViewport,
+} from 'reka-ui';
 import { PropType, reactive, ref } from 'vue';
 
 interface Firearm {
@@ -84,7 +104,7 @@ const addFirearm = () => {
 
     if (type && make && model && caliber && serial_no) {
         form.firearms.push({
-            id: id ?? 0,
+            id: Number(id) || 0,
             type,
             make,
             model,
@@ -100,6 +120,19 @@ const addFirearm = () => {
         alert('Complete all firearm fields first.');
     }
 };
+
+const firearmTypeOptions = [
+    'Pistol',
+    'Revolver',
+    'Shotgun',
+    'Rifle',
+    'Submachine Gun',
+    'Assault Rifle',
+    'Sniper Rifle',
+    'Carbine',
+    'Machine Gun',
+    'Other',
+];
 </script>
 
 <template>
@@ -107,8 +140,8 @@ const addFirearm = () => {
         <form @submit.prevent="submit" class="flex w-full flex-col space-y-10">
             <h4 class="text-xl font-semibold text-zinc-50">Personal Details</h4>
 
-            <div v-if="step == 6" class="flex flex-col space-y-4">
-                <div class="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+            <div class="flex flex-col space-y-4">
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
                     <div class="grid gap-2">
                         <Label for="Firearm Type">Firearm Type</Label>
                         <SelectRoot v-model="newFirearm.type">
@@ -117,7 +150,7 @@ const addFirearm = () => {
                                 aria-label="Customise options"
                             >
                                 <SelectValue placeholder="" />
-                                <icons.ChevronDown icon="radix-icons:chevron-down" class="h-3.5 w-3.5" />
+                                <ChevronDown icon="radix-icons:chevron-down" class="h-3.5 w-3.5" />
                             </SelectTrigger>
 
                             <SelectPortal>
@@ -128,7 +161,7 @@ const addFirearm = () => {
                                     <SelectScrollUpButton
                                         class="flex h-[25px] cursor-default items-center justify-center bg-zinc-200 dark:bg-zinc-700"
                                     >
-                                        <icons.ArrowUp :size="16" />
+                                        <ArrowUp :size="16" />
                                     </SelectScrollUpButton>
 
                                     <SelectViewport class="p-[5px]">
@@ -153,7 +186,7 @@ const addFirearm = () => {
                                     <SelectScrollDownButton
                                         class="flex h-[25px] cursor-default items-center justify-center bg-zinc-200 dark:bg-zinc-700"
                                     >
-                                        <icons.ArrowDown :size="16" />
+                                        <ArrowDown :size="16" />
                                     </SelectScrollDownButton>
                                 </SelectContent>
                             </SelectPortal>
@@ -161,61 +194,63 @@ const addFirearm = () => {
                     </div>
                     <div class="grid gap-2">
                         <Label for="make">Make</Label>
-                        <Input id="make" type="text" class="uppercase" required autofocus v-model="newFirearm.make" />
+                        <Input id="make" type="text" class="uppercase" autofocus v-model="newFirearm.make" />
                     </div>
                     <div class="grid gap-2">
                         <Label for="model">Model</Label>
-                        <Input id="make" type="text" class="uppercase" required autofocus v-model="newFirearm.model" />
+                        <Input id="make" type="text" class="uppercase" autofocus v-model="newFirearm.model" />
                     </div>
                     <div class="grid gap-2">
                         <Label for="caliber">Caliber</Label>
-                        <Input id="caliber" type="text" class="uppercase" required autofocus v-model="newFirearm.caliber" />
+                        <Input id="caliber" type="text" class="uppercase" autofocus v-model="newFirearm.caliber" />
                     </div>
                     <div class="grid gap-2">
                         <Label for="serial_no">Serial No.</Label>
-                        <Input id="serial_no" type="text" class="uppercase" required autofocus v-model="newFirearm.serial_no" />
+                        <Input id="serial_no" type="text" class="uppercase" autofocus v-model="newFirearm.serial_no" />
                     </div>
                     <div class="grid gap-2">
                         <Label for="serial_no" class="text-transparent">Action</Label>
                         <Button type="button" @click="addFirearm" class="h-10 bg-zinc-700 text-white sm:w-52" :tabindex="4">
                             Add
-                            <icons.Plus class="h-4 w-4" />
+                            <Plus class="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
 
-                <table v-if="form.firearms.length > 0" class="mt-3 min-w-full table-auto border border-zinc-600 text-sm text-white">
-                    <thead class="bg-zinc-800">
-                        <tr>
-                            <th class="px-3 py-2 text-left">#</th>
-                            <th class="px-3 py-2 text-left">Type</th>
-                            <th class="px-3 py-2 text-left">Make</th>
-                            <th class="px-3 py-2 text-left">Model</th>
-                            <th class="px-3 py-2 text-left">Caliber</th>
-                            <th class="px-3 py-2 text-left">Serial No.</th>
-                            <th class="px-3 py-2 text-left">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="(firearm, index) in form.firearms"
-                            :key="index"
-                            class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
-                        >
-                            <td class="px-3 py-2">{{ index + 1 }}</td>
-                            <td class="px-3 py-2">{{ firearm.type }}</td>
-                            <td class="px-3 py-2">{{ firearm.make }}</td>
-                            <td class="px-3 py-2">{{ firearm.model }}</td>
-                            <td class="px-3 py-2">{{ firearm.caliber }}</td>
-                            <td class="px-3 py-2">{{ firearm.serial_no }}</td>
-                            <td class="px-3 py-2">
-                                <Button type="button" @click="form.firearms.splice(index, 1)" class="bg-primary text-white hover:bg-primary/80">
-                                    <icons.X />
-                                </Button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="mt-3 max-h-64 overflow-y-auto border border-zinc-600">
+                    <table v-if="form.firearms.length > 0" class="min-w-full table-auto text-xs text-white">
+                        <thead class="sticky top-0 bg-zinc-800">
+                            <tr>
+                                <th class="px-3 py-2 text-left">#</th>
+                                <th class="px-3 py-2 text-left">Type</th>
+                                <th class="px-3 py-2 text-left">Make</th>
+                                <th class="px-3 py-2 text-left">Model</th>
+                                <th class="px-3 py-2 text-left">Caliber</th>
+                                <th class="px-3 py-2 text-left">Serial</th>
+                                <th class="px-3 py-2 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(firearm, index) in form.firearms"
+                                :key="index"
+                                class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
+                            >
+                                <td class="px-3 py-2">{{ firearm.id }}</td>
+                                <td class="px-3 py-2">{{ firearm.type }}</td>
+                                <td class="px-3 py-2">{{ firearm.make }}</td>
+                                <td class="px-3 py-2">{{ firearm.model }}</td>
+                                <td class="px-3 py-2">{{ firearm.caliber }}</td>
+                                <td class="px-3 py-2">{{ firearm.serial_no }}</td>
+                                <td class="px-3 py-2">
+                                    <Button type="button" @click="form.firearms.splice(index, 1)" class="bg-primary text-white hover:bg-primary/80">
+                                        <X />
+                                    </Button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <Button class="h-10 text-white lg:w-52" :disabled="form.processing">

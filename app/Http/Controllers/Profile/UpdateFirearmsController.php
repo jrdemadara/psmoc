@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 
-use App\Mail\MemberProfileUpdateMail;
+use App\Mail\ProfileUpdateSuccessMail;
 use App\Models\Profile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -73,10 +73,11 @@ class UpdateFirearmsController extends Controller
 
 
         $data = [
+            'section' => 'Firearms',
             'name' => Str::upper($profile->first_name),
         ];
 
-        Mail::to($profile->email)->send(new MemberProfileUpdateMail($data));
+        Mail::mailer('smtp-noreply')->to($profile->email)->send(new ProfileUpdateSuccessMail($data));
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }

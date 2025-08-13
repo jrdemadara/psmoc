@@ -172,57 +172,57 @@ const firearmsData = {
                 <!-- Navigation -->
                 <nav
                     :class="[
-                        'flex w-full flex-col items-start space-y-4 text-center text-sm font-semibold text-zinc-50 capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0',
+                        'flex w-full flex-col items-start space-y-4 text-center text-sm font-semibold whitespace-nowrap text-zinc-50 capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0',
                         isOpen ? 'mt-5 flex' : 'hidden lg:flex',
                     ]"
                     class="transition-all duration-300 ease-in-out"
                 >
                     <button
                         @click="currentNav = 0"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:bg-primary"
-                        :class="currentNav == 0 ? 'bg-primary' : ''"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 0 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
                     >
                         Application Details
                     </button>
                     <button
                         @click="currentNav = 1"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:bg-primary"
-                        :class="currentNav == 1 ? 'bg-primary' : ''"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 1 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
                     >
                         Personal Details
                     </button>
                     <button
                         @click="currentNav = 2"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:bg-primary"
-                        :class="currentNav == 2 ? 'bg-primary' : ''"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 2 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
                     >
                         Address
                     </button>
                     <button
                         @click="currentNav = 3"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:bg-primary"
-                        :class="currentNav == 3 ? 'bg-primary' : ''"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 3 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
                     >
                         Work
                     </button>
                     <button
                         @click="currentNav = 4"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:bg-primary"
-                        :class="currentNav == 4 ? 'bg-primary' : ''"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 4 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
                     >
                         Photo & Signature
                     </button>
                     <button
                         @click="currentNav = 5"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:bg-primary"
-                        :class="currentNav == 5 ? 'bg-primary' : ''"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 5 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
                     >
                         Gun Clubs
                     </button>
                     <button
                         @click="currentNav = 6"
-                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:bg-primary"
-                        :class="currentNav == 6 ? 'bg-primary' : ''"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 6 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
                     >
                         Firearms
                     </button>
