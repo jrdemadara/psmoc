@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->float('score');
             $table->timestamps();
-            $table->unique(['profile_id', 'match_id', 'division_id']);
+            $table->unique(['division_id']);
         });
     }
 
