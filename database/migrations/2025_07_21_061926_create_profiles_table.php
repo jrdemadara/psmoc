@@ -13,34 +13,35 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->string('qrcode');
+            $table->string('qrcode')->nullable();
+            $table->string('temp_id')->nullable();
             $table->string('rfid')->nullable();
-            $table->enum('reg_type', ['new', 'renewal']);
-            $table->string('application_venue');
-            $table->string('ltopf_no');
-            $table->string('license_type');
+            $table->enum('reg_type', ['new', 'renewal'])->default('new');
+            $table->string('application_venue')->nullable();
+            $table->string('ltopf_no')->nullable();
+            $table->string('license_type')->nullable();
 
-            $table->string('last_name');
-            $table->string('first_name');
+            $table->string('last_name')->nullable();
+            $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('extension')->nullable();
-            $table->string('email');
-            $table->string('phone');
-            $table->date('birth_date');
-            $table->string('birth_place');
-            $table->integer('age');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->string('birth_place')->nullable();
+            $table->integer('age')->nullable();
             $table->string('gender');
-            $table->string('civil_status');
-            $table->string('blood_type');
+            $table->string('civil_status')->nullable();
+            $table->string('blood_type')->nullable();
 
-            $table->string('region');
-            $table->string('province');
-            $table->string('city_municipality');
-            $table->string('barangay');
-            $table->string('purok');
-            $table->string('street');
+            $table->string('region')->nullable();
+            $table->string('province')->nullable();
+            $table->string('city_municipality')->nullable();
+            $table->string('barangay')->nullable();
+            $table->string('purok')->nullable();
+            $table->string('street')->nullable();
 
-            $table->string('occupation');
+            $table->string('occupation')->nullable();
             $table->string('company_organization')->nullable();
             $table->string('position')->nullable();
             $table->string('office_business_address')->nullable();
@@ -55,7 +56,7 @@ return new class extends Migration
             $table->string('approved_by')->nullable();
             $table->boolean('licensed_shooter')->default(false);
             $table->date('expiry_date');
-            $table->enum('status', ['pending', 'approved', 'recommended', 'denied'])->default('pending');
+            $table->enum('status', ['pending', 'on-hold', 'approved', 'recommended', 'denied'])->default('pending');
             $table->timestamps();
             $table->index(['last_name', 'first_name']);
         });
@@ -66,6 +67,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles_migration');
+        Schema::dropIfExists('profiles');
     }
 };
