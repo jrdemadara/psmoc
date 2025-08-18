@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Profile\ResubmissionController;
 use App\Http\Controllers\Profile\UpdateAddressController;
 use App\Http\Controllers\Profile\UpdateApplicationDetailsController;
 use App\Http\Controllers\Profile\UpdateFirearmsController;
@@ -61,6 +62,9 @@ Route::patch('update-gunclubs', [UpdateGunClubsController::class, 'update'])
 
 Route::patch('update-firearms', [UpdateFirearmsController::class, 'update'])
     ->name('update-firearms');
+
+Route::get('resubmission/{token}', [ResubmissionController::class, 'index'])
+    ->name('resubmission');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
