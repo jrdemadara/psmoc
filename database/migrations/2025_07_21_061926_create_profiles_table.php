@@ -55,9 +55,15 @@ return new class extends Migration
             $table->string('recommended_by')->nullable();
             $table->string('approved_by')->nullable();
             $table->boolean('licensed_shooter')->default(false);
+
             $table->date('expiry_date');
             $table->enum('status', ['pending', 'on-hold', 'approved', 'recommended', 'denied'])->default('pending');
+            $table->string('psmoc_position')->nullable();
+            $table->enum('membership_type', ['regular', 'lifetime'])->default('regular');
+            $table->string('moo')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
             $table->index(['last_name', 'first_name']);
         });
     }

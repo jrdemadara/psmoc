@@ -12,29 +12,39 @@ use Inertia\Response;
 
 class ResubmissionController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(string $token): Response
     {
-        $request->validate([
-            'token' => 'required|string|max:255',
-        ]);
 
         // Get stored values from Redis hash
-        $data = Redis::hgetall("resubmission_token:{$request->token}");
+        $data = Redis::get("resubmission_token:{$token}");
 
-        if (empty($data)) {
+        if (! $data) {
             abort(403, 'Invalid or expired link.');
         }
 
-        // Decode fields JSON back into array
+        $data = is_string($data) ? json_decode($data, true) : $data;
+
         $qrcode = $data['qrcode'] ?? null;
-        $fields = isset($data['fields']) ? json_decode($data['fields'], true) : [];
+        $fields = $data['fields'] ?? [];
 
         if (! $qrcode || empty($fields)) {
             abort(403, 'Invalid or expired link.');
         }
 
+        // Decode fields JSON back into array
+        $qrcode = $data['qrcode'] ?? null;
+        $fields = [];
+
+        if (isset($data['fields'])) {
+            if (is_string($data['fields'])) {
+                $fields = json_decode($data['fields'], true) ?? [];
+            } elseif (is_array($data['fields'])) {
+                $fields = $data['fields'];
+            }
+        }
+
         $profile = Profile::where('qrcode', $qrcode)
-            ->where('status', '!=', 'approved')
+            ->where('status', '=', 'on-hold')
             ->first();
 
         if (! $profile) {
@@ -45,7 +55,7 @@ class ResubmissionController extends Controller
         $filteredProfile = collect($profile)->only($fields);
 
         return Inertia::render('Resubmission', [
-            'token'   => $request->token,
+            'token'   => $token,
             'fields'  => $fields,
             'profile' => $filteredProfile,
         ]);
