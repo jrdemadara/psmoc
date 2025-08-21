@@ -44,6 +44,10 @@ interface Data {
 }
 
 const props = defineProps({
+    resubmit: {
+        type: Boolean,
+        required: true,
+    },
     token: {
         type: String,
         required: true,
@@ -57,6 +61,7 @@ const props = defineProps({
 const capitalize = (str?: string) => (str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '');
 
 const form = useForm({
+    resubmit: props.resubmit,
     token: props.token,
     last_name: props.data.last_name,
     first_name: props.data.first_name,
@@ -121,7 +126,7 @@ function formatPhone(e: any) {
         <form @submit.prevent="submit" class="flex w-full flex-col space-y-10">
             <h4 class="text-xl font-semibold text-zinc-50">Personal Details</h4>
 
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div class="grid grid-cols-1 gap-6 text-zinc-50 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 <div class="grid gap-2">
                     <Label for="lastname">Lastname</Label>
                     <Input id="lastname" type="text" class="capitalize" required autofocus autocomplete="lastname" v-model="form.last_name" />

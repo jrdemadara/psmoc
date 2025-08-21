@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Gunclub;
 use App\Models\Profile;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,8 +17,6 @@ class ResubmissionController extends Controller
 {
     public function index(string $token): Response
     {
-
-        // Get stored values from Redis hash
         $data = Redis::get("resubmission_token:{$token}");
 
         if (! $data) {
@@ -31,7 +32,6 @@ class ResubmissionController extends Controller
             abort(403, 'Invalid or expired link.');
         }
 
-        // Decode fields JSON back into array
         $qrcode = $data['qrcode'] ?? null;
         $fields = [];
 
@@ -43,21 +43,36 @@ class ResubmissionController extends Controller
             }
         }
 
-        $profile = Profile::where('qrcode', $qrcode)
-            ->where('status', '=', 'on-hold')
-            ->first();
+        $profile = Profile::with([
+            'gunclubMembers.gunclub',
+            'firearms',
+        ])
+        ->where('qrcode', $qrcode)
+        ->where('status', '=', 'on-hold')
+        ->firstOrFail();
+
+        $profile->photo = $profile->photo
+            ? Storage::temporaryUrl($profile->photo, Carbon::now()->addMinutes(20))
+            : null;
+
+        $profile->signature = $profile->signature
+            ? Storage::temporaryUrl($profile->signature, Carbon::now()->addMinutes(10))
+            : null;
+
+        $gunClubs = Gunclub::select('id', 'name')->get();
 
         if (! $profile) {
             abort(404, 'Profile not found.');
         }
 
-        // Only return requested fields
-        $filteredProfile = collect($profile)->only($fields);
+        // // Only return requested fields
+        // $filteredProfile = collect($profile)->only($fields);
 
         return Inertia::render('Resubmission', [
             'token'   => $token,
             'fields'  => $fields,
-            'profile' => $filteredProfile,
+            'profile' => $profile,
+            'gunClubs'  => $gunClubs,
         ]);
     }
 

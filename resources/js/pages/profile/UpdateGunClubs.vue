@@ -46,6 +46,10 @@ interface Data {
 }
 
 const props = defineProps({
+    resubmit: {
+        type: Boolean,
+        required: true,
+    },
     token: {
         type: String,
         required: true,
@@ -57,6 +61,7 @@ const props = defineProps({
 });
 
 const form = useForm({
+    resubmit: props.resubmit,
     token: props.token,
     gunclubs: props.data.member_gunclubs.map((member) => ({
         id: member.id, //take a look at this. The expected type comes from property 'id' which is declared here on type '{ id: number; gunclub_id: number; years_no: number; is_main: boolean; }'
@@ -148,7 +153,7 @@ watch(
         <form @submit.prevent="submit" class="flex w-full flex-col space-y-10">
             <h4 class="text-xl font-semibold text-zinc-50">Gunclubs</h4>
 
-            <div class="flex flex-col space-y-4">
+            <div class="flex flex-col space-y-4 text-zinc-50">
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
                     <div class="grid gap-2">
                         <Label for="gunclub">Gun Club</Label>

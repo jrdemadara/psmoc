@@ -41,6 +41,10 @@ interface Data {
 }
 
 const props = defineProps({
+    resubmit: {
+        type: Boolean,
+        required: true,
+    },
     token: {
         type: String,
         required: true,
@@ -52,6 +56,7 @@ const props = defineProps({
 });
 
 const form = useForm({
+    resubmit: props.resubmit,
     token: props.token,
     firearms: props.data.firearms.map((firearm) => ({
         id: firearm.id,
@@ -140,7 +145,7 @@ const firearmTypeOptions = [
         <form @submit.prevent="submit" class="flex w-full flex-col space-y-10">
             <h4 class="text-xl font-semibold text-zinc-50">Personal Details</h4>
 
-            <div class="flex flex-col space-y-4">
+            <div class="flex flex-col space-y-4 text-zinc-50">
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
                     <div class="grid gap-2">
                         <Label for="Firearm Type">Firearm Type</Label>
@@ -231,11 +236,7 @@ const firearmTypeOptions = [
                             </tr>
                         </thead>
                         <tbody>
-                            <tr
-                                v-for="(firearm, index) in form.firearms"
-                                :key="index"
-                                class="border-t border-zinc-600 text-black uppercase dark:text-zinc-50"
-                            >
+                            <tr v-for="(firearm, index) in form.firearms" :key="index" class="border-t border-zinc-600 text-zinc-50 uppercase">
                                 <td class="px-3 py-2">{{ firearm.id }}</td>
                                 <td class="px-3 py-2">{{ firearm.type }}</td>
                                 <td class="px-3 py-2">{{ firearm.make }}</td>

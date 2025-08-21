@@ -37,6 +37,10 @@ interface Data {
 }
 
 const props = defineProps({
+    resubmit: {
+        type: Boolean,
+        required: true,
+    },
     token: {
         type: String,
         required: true,
@@ -50,6 +54,7 @@ const props = defineProps({
 const capitalize = (str?: string) => (str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '');
 
 const form = useForm({
+    resubmit: props.resubmit,
     token: props.token,
     application_venue: props.data.application_venue,
     licensed_shooter: props.data.licensed_shooter ? 'Yes' : 'No',

@@ -15,6 +15,10 @@ interface Data {
 }
 
 const props = defineProps({
+    resubmit: {
+        type: Boolean,
+        required: true,
+    },
     token: {
         type: String,
         required: true,
@@ -26,6 +30,7 @@ const props = defineProps({
 });
 
 const form = useForm({
+    resubmit: props.resubmit,
     token: props.token,
     photo: null as File | null,
     signature: null as File | null,
@@ -156,7 +161,7 @@ onUnmounted(() => {
         <form @submit.prevent="submit" class="flex w-full flex-col space-y-10">
             <h4 class="text-xl font-semibold text-zinc-50">Photo & Signature</h4>
 
-            <div class="grid grid-cols-1 gap-6 lg:flex lg:flex-col lg:items-start lg:justify-start lg:space-y-8">
+            <div class="grid grid-cols-1 gap-6 text-zinc-50 lg:flex lg:flex-col lg:items-start lg:justify-start lg:space-y-8">
                 <!-- Photo Section -->
                 <div class="grid gap-2">
                     <div class="flex items-center space-x-1 text-primary"><Info /><strong>Reminder:</strong></div>

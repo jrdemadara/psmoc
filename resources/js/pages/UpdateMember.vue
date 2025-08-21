@@ -172,7 +172,7 @@ const firearmsData = {
                 <!-- Navigation -->
                 <nav
                     :class="[
-                        'flex w-full flex-col items-start space-y-4 text-center text-sm font-semibold whitespace-nowrap text-zinc-50 capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0',
+                        'flex w-full flex-col items-start text-center text-sm font-semibold whitespace-nowrap text-zinc-50 capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0',
                         isOpen ? 'mt-5 flex' : 'hidden lg:flex',
                     ]"
                     class="transition-all duration-300 ease-in-out"
@@ -235,30 +235,30 @@ const firearmsData = {
             <!-- Example long content -->
             <div class="space-y-4 p-6">
                 <div v-if="currentNav == 0">
-                    <UpdateApplicationDetails :token="props.token" :data="applicationDetailsData" />
+                    <UpdateApplicationDetails :resubmit="false" :token="props.token" :data="applicationDetailsData" />
                 </div>
 
                 <div v-if="currentNav == 1">
-                    <UpdatePersonalDetails :token="props.token" :data="personalDetailsData" />
+                    <UpdatePersonalDetails :resubmit="false" :token="props.token" :data="personalDetailsData" />
                 </div>
 
                 <div v-if="currentNav == 2">
-                    <UpdateAddress :token="props.token" :data="addressData" />
+                    <UpdateAddress :resubmit="false" :token="props.token" :data="addressData" />
                 </div>
 
                 <div v-if="currentNav == 3">
-                    <UpdateWorkDetails :token="props.token" :data="workDetailsData" />
+                    <UpdateWorkDetails :resubmit="false" :token="props.token" :data="workDetailsData" />
                 </div>
 
                 <div v-if="currentNav == 4">
-                    <UpdatePhotoSignature :token="props.token" :data="photoSignatureData" />
+                    <UpdatePhotoSignature :resubmit="false" :token="props.token" :data="photoSignatureData" />
                 </div>
 
                 <div v-if="currentNav == 5">
-                    <UpdateGunClubs :token="props.token" :data="gunclubsData" />
+                    <UpdateGunClubs :resubmit="false" :token="props.token" :data="gunclubsData" />
                 </div>
                 <div v-if="currentNav == 6">
-                    <UpdateFirearms :token="props.token" :data="firearmsData" />
+                    <UpdateFirearms :resubmit="false" :token="props.token" :data="firearmsData" />
                 </div>
             </div>
         </div>

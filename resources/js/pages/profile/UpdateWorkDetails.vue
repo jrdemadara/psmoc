@@ -18,6 +18,10 @@ interface Data {
 }
 
 const props = defineProps({
+    resubmit: {
+        type: Boolean,
+        required: true,
+    },
     token: {
         type: String,
         required: true,
@@ -29,6 +33,7 @@ const props = defineProps({
 });
 
 const form = useForm({
+    resubmit: props.resubmit,
     token: props.token,
     occupation: props.data.occupation,
     company_organization: props.data.company_organization,
@@ -69,7 +74,7 @@ function popSuccessToast() {
         <form @submit.prevent="submit" class="flex w-full flex-col space-y-10">
             <h4 class="text-xl font-semibold text-zinc-50">Personal Details</h4>
 
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div class="grid grid-cols-1 gap-6 text-zinc-50 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 <div class="grid gap-2">
                     <Label for="occupation">Occupation</Label>
                     <Input id="occupation" type="text" class="capitalize" required autofocus autocomplete="occupation" v-model="form.occupation" />

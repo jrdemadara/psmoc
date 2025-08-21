@@ -25,7 +25,16 @@ class UpdateGunClubsController extends Controller
         'gunclubs.*.is_main' => 'required|boolean',
         ]);
 
-        $qrcode = Redis::get("profile_update_token:{$request->token}");
+        $qrcode = "";
+
+        $data = $request->resubmit? Redis::get("resubmission_token:{$request->token}") : Redis::get("profile_update_token:{$request->token}");
+
+        if ($request->resubmit) {
+            $data = is_string($data) ? json_decode($data, true) : $data;
+            $qrcode = $data['qrcode'] ?? null;
+        } else {
+            $qrcode = $data;
+        }
 
         if (! $qrcode) {
               abort(403, 'Invalid or expired update link.');

@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { PropType, ref } from 'vue';
+import UpdateAddress from './profile/UpdateAddress.vue';
+import UpdateApplicationDetails from './profile/UpdateApplicationDetails.vue';
+import UpdateFirearms from './profile/UpdateFirearms.vue';
+import UpdateGunClubs from './profile/UpdateGunClubs.vue';
+import UpdatePersonalDetails from './profile/UpdatePersonalDetails.vue';
+import UpdatePhotoSignature from './profile/UpdatePhotoSignature.vue';
+import UpdateWorkDetails from './profile/UpdateWorkDetails.vue';
+
+const isOpen = ref(false);
+
+const currentNav = ref(1);
 
 interface Gunclub {
     id: number;
@@ -67,10 +78,6 @@ interface Profile {
 }
 
 const props = defineProps({
-    profile: {
-        type: Object as PropType<Profile>,
-        required: true,
-    },
     token: {
         type: String,
         required: true,
@@ -79,9 +86,15 @@ const props = defineProps({
         type: Object as PropType<Record<string, any>>,
         required: true,
     },
+    profile: {
+        type: Object as PropType<Profile>,
+        required: true,
+    },
+    gunClubs: {
+        type: Array as PropType<Gunclub[]>,
+        required: true,
+    },
 });
-
-console.log(props);
 
 const applicationDetailsData = {
     reg_type: props.profile.reg_type,
@@ -147,18 +160,117 @@ const firearmsData = {
                 <!-- Logo -->
                 <div class="flex items-center space-x-2">
                     <img src="../../assets/images/logo.png" alt="Logo" class="h-10 w-auto" />
-                    <h4 class="text-lg font-medium">Resubmission</h4>
+                    <h4 class="text-lg font-medium">Profile Resubmission</h4>
                 </div>
+
+                <!-- Hamburger -->
+                <button @click="isOpen = !isOpen" class="text-zinc-50 focus:outline-none lg:hidden">
+                    <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <!-- Navigation -->
+                <nav
+                    :class="[
+                        'flex w-full flex-col items-start text-center text-sm font-semibold whitespace-nowrap text-zinc-50 capitalize lg:flex lg:w-auto lg:flex-row lg:items-center lg:justify-center lg:gap-5 lg:space-y-0',
+                        isOpen ? 'mt-5 flex' : 'hidden lg:flex',
+                    ]"
+                    class="transition-all duration-300 ease-in-out"
+                >
+                    <button
+                        @click="currentNav = 0"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 0 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
+                    >
+                        Application Details
+                    </button>
+                    <button
+                        @click="currentNav = 1"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 1 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
+                    >
+                        Personal Details
+                    </button>
+                    <button
+                        @click="currentNav = 2"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 2 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
+                    >
+                        Address
+                    </button>
+                    <button
+                        @click="currentNav = 3"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 3 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
+                    >
+                        Work
+                    </button>
+                    <button
+                        @click="currentNav = 4"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 4 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
+                    >
+                        Photo & Signature
+                    </button>
+                    <button
+                        @click="currentNav = 5"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 5 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
+                    >
+                        Gun Clubs
+                    </button>
+                    <button
+                        @click="currentNav = 6"
+                        class="flex w-full justify-start px-5 py-1.5 capitalize hover:text-primary"
+                        :class="currentNav == 6 ? 'bg-primary lg:bg-transparent lg:text-primary' : ''"
+                    >
+                        Firearms
+                    </button>
+                </nav>
             </div>
         </header>
 
+        <div v-if="props.fields.length > 0" class="flex w-full flex-col border-b border-b-zinc-800 px-4 py-4">
+            <div class="rounded-lg border border-primary p-4 text-white shadow-md">
+                <h2 class="mb-2">List of information that needs to be resubmitted.</h2>
+                <ul class="list-inside list-disc space-y-1 text-sm">
+                    <li v-for="(field, index) in props.fields" :key="index" class="capitalize">{{ field.replace('_', ' ') }}</li>
+                </ul>
+            </div>
+        </div>
+
         <!-- Scrollable content -->
         <div class="flex-1 overflow-y-auto">
-            <!-- Example long content -->
-            <div class="space-y-4 p-6">
-                <div>
-                    Resubmission
-                    <!-- <UpdateApplicationDetails :token="props.token" :data="applicationDetailsData" /> -->
+            <div class="space-y-4 p-4">
+                <div v-if="currentNav == 0">
+                    <UpdateApplicationDetails :resubmit="true" :token="props.token" :data="applicationDetailsData" />
+                </div>
+
+                <div v-if="currentNav == 1">
+                    <UpdatePersonalDetails :resubmit="true" :token="props.token" :data="personalDetailsData" />
+                </div>
+
+                <div v-if="currentNav == 2">
+                    <UpdateAddress :resubmit="true" :token="props.token" :data="addressData" />
+                </div>
+
+                <div v-if="currentNav == 3">
+                    <UpdateWorkDetails :resubmit="true" :token="props.token" :data="workDetailsData" />
+                </div>
+
+                <div v-if="currentNav == 4">
+                    <UpdatePhotoSignature :resubmit="true" :token="props.token" :data="photoSignatureData" />
+                </div>
+
+                <div v-if="currentNav == 5">
+                    <UpdateGunClubs :resubmit="true" :token="props.token" :data="gunclubsData" />
+                </div>
+                <div v-if="currentNav == 6">
+                    <UpdateFirearms :resubmit="true" :token="props.token" :data="firearmsData" />
                 </div>
             </div>
         </div>
