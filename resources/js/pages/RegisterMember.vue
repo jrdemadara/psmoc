@@ -793,13 +793,13 @@ onUnmounted(() => {
                                 <h4 class="text-sm font-bold">Review & Submit</h4>
                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">Confirm and finish</p>
                             </div>
-                            <span v-if="isStep7Valid == null">
+                            <span v-if="form.processing">
                                 <icons.Loader2 class="animate-spin" :size="24" />
                             </span>
-                            <span v-else-if="isStep7Valid">
+                            <span v-else-if="form.wasSuccessful">
                                 <icons.Check class="text-green-600" :size="24" />
                             </span>
-                            <span v-else>
+                            <span v-else-if="form.hasErrors">
                                 <icons.X class="text-red-600" :size="24" />
                             </span>
                         </div>
